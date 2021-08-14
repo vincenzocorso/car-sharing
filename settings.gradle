@@ -1,1 +1,3 @@
 rootProject.name = 'car-sharing'
+
+include 'rent-service'
