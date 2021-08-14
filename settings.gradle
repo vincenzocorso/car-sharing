@@ -2,3 +2,4 @@ rootProject.name = 'car-sharing'
 
 include 'common'
 include 'rent-service'
+include 'rent-service-api'
