@@ -3,25 +3,17 @@ package it.vincenzocorso.carsharing.common;
 import java.time.Instant;
 
 public class EventEnvelope<E extends DomainEvent> {
-	private final Instant timestamp;
-	private final String aggregateId;
-	private final E payload;
+	public final Instant timestamp;
+	public final String aggregateId;
+	public final E payload;
 
-	public EventEnvelope(String aggregateId, E payload) {
-		this.timestamp = Instant.now();
+	public EventEnvelope(Instant timestamp, String aggregateId, E payload) {
+		this.timestamp = timestamp;
 		this.aggregateId = aggregateId;
 		this.payload = payload;
 	}
 
-	public Instant getTimestamp() {
-		return this.timestamp;
-	}
-
-	public String getAggregateId() {
-		return this.aggregateId;
-	}
-
-	public E getPayload() {
-		return this.payload;
+	public static <E extends DomainEvent> EventEnvelope<E> create(String aggregateId, E payload) {
+		return new EventEnvelope<>(Instant.now(), aggregateId, payload);
 	}
 }
