@@ -1,4 +1,3 @@
 plugins {
-	id 'service.java-conventions'
 	id 'service.spring-conventions'
 }
