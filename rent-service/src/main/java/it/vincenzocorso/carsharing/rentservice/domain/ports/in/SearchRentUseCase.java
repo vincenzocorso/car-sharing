@@ -5,6 +5,6 @@ import it.vincenzocorso.carsharing.rentservice.domain.models.Rent;
 import java.util.List;
 
 public interface SearchRentUseCase {
-	Rent getCustomerRentById(String customerId, String rentId);
-	List<Rent> getAllCustomerRents(String customerId);
+	Rent getCustomerRent(String customerId, String rentId);
+	List<Rent> getCustomerRents(String customerId);
 }
