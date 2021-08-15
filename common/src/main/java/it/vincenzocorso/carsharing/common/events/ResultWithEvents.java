@@ -1,4 +1,4 @@
-package it.vincenzocorso.carsharing.common;
+package it.vincenzocorso.carsharing.common.events;
 
 import java.util.List;
 
