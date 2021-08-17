@@ -1,9 +1,0 @@
-plugins {
-    id 'idea'
-}
-
-idea {
-    module {
-        downloadJavadoc = true
-    }
-}

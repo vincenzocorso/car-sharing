@@ -1,5 +1,5 @@
 plugins {
-	id 'project.common-conventions'
+	id 'idea'
 	id 'java'
 }
 
@@ -13,4 +13,10 @@ repositories {
 dependencies {
 	compileOnly 'org.projectlombok:lombok:1.18.20'
 	annotationProcessor 'org.projectlombok:lombok:1.18.20'
+}
+
+idea {
+	module {
+		downloadJavadoc = true
+	}
 }
