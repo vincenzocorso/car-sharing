@@ -1,5 +1,5 @@
 plugins {
-    id 'api.java-conventions'
+    id 'api.spring-conventions'
 }
 
 dependencies {

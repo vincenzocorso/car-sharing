@@ -1,7 +1,0 @@
-plugins {
-    id 'project.java-conventions'
-}
-
-dependencies {
-    implementation 'org.hibernate.validator:hibernate-validator:6.2.0.Final'
-}
