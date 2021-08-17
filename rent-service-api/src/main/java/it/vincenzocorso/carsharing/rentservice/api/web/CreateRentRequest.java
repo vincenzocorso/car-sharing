@@ -8,7 +8,10 @@ import javax.validation.constraints.NotNull;
 
 @AllArgsConstructor
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
-public class CreateVehicleRequest {
+public class CreateRentRequest {
+	@NotNull(message = "The customer id must be not null")
+	public final String customerId;
+
 	@NotNull(message = "The vehicle id must be not null")
 	public final String vehicleId;
 }
