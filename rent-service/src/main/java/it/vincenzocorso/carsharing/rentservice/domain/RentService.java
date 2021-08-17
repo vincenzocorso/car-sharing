@@ -5,6 +5,7 @@ import it.vincenzocorso.carsharing.common.exceptions.NotAuthorizedException;
 import it.vincenzocorso.carsharing.rentservice.domain.exceptions.RentNotFoundException;
 import it.vincenzocorso.carsharing.rentservice.domain.models.Rent;
 import it.vincenzocorso.carsharing.rentservice.domain.models.RentDetails;
+import it.vincenzocorso.carsharing.rentservice.domain.models.SearchRentCriteria;
 import it.vincenzocorso.carsharing.rentservice.domain.ports.in.RentVehicleUseCase;
 import it.vincenzocorso.carsharing.rentservice.domain.ports.in.SearchRentUseCase;
 import it.vincenzocorso.carsharing.rentservice.domain.ports.out.RentRepository;
@@ -69,14 +70,12 @@ public class RentService implements RentVehicleUseCase, SearchRentUseCase {
 	}
 
 	@Override
-	public Rent getCustomerRent(String customerId, String rentId) {
-		Rent rent = this.rentRepository.findById(rentId).orElseThrow(() -> new RentNotFoundException(rentId));
-		if(!rent.isOwnedBy(customerId)) throw new NotAuthorizedException();
-		return rent;
+	public List<Rent> getRents(SearchRentCriteria criteria) {
+		return this.rentRepository.findByCriteria(criteria);
 	}
 
 	@Override
-	public List<Rent> getCustomerRents(String customerId) {
-		return this.rentRepository.findByCustomer(customerId);
+	public Rent getRent(String rentId) {
+		return this.rentRepository.findById(rentId).orElseThrow(() -> new RentNotFoundException(rentId));
 	}
 }

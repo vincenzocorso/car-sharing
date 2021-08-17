@@ -4,6 +4,7 @@ import it.vincenzocorso.carsharing.common.exceptions.NotAuthorizedException;
 import it.vincenzocorso.carsharing.rentservice.domain.exceptions.RentNotFoundException;
 import it.vincenzocorso.carsharing.rentservice.domain.models.Rent;
 import it.vincenzocorso.carsharing.rentservice.domain.models.RentState;
+import it.vincenzocorso.carsharing.rentservice.domain.models.SearchRentCriteria;
 import it.vincenzocorso.carsharing.rentservice.domain.ports.out.RentRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,9 +12,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
 import java.util.Optional;
 
 import static it.vincenzocorso.carsharing.rentservice.domain.FakeRent.*;
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -121,27 +124,30 @@ class RentServiceTest {
 	}
 
 	@Test
-	void shouldGetCustomerRentById() {
+	void shouldGetRents() {
+		List<Rent> persistedRents = List.of(createRentInState(RentState.PENDING));
+		SearchRentCriteria searchRentCriteria = SearchRentCriteria.empty();
+		when(this.rentRepository.findByCriteria(searchRentCriteria)).thenReturn(persistedRents);
+
+		List<Rent> retrievedRents = this.rentService.getRents(searchRentCriteria);
+
+		assertThat(retrievedRents).hasSameElementsAs(persistedRents);
+	}
+
+	@Test
+	void shouldGetRent() {
 		Rent persistedRent = createRentInState(RentState.PENDING);
 		when(this.rentRepository.findById(RENT_ID)).thenReturn(Optional.of(persistedRent));
 
-		Rent retrievedRent = this.rentService.getCustomerRent(CUSTOMER_ID, RENT_ID);
+		Rent retrievedRent = this.rentService.getRent(RENT_ID);
 
 		assertEquals(retrievedRent, persistedRent);
 	}
 
 	@Test
-	void shouldNotGetCustomerRentByNotExistingId() {
+	void shouldNotGetRent() {
 		when(this.rentRepository.findById(anyString())).thenReturn(Optional.empty());
 
-		assertThrows(RentNotFoundException.class, () -> this.rentService.getCustomerRent(CUSTOMER_ID, RENT_ID));
-	}
-
-	@Test
-	void shouldNotGetCustomerRentByIdWhenCustomerIdDoesntMatch() {
-		Rent persistedRent = createRentInState(RentState.PENDING);
-		when(this.rentRepository.findById(RENT_ID)).thenReturn(Optional.of(persistedRent));
-
-		assertThrows(NotAuthorizedException.class, () -> this.rentService.getCustomerRent("AnotherCustomerId", RENT_ID));
+		assertThrows(RentNotFoundException.class, () -> this.rentService.getRent(RENT_ID));
 	}
 }
