@@ -28,5 +28,6 @@ public interface RentRestApi {
 	RentResponse getRent(@PathVariable(name = "rentId") String rentId);
 
 	@PostMapping
+	@ResponseStatus(HttpStatus.CREATED)
 	RentResponse createRent(@Valid @RequestBody CreateRentRequest request);
 }
