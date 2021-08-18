@@ -16,11 +16,14 @@ public interface RentRestApi {
 	List<RentResponse> getRents(
 			@RequestParam(name = "customerId", required = false) String customerId,
 			@RequestParam(name = "states", required = false)
-				List<@Pattern(regexp = "PENDING|REJECTED|ACCEPTED|STARTED|ENDED") String> states,
+				List<@Pattern(regexp = "PENDING|REJECTED|ACCEPTED|STARTED|ENDED",
+						message = "Each state must be one of the following: PENDING, REJECTED, ACCEPTED, STARTED, ENDED")
+						String> states,
 			@RequestParam(name = "limit", required = false, defaultValue = "10")
 				@Min(value = 1, message = "The limit must be positive")
 				@Max(value = 200, message = "The limit must be at most 200") Integer limit,
-			@RequestParam(name = "offset", required = false, defaultValue = "0") Integer offset
+			@RequestParam(name = "offset", required = false, defaultValue = "0")
+				@Min(value = 0, message = "Offset must be greater or equal to zero") Integer offset
 	);
 
 	@GetMapping("/{rentId}")
