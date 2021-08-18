@@ -1,7 +1,6 @@
 package it.vincenzocorso.carsharing.rentservice.domain;
 
 import it.vincenzocorso.carsharing.common.events.ResultWithEvents;
-import it.vincenzocorso.carsharing.common.exceptions.NotAuthorizedException;
 import it.vincenzocorso.carsharing.rentservice.domain.exceptions.RentNotFoundException;
 import it.vincenzocorso.carsharing.rentservice.domain.models.Rent;
 import it.vincenzocorso.carsharing.rentservice.domain.models.RentDetails;
@@ -30,9 +29,8 @@ public class RentService implements RentVehicleUseCase, SearchRentUseCase {
 	}
 
 	@Override
-	public Rent cancelRent(String customerId, String rentId) {
+	public Rent cancelRent(String rentId) {
 		Rent rent = this.rentRepository.findById(rentId).orElseThrow(() -> new RentNotFoundException(rentId));
-		if(!rent.isOwnedBy(customerId)) throw new NotAuthorizedException();
 		rent.cancel();
 		Rent savedRent = this.rentRepository.save(rent);
 
@@ -43,9 +41,8 @@ public class RentService implements RentVehicleUseCase, SearchRentUseCase {
 	}
 
 	@Override
-	public Rent startRent(String customerId, String rentId) {
+	public Rent startRent(String rentId) {
 		Rent rent = this.rentRepository.findById(rentId).orElseThrow(() -> new RentNotFoundException(rentId));
-		if(!rent.isOwnedBy(customerId)) throw new NotAuthorizedException();
 		rent.start();
 		Rent savedRent = this.rentRepository.save(rent);
 
@@ -56,9 +53,8 @@ public class RentService implements RentVehicleUseCase, SearchRentUseCase {
 	}
 
 	@Override
-	public Rent endRent(String customerId, String rentId) {
+	public Rent endRent(String rentId) {
 		Rent rent = this.rentRepository.findById(rentId).orElseThrow(() -> new RentNotFoundException(rentId));
-		if(!rent.isOwnedBy(customerId)) throw new NotAuthorizedException();
 		rent.end();
 		Rent savedRent = this.rentRepository.save(rent);
 

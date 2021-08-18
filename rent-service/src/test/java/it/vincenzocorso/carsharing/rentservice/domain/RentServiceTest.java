@@ -1,6 +1,5 @@
 package it.vincenzocorso.carsharing.rentservice.domain;
 
-import it.vincenzocorso.carsharing.common.exceptions.NotAuthorizedException;
 import it.vincenzocorso.carsharing.rentservice.domain.exceptions.RentNotFoundException;
 import it.vincenzocorso.carsharing.rentservice.domain.models.Rent;
 import it.vincenzocorso.carsharing.rentservice.domain.models.RentState;
@@ -48,7 +47,7 @@ class RentServiceTest {
 		when(this.rentRepository.findById(RENT_ID)).thenReturn(Optional.of(persistedRent));
 		when(this.rentRepository.save(any(Rent.class))).thenReturn(persistedRent);
 
-		Rent cancelledRent = this.rentService.cancelRent(CUSTOMER_ID, RENT_ID);
+		Rent cancelledRent = this.rentService.cancelRent(RENT_ID);
 
 		verify(this.rentRepository).save(cancelledRent);
 		// TODO: verify that the events have been published
@@ -58,15 +57,7 @@ class RentServiceTest {
 	void shouldNotCancelRentWhenRentIdDoesntExists() {
 		when(this.rentRepository.findById(anyString())).thenReturn(Optional.empty());
 
-		assertThrows(RentNotFoundException.class, () -> this.rentService.cancelRent(CUSTOMER_ID, "NotExistingId"));
-	}
-
-	@Test
-	void shouldNotCancelRentWhenCustomerIdDoesntMatch() {
-		Rent persistedRent = createRentInState(RentState.ACCEPTED);
-		when(this.rentRepository.findById(RENT_ID)).thenReturn(Optional.of(persistedRent));
-
-		assertThrows(NotAuthorizedException.class, () -> this.rentService.cancelRent("AnotherCustomerId", RENT_ID));
+		assertThrows(RentNotFoundException.class, () -> this.rentService.cancelRent("NotExistingId"));
 	}
 
 	@Test
@@ -75,7 +66,7 @@ class RentServiceTest {
 		when(this.rentRepository.findById(RENT_ID)).thenReturn(Optional.of(persistedRent));
 		when(this.rentRepository.save(any(Rent.class))).thenReturn(persistedRent);
 
-		Rent startedRent = this.rentService.startRent(CUSTOMER_ID, RENT_ID);
+		Rent startedRent = this.rentService.startRent(RENT_ID);
 
 		verify(this.rentRepository).save(startedRent);
 		// TODO: verify that the events have been published
@@ -85,15 +76,7 @@ class RentServiceTest {
 	void shouldNotStartRentWhenRentIdDoesntExists() {
 		when(this.rentRepository.findById(anyString())).thenReturn(Optional.empty());
 
-		assertThrows(RentNotFoundException.class, () -> this.rentService.startRent(CUSTOMER_ID, "NotExistingId"));
-	}
-
-	@Test
-	void shouldNotStartRentWhenCustomerIdDoesntMatch() {
-		Rent persistedRent = createRentInState(RentState.ACCEPTED);
-		when(this.rentRepository.findById(RENT_ID)).thenReturn(Optional.of(persistedRent));
-
-		assertThrows(NotAuthorizedException.class, () -> this.rentService.startRent("AnotherCustomerId", RENT_ID));
+		assertThrows(RentNotFoundException.class, () -> this.rentService.startRent("NotExistingId"));
 	}
 
 	@Test
@@ -102,7 +85,7 @@ class RentServiceTest {
 		when(this.rentRepository.findById(RENT_ID)).thenReturn(Optional.of(persistedRent));
 		when(this.rentRepository.save(any(Rent.class))).thenReturn(persistedRent);
 
-		Rent endedRent = this.rentService.endRent(CUSTOMER_ID, RENT_ID);
+		Rent endedRent = this.rentService.endRent(RENT_ID);
 
 		verify(this.rentRepository).save(endedRent);
 		// TODO: verify that the events have been published
@@ -112,15 +95,7 @@ class RentServiceTest {
 	void shouldNotEndRentWhenRentIdDoesntExists() {
 		when(this.rentRepository.findById(anyString())).thenReturn(Optional.empty());
 
-		assertThrows(RentNotFoundException.class, () -> this.rentService.endRent(CUSTOMER_ID, "NotExistingId"));
-	}
-
-	@Test
-	void shouldNotEndRentWhenCustomerIdDoesntMatch() {
-		Rent persistedRent = createRentInState(RentState.STARTED);
-		when(this.rentRepository.findById(RENT_ID)).thenReturn(Optional.of(persistedRent));
-
-		assertThrows(NotAuthorizedException.class, () -> this.rentService.endRent("AnotherCustomerId", RENT_ID));
+		assertThrows(RentNotFoundException.class, () -> this.rentService.endRent("NotExistingId"));
 	}
 
 	@Test
