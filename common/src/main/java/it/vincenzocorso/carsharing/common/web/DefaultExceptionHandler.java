@@ -27,7 +27,7 @@ public class DefaultExceptionHandler {
 				.map(this::convertToIssue)
 				.collect(Collectors.toList());
 
-		return new ErrorResponse("VALIDATION_ERROR", "A validation error occurred in request body.", issues);
+		return ErrorResponses.makeValidationErrorResponse(issues);
 	}
 
 	private Issue convertToIssue(FieldError fieldError) {
@@ -41,7 +41,7 @@ public class DefaultExceptionHandler {
 				.map(this::convertToIssue)
 				.collect(Collectors.toList());
 
-		return new ErrorResponse("VALIDATION_ERROR", "A validation error occurred in request body.", issues);
+		return ErrorResponses.makeValidationErrorResponse(issues);
 	}
 
 	private Issue convertToIssue(ConstraintViolation<?> constraintViolation) {
@@ -56,14 +56,13 @@ public class DefaultExceptionHandler {
 	@ExceptionHandler(HttpMessageNotReadableException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ErrorResponse handleMissingRequestBody(HttpMessageNotReadableException ex) {
-		return new ErrorResponse("INVALID_REQUEST_BODY", "The request body is not readable.", Collections.emptyList());
+		return ErrorResponses.makeInvalidRequestBodyErrorResponse(Collections.emptyList());
 	}
 
 	@ExceptionHandler(Exception.class)
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	public ErrorResponse handleGenericException(Exception ex) {
 		log.warn("No exception handler found for: ", ex);
-
-		return new ErrorResponse("INTERNAL_SERVER_ERROR", "An error occurred processing the request.", Collections.emptyList());
+		return ErrorResponses.makeInternalServerErrorResponse();
 	}
 }
