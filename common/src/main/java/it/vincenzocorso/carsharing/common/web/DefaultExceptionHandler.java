@@ -9,7 +9,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.Path;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,6 +32,25 @@ public class DefaultExceptionHandler {
 
 	private Issue convertToIssue(FieldError fieldError) {
 		return new Issue(fieldError.getField(), fieldError.getDefaultMessage());
+	}
+
+	@ExceptionHandler(ConstraintViolationException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public ErrorResponse handleValidationException(ConstraintViolationException ex) {
+		List<Issue> issues = ex.getConstraintViolations().stream()
+				.map(this::convertToIssue)
+				.collect(Collectors.toList());
+
+		return new ErrorResponse("VALIDATION_ERROR", "A validation error occurred in request body.", issues);
+	}
+
+	private Issue convertToIssue(ConstraintViolation<?> constraintViolation) {
+		Iterator<Path.Node> iterator = constraintViolation.getPropertyPath().iterator();
+		Path.Node lastNode = iterator.next();
+		while(iterator.hasNext())
+			lastNode = iterator.next();
+
+		return new Issue(lastNode.getName(), constraintViolation.getMessage());
 	}
 
 	@ExceptionHandler(HttpMessageNotReadableException.class)
