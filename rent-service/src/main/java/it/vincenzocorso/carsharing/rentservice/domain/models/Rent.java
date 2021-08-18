@@ -5,10 +5,11 @@ import it.vincenzocorso.carsharing.common.events.ResultWithEvents;
 import it.vincenzocorso.carsharing.rentservice.api.events.RentCreatedEvent;
 import it.vincenzocorso.carsharing.rentservice.api.events.RentStateTransitionEvent;
 import it.vincenzocorso.carsharing.rentservice.domain.exceptions.IllegalRentStateTransitionException;
+import lombok.EqualsAndHashCode;
 
 import java.util.List;
-import java.util.Objects;
 
+@EqualsAndHashCode(of = {"id", "details"})
 public class Rent {
 	private String id;
 	private final RentDetails details;
@@ -99,18 +100,5 @@ public class Rent {
 
 	public boolean isOwnedBy(String customerId) {
 		return this.getDetails().getCustomerId().equals(customerId);
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || this.getClass() != o.getClass()) return false;
-		Rent rent = (Rent) o;
-		return Objects.equals(this.id, rent.id) && this.details.equals(rent.details);
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(this.id, this.details);
 	}
 }

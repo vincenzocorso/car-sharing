@@ -9,15 +9,13 @@ import it.vincenzocorso.carsharing.rentservice.domain.models.SearchRentCriteria;
 import it.vincenzocorso.carsharing.rentservice.domain.ports.in.RentVehicleUseCase;
 import it.vincenzocorso.carsharing.rentservice.domain.ports.in.SearchRentUseCase;
 import it.vincenzocorso.carsharing.rentservice.domain.ports.out.RentRepository;
+import lombok.AllArgsConstructor;
 
 import java.util.List;
 
+@AllArgsConstructor
 public class RentService implements RentVehicleUseCase, SearchRentUseCase {
 	private final RentRepository rentRepository;
-
-	public RentService(RentRepository rentRepository) {
-		this.rentRepository = rentRepository;
-	}
 
 	@Override
 	public Rent createRent(String customerId, String vehicleId) {
