@@ -1,11 +1,5 @@
 plugins {
-    id 'project.java-conventions'
     id 'project.spring-conventions'
-}
-
-dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-validation'
 }
 
 // Api modules don't have a main class

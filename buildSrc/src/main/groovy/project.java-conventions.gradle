@@ -1,14 +1,10 @@
 plugins {
+	id 'java.build-conventions'
 	id 'idea'
 	id 'java'
 }
 
 sourceCompatibility = '11'
-
-repositories {
-	mavenLocal()
-	mavenCentral()
-}
 
 dependencies {
 	compileOnly 'org.projectlombok:lombok:1.18.20'
@@ -19,4 +15,8 @@ idea {
 	module {
 		downloadJavadoc = true
 	}
+}
+
+tasks.withType(Test) {
+	useJUnitPlatform()
 }

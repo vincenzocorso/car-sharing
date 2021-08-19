@@ -1,0 +1,16 @@
+plugins {
+    id 'org.unbroken-dome.test-sets'
+}
+
+testSets  {
+    integrationTest { dirName = 'integration-test' }
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    integrationTestImplementation sourceSets.test.output
+}
