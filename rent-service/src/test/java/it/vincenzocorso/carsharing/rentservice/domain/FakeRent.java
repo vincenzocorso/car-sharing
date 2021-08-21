@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 public class FakeRent {
 	public static final String RENT_ID = "RNT-ATGH-0453-ABCD";
 
@@ -73,5 +75,20 @@ public class FakeRent {
 	private static Rent makeRent(List<RentStateTransition> transitions) {
 		RentDetails rentDetails = new RentDetails(CUSTOMER_ID, VEHICLE_ID);
 		return new Rent(RENT_ID, rentDetails, transitions);
+	}
+
+	public static void assertEqualsWithRent(Rent actualRent) {
+		assertEquals(RENT_ID, actualRent.getId());
+		assertEquals(CUSTOMER_ID, actualRent.getDetails().getCustomerId());
+		assertEquals(VEHICLE_ID, actualRent.getDetails().getVehicleId());
+		for(RentStateTransition expectedTransition : ORDERED_STATE_TRANSITIONS) {
+			RentStateTransition actualTransition = actualRent.getStateTransitions().stream()
+					.filter(t -> t.getSequenceNumber().equals(expectedTransition.getSequenceNumber()))
+					.findFirst()
+					.orElse(null);
+			assertNotNull(actualTransition);
+			assertEquals(expectedTransition.getState(), actualTransition.getState());
+			assertEquals(expectedTransition.getTimestamp(), actualTransition.getTimestamp());
+		}
 	}
 }
