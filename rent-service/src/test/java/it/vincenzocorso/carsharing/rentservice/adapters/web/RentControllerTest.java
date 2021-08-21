@@ -97,7 +97,7 @@ class RentControllerTest {
 	@Test
 	void shouldCreateRent() throws Exception {
 		String request = this.objectMapper.writeValueAsString(new CreateRentRequest(CUSTOMER_ID, VEHICLE_ID));
-		when(this.rentVehicleUseCase.createRent(CUSTOMER_ID, VEHICLE_ID)).thenReturn(createRentInState(RentState.PENDING));
+		when(this.rentVehicleUseCase.createRent(CUSTOMER_ID, VEHICLE_ID)).thenReturn(rentInState(RentState.PENDING));
 
 		this.mockMvc.perform(post("/rents").content(request).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isCreated())

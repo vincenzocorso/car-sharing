@@ -39,7 +39,7 @@ public class FakeRent {
 
 	public static final Rent RENT = new Rent(RENT_ID, RENT_DETAILS, ORDERED_STATE_TRANSITIONS);
 
-	public static Rent createRentInState(RentState state) {
+	public static Rent rentInState(RentState state) {
 		List<RentStateTransition> transitions = new ArrayList<>();
 		int counter = 1;
 

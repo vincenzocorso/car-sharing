@@ -43,7 +43,7 @@ class RentServiceTest {
 
 	@Test
 	void shouldCancelRent() {
-		Rent persistedRent = createRentInState(RentState.ACCEPTED);
+		Rent persistedRent = rentInState(RentState.ACCEPTED);
 		when(this.rentRepository.findById(RENT_ID)).thenReturn(Optional.of(persistedRent));
 		when(this.rentRepository.save(any(Rent.class))).thenReturn(persistedRent);
 
@@ -62,7 +62,7 @@ class RentServiceTest {
 
 	@Test
 	void shouldStartRent() {
-		Rent persistedRent = createRentInState(RentState.ACCEPTED);
+		Rent persistedRent = rentInState(RentState.ACCEPTED);
 		when(this.rentRepository.findById(RENT_ID)).thenReturn(Optional.of(persistedRent));
 		when(this.rentRepository.save(any(Rent.class))).thenReturn(persistedRent);
 
@@ -81,7 +81,7 @@ class RentServiceTest {
 
 	@Test
 	void shouldEndRent() {
-		Rent persistedRent = createRentInState(RentState.STARTED);
+		Rent persistedRent = rentInState(RentState.STARTED);
 		when(this.rentRepository.findById(RENT_ID)).thenReturn(Optional.of(persistedRent));
 		when(this.rentRepository.save(any(Rent.class))).thenReturn(persistedRent);
 
@@ -100,7 +100,7 @@ class RentServiceTest {
 
 	@Test
 	void shouldGetRents() {
-		List<Rent> persistedRents = List.of(createRentInState(RentState.PENDING));
+		List<Rent> persistedRents = List.of(rentInState(RentState.PENDING));
 		SearchRentCriteria searchRentCriteria = SearchRentCriteria.empty();
 		when(this.rentRepository.findByCriteria(searchRentCriteria)).thenReturn(persistedRents);
 
@@ -111,7 +111,7 @@ class RentServiceTest {
 
 	@Test
 	void shouldGetRent() {
-		Rent persistedRent = createRentInState(RentState.PENDING);
+		Rent persistedRent = rentInState(RentState.PENDING);
 		when(this.rentRepository.findById(RENT_ID)).thenReturn(Optional.of(persistedRent));
 
 		Rent retrievedRent = this.rentService.getRent(RENT_ID);

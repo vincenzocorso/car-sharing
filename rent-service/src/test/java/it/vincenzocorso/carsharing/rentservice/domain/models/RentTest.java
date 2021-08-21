@@ -18,7 +18,7 @@ class RentTest {
 
 	@Test
 	void shouldRejectRent() {
-		Rent rent = createRentInState(RentState.PENDING);
+		Rent rent = rentInState(RentState.PENDING);
 
 		rent.reject();
 
@@ -28,14 +28,14 @@ class RentTest {
 	@ParameterizedTest
 	@EnumSource(value = RentState.class, mode = EnumSource.Mode.EXCLUDE, names = {"PENDING"})
 	void shouldNotRejectRent(RentState state) {
-		Rent rent = createRentInState(state);
+		Rent rent = rentInState(state);
 
 		assertThrows(IllegalRentStateTransitionException.class, rent::reject);
 	}
 
 	@Test
 	void shouldAcceptRent() {
-		Rent rent = createRentInState(RentState.PENDING);
+		Rent rent = rentInState(RentState.PENDING);
 
 		rent.accept();
 
@@ -45,14 +45,14 @@ class RentTest {
 	@ParameterizedTest
 	@EnumSource(value = RentState.class, mode = EnumSource.Mode.EXCLUDE, names = {"PENDING"})
 	void shouldNotAcceptRent(RentState state) {
-		Rent rent = createRentInState(state);
+		Rent rent = rentInState(state);
 
 		assertThrows(IllegalRentStateTransitionException.class, rent::accept);
 	}
 
 	@Test
 	void shouldCancelRent() {
-		Rent rent = createRentInState(RentState.ACCEPTED);
+		Rent rent = rentInState(RentState.ACCEPTED);
 
 		rent.cancel();
 
@@ -62,14 +62,14 @@ class RentTest {
 	@ParameterizedTest
 	@EnumSource(value = RentState.class, mode = EnumSource.Mode.EXCLUDE, names = {"ACCEPTED"})
 	void shouldNotCancelRent(RentState state) {
-		Rent rent = createRentInState(state);
+		Rent rent = rentInState(state);
 
 		assertThrows(IllegalRentStateTransitionException.class, rent::cancel);
 	}
 
 	@Test
 	void shouldStartRent() {
-		Rent rent = createRentInState(RentState.ACCEPTED);
+		Rent rent = rentInState(RentState.ACCEPTED);
 
 		rent.start();
 
@@ -79,14 +79,14 @@ class RentTest {
 	@ParameterizedTest
 	@EnumSource(value = RentState.class, mode = EnumSource.Mode.EXCLUDE, names = {"ACCEPTED"})
 	void shouldNotStartRent(RentState state) {
-		Rent rent = createRentInState(state);
+		Rent rent = rentInState(state);
 
 		assertThrows(IllegalRentStateTransitionException.class, rent::start);
 	}
 
 	@Test
 	void shouldEndRent() {
-		Rent rent = createRentInState(RentState.STARTED);
+		Rent rent = rentInState(RentState.STARTED);
 
 		rent.end();
 
@@ -96,7 +96,7 @@ class RentTest {
 	@ParameterizedTest
 	@EnumSource(value = RentState.class, mode = EnumSource.Mode.EXCLUDE, names = {"STARTED"})
 	void shouldNotEndRent(RentState state) {
-		Rent rent = createRentInState(state);
+		Rent rent = rentInState(state);
 
 		assertThrows(IllegalRentStateTransitionException.class, rent::end);
 	}
