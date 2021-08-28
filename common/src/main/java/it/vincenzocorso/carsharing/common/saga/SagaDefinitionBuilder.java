@@ -14,16 +14,8 @@ public class SagaDefinitionBuilder<S extends SagaState> {
 		return new SagaDefinitionBuilder<>();
 	}
 
-	public SagaForwardActionBuilder<S> step() {
-		return new SagaForwardActionBuilder<>(this);
-	}
-
-	public SagaRetriableStepBuilder<S> retriableSteps() {
-		return new SagaRetriableStepBuilder<>(this);
-	}
-
-	public SagaDefinition<S> end() {
-		return this.build();
+	public SagaStepBuilder<S> step() {
+		return new SagaStepBuilder<>(this);
 	}
 
 	void addStep(SagaStep<S> sagaStep) {
