@@ -8,8 +8,13 @@ import lombok.Setter;
 @RequiredArgsConstructor
 @Getter
 @Setter
-public class CreateRentSagaState extends SagaState {
+public class CreateRentSagaState implements SagaState {
+	private final String rentId;
 	private final String customerId;
 	private final String vehicleId;
-	private String rentId;
+
+	@Override
+	public String getCorrelationId() {
+		return this.rentId;
+	}
 }

@@ -1,4 +1,4 @@
-package it.vincenzocorso.carsharing.common.events;
+package it.vincenzocorso.carsharing.common.messaging.events;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

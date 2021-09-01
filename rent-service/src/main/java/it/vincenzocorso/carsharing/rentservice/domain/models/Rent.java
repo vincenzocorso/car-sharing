@@ -1,9 +1,9 @@
 package it.vincenzocorso.carsharing.rentservice.domain.models;
 
-import it.vincenzocorso.carsharing.common.events.DomainEvent;
-import it.vincenzocorso.carsharing.common.events.ResultWithEvents;
-import it.vincenzocorso.carsharing.rentservice.api.events.RentCreatedEvent;
-import it.vincenzocorso.carsharing.rentservice.api.events.RentStateTransitionEvent;
+import it.vincenzocorso.carsharing.common.messaging.events.DomainEvent;
+import it.vincenzocorso.carsharing.common.messaging.events.ResultWithEvents;
+import it.vincenzocorso.carsharing.rentservice.api.messaging.events.RentCreatedEvent;
+import it.vincenzocorso.carsharing.rentservice.api.messaging.events.RentStateTransitionEvent;
 import it.vincenzocorso.carsharing.rentservice.domain.exceptions.IllegalRentStateTransitionException;
 
 import java.util.List;

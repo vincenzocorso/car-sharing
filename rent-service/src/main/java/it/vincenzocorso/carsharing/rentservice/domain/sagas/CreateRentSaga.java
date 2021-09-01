@@ -9,7 +9,6 @@ import static it.vincenzocorso.carsharing.common.saga.SagaDefinitionBuilder.*;
 
 @AllArgsConstructor
 public class CreateRentSaga implements Saga<CreateRentSagaState> {
-	private final CreateRentProxy createRentProxy;
 	private final RejectRentProxy rejectRentProxy;
 	private final VerifyCustomerProxy verifyCustomerProxy;
 	private final BookVehicleProxy bookVehicleProxy;
@@ -24,7 +23,6 @@ public class CreateRentSaga implements Saga<CreateRentSagaState> {
 	public SagaDefinition<CreateRentSagaState> getDefinition() {
 		return start(CreateRentSagaState.class)
 				.step()
-					.forward("Creating Rent", this.createRentProxy, (participant, state) -> participant.createRent(state.getCustomerId(), state.getVehicleId()))
 					.backward("Rejecting Rent", this.rejectRentProxy, (participant, state) -> participant.rejectRent(state.getRentId()))
 				.step()
 					.forward("Verifying Customer", this.verifyCustomerProxy, (participant, state) -> participant.verifyCustomer(state.getCustomerId()))
