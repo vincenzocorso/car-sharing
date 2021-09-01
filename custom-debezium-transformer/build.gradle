@@ -1,0 +1,10 @@
+plugins {
+    id 'project.java-conventions'
+}
+
+dependencies {
+    implementation project(':common')
+    
+    implementation 'org.apache.kafka:connect-api:2.8.0'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.5'
+}
