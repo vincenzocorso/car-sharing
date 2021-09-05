@@ -1,0 +1,11 @@
+plugins {
+    id 'project.quarkus-conventions'
+}
+
+dependencies {
+    implementation 'io.quarkus:quarkus-arc'
+
+    testImplementation 'io.quarkus:quarkus-junit5'
+    testImplementation 'org.mockito:mockito-junit-jupiter:3.12.4'
+    testImplementation 'org.assertj:assertj-core:3.20.2'
+}
