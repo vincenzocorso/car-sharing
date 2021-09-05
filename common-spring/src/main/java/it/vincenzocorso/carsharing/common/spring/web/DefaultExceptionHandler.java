@@ -1,5 +1,8 @@
-package it.vincenzocorso.carsharing.common.web;
+package it.vincenzocorso.carsharing.common.spring.web;
 
+import it.vincenzocorso.carsharing.common.web.ErrorResponse;
+import it.vincenzocorso.carsharing.common.web.ErrorResponses;
+import it.vincenzocorso.carsharing.common.web.Issue;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;

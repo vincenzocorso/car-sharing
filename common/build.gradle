@@ -1,12 +1,3 @@
 plugins {
     id 'project.java-conventions'
-    id 'project.spring-conventions'
 }
-
-dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-}
-
-// This module doesn't have a main class
-bootJar.enabled = false
-jar.enabled = true

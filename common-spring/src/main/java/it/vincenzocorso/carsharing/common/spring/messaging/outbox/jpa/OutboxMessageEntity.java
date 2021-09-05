@@ -1,4 +1,4 @@
-package it.vincenzocorso.carsharing.common.messaging.outbox.jpa;
+package it.vincenzocorso.carsharing.common.spring.messaging.outbox.jpa;
 
 import it.vincenzocorso.carsharing.common.messaging.outbox.OutboxMessage;
 import lombok.Getter;

@@ -5,6 +5,7 @@ plugins {
 
 dependencies {
 	implementation project(':common')
+	implementation project(':common-spring')
 	implementation project(':rent-service-api')
 
 	annotationProcessor 'org.hibernate:hibernate-jpamodelgen:5.4.32.Final'

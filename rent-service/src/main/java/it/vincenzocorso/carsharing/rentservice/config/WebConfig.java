@@ -1,6 +1,6 @@
 package it.vincenzocorso.carsharing.rentservice.config;
 
-import it.vincenzocorso.carsharing.common.web.DefaultExceptionHandler;
+import it.vincenzocorso.carsharing.common.spring.web.DefaultExceptionHandler;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
