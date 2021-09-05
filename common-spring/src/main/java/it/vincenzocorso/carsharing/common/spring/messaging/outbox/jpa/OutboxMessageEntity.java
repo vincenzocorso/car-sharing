@@ -18,19 +18,19 @@ import java.util.UUID;
 @Setter
 public class OutboxMessageEntity implements OutboxMessage {
 	@Id
-	@Column(name = OutboxMessage.MESSAGE_ID)
+	@Column(name = OutboxMessage.MESSAGE_ID_FIELD_NAME)
 	private String messageId;
 
-	@Column(name = OutboxMessage.CHANNEL)
+	@Column(name = OutboxMessage.CHANNEL_FIELD_NAME)
 	private String channel;
 
-	@Column(name = OutboxMessage.MESSAGE_KEY)
+	@Column(name = OutboxMessage.MESSAGE_KEY_FIELD_NAME)
 	private String messageKey;
 
-	@Column(name = OutboxMessage.PAYLOAD)
+	@Column(name = OutboxMessage.PAYLOAD_FIELD_NAME)
 	private String payload;
 
-	@Column(name = OutboxMessage.HEADERS)
+	@Column(name = OutboxMessage.HEADERS_FIELD_NAME)
 	private String headers;
 
 	public OutboxMessageEntity(String channel, String messageKey, String payload) {

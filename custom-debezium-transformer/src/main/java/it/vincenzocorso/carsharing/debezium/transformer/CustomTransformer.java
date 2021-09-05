@@ -28,10 +28,10 @@ public class CustomTransformer<R extends ConnectRecord<R>> implements Transforma
 		if("c".equalsIgnoreCase(databaseOperation)) {
 			Struct after = (Struct)struct.get("after");
 
-			String channel = after.getString(CHANNEL);
-			String messageKey = after.getString(MESSAGE_KEY);
-			String payload = after.getString(PAYLOAD);
-			String encodedHeaders = after.getString(HEADERS);
+			String channel = after.getString(CHANNEL_FIELD_NAME);
+			String messageKey = after.getString(MESSAGE_KEY_FIELD_NAME);
+			String payload = after.getString(PAYLOAD_FIELD_NAME);
+			String encodedHeaders = after.getString(HEADERS_FIELD_NAME);
 
 			Headers headers = sourceRecord.headers();
 			try {
