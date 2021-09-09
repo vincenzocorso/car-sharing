@@ -1,0 +1,4 @@
+plugins {
+    id 'project.quarkus-conventions'
+    id 'org.kordamp.gradle.jandex'
+}
