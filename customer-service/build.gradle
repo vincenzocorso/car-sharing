@@ -1,0 +1,15 @@
+plugins {
+    id 'project.java-conventions'
+    id 'service.quarkus-conventions'
+}
+
+dependencies {
+    implementation project(':common')
+    implementation project(':customer-service-api')
+
+    implementation 'io.quarkus:quarkus-mongodb-panache'
+
+    integrationTestImplementation 'org.testcontainers:testcontainers:1.16.0'
+    integrationTestImplementation 'org.testcontainers:junit-jupiter:1.16.0'
+    integrationTestImplementation 'org.testcontainers:mongodb:1.16.0'
+}
