@@ -1,0 +1,8 @@
+plugins {
+    id 'project.java-conventions'
+    id 'api.quarkus-conventions'
+}
+
+dependencies {
+    implementation project(':common')
+}

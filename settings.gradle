@@ -2,6 +2,9 @@ rootProject.name = 'car-sharing'
 
 include 'common'
 include 'common-spring'
+
+include 'customer-service-api'
+
 include 'rent-service'
 include 'rent-service-api'
 include 'custom-debezium-transformer'
