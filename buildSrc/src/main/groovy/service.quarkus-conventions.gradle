@@ -4,6 +4,7 @@ plugins {
 
 dependencies {
     implementation 'io.quarkus:quarkus-arc'
+    implementation 'io.quarkus:quarkus-container-image-jib'
 
     testImplementation 'io.quarkus:quarkus-junit5'
     testImplementation 'io.quarkus:quarkus-junit5-mockito'
