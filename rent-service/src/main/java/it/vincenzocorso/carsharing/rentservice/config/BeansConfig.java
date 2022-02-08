@@ -17,46 +17,6 @@ public class BeansConfig {
 	}
 
 	@Bean
-	BookVehicleProxy bookVehicleProxy() {
-		return new BookVehicleProxy() {
-			@Override
-			public void bookVehicle(String vehicleId) {
-				log.info("Sending " + this.getMessageType() + " " + vehicleId);
-			}
-
-			@Override
-			public String getMessageType() {
-				return "BOOK_VEHICLE_COMMAND";
-			}
-
-			@Override
-			public String getResponseMessageType() {
-				return "BOOK_VEHICLE_REPLY";
-			}
-		};
-	}
-
-	@Bean
-	ApproveRentProxy approveRentProxy() {
-		return new ApproveRentProxy() {
-			@Override
-			public void approveRent(String rentId) {
-				log.info("Sending " + this.getMessageType() + " " + rentId);
-			}
-
-			@Override
-			public String getMessageType() {
-				return "APPROVE_RENT_COMMAND";
-			}
-
-			@Override
-			public String getResponseMessageType() {
-				return "APPROVE_RENT_REPLY";
-			}
-		};
-	}
-
-	@Bean
 	CreateRentSaga createRentSaga(
 			RejectRentProxy rejectRentProxy,
 			VerifyCustomerProxy verifyCustomerProxy,
@@ -66,7 +26,7 @@ public class BeansConfig {
 	}
 
 	@Bean
-	RentService rentService(RentRepository rentRepository, SagaManager sagaManager, CreateRentSaga createRentSaga) {
-		return new RentService(rentRepository, sagaManager, createRentSaga);
+	RentService rentService(RentRepository rentRepository, RentSagaManager rentSagaManager, CreateRentSaga createRentSaga) {
+		return new RentService(rentRepository, rentSagaManager, createRentSaga);
 	}
 }

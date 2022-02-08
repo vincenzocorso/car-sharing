@@ -7,22 +7,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class SagaDefinitionBuilder<S extends SagaState> {
-	private final List<SagaStep<S>> steps = new ArrayList<>();
+public class SagaDefinitionBuilder {
+	private final List<SagaStep> steps = new ArrayList<>();
 
-	public static <S extends SagaState> SagaDefinitionBuilder<S> start(Class<S> sagaStateClass) {
-		return new SagaDefinitionBuilder<>();
+	public static SagaDefinitionBuilder start() {
+		return new SagaDefinitionBuilder();
 	}
 
-	public SagaStepBuilder<S> step() {
-		return new SagaStepBuilder<>(this);
+	public SagaStepBuilder step() {
+		return new SagaStepBuilder(this);
 	}
 
-	void addStep(SagaStep<S> sagaStep) {
+	void addStep(SagaStep sagaStep) {
 		this.steps.add(sagaStep);
 	}
 
-	SagaDefinition<S> build() {
-		return new SagaDefinition<>(this.steps);
+	SagaDefinition build() {
+		return new SagaDefinition(this.steps);
 	}
 }

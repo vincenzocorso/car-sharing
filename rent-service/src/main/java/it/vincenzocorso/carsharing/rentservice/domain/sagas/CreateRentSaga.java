@@ -8,7 +8,7 @@ import lombok.AllArgsConstructor;
 import static it.vincenzocorso.carsharing.common.saga.SagaDefinitionBuilder.*;
 
 @AllArgsConstructor
-public class CreateRentSaga implements Saga<CreateRentSagaState> {
+public class CreateRentSaga implements Saga {
 	private final RejectRentProxy rejectRentProxy;
 	private final VerifyCustomerProxy verifyCustomerProxy;
 	private final BookVehicleProxy bookVehicleProxy;
@@ -20,16 +20,16 @@ public class CreateRentSaga implements Saga<CreateRentSagaState> {
 	}
 
 	@Override
-	public SagaDefinition<CreateRentSagaState> getDefinition() {
-		return start(CreateRentSagaState.class)
+	public SagaDefinition getDefinition() {
+		return start()
 				.step()
-					.backward("Rejecting Rent", this.rejectRentProxy, (participant, state) -> participant.rejectRent(state.getRentId()))
+					.backward("Rejecting Rent", this.rejectRentProxy)
 				.step()
-					.forward("Verifying Customer", this.verifyCustomerProxy, (participant, state) -> participant.verifyCustomer(state.getCustomerId()))
+					.forward("Verifying Customer", this.verifyCustomerProxy)
 				.step()
-					.forward("Booking Vehicle", this.bookVehicleProxy, (participant, state) -> participant.bookVehicle(state.getVehicleId()))
+					.forward("Booking Vehicle", this.bookVehicleProxy)
 				.retriableSteps()
-					.forward("Approving Rent", this.approveRentProxy, (participant, state) -> participant.approveRent(state.getRentId()))
+					.forward("Approving Rent", this.approveRentProxy)
 				.end();
 	}
 }

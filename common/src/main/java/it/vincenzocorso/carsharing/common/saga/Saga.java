@@ -1,6 +1,6 @@
 package it.vincenzocorso.carsharing.common.saga;
 
-public interface Saga<S extends SagaState> {
+public interface Saga {
 	String getName();
-	SagaDefinition<S> getDefinition();
+	SagaDefinition getDefinition();
 }

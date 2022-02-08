@@ -7,6 +7,6 @@ import java.util.List;
 
 @AllArgsConstructor
 @Getter
-public class SagaDefinition<S extends SagaState> {
-	private final List<SagaStep<S>> steps;
+public class SagaDefinition {
+	private final List<SagaStep> steps;
 }

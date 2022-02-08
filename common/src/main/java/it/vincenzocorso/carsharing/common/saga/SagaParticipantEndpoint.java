@@ -1,6 +1,7 @@
 package it.vincenzocorso.carsharing.common.saga;
 
 public interface SagaParticipantEndpoint {
-	String getMessageType();
+	void invoke(SagaState state);
+	String getName();
 	String getResponseMessageType();
 }

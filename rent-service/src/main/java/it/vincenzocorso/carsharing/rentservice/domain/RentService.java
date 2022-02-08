@@ -8,7 +8,7 @@ import it.vincenzocorso.carsharing.rentservice.domain.models.SearchRentCriteria;
 import it.vincenzocorso.carsharing.rentservice.domain.ports.in.RentVehicleUseCase;
 import it.vincenzocorso.carsharing.rentservice.domain.ports.in.SearchRentUseCase;
 import it.vincenzocorso.carsharing.rentservice.domain.ports.out.RentRepository;
-import it.vincenzocorso.carsharing.rentservice.domain.ports.out.SagaManager;
+import it.vincenzocorso.carsharing.rentservice.domain.ports.out.RentSagaManager;
 import it.vincenzocorso.carsharing.rentservice.domain.sagas.CreateRentSaga;
 import it.vincenzocorso.carsharing.rentservice.domain.sagas.CreateRentSagaState;
 import lombok.AllArgsConstructor;
@@ -18,7 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 public class RentService implements RentVehicleUseCase, SearchRentUseCase {
 	private final RentRepository rentRepository;
-	private final SagaManager sagaManager;
+	private final RentSagaManager rentSagaManager;
 	private final CreateRentSaga createRentSaga;
 
 	@Override
@@ -27,7 +27,7 @@ public class RentService implements RentVehicleUseCase, SearchRentUseCase {
 		ResultWithEvents<Rent> resultWithEvents = Rent.create(rentDetails);
 		Rent savedRent = this.rentRepository.save(resultWithEvents.result);
 
-		this.sagaManager.startSaga(this.createRentSaga, new CreateRentSagaState(savedRent.getId(), customerId, vehicleId));
+		this.rentSagaManager.startSaga(this.createRentSaga, new CreateRentSagaState(savedRent.getId(), customerId, vehicleId));
 
 		// TODO: publish events
 
