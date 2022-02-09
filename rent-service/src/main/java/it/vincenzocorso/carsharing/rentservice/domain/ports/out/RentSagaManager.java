@@ -1,8 +1,0 @@
-package it.vincenzocorso.carsharing.rentservice.domain.ports.out;
-
-import it.vincenzocorso.carsharing.common.saga.Saga;
-import it.vincenzocorso.carsharing.common.saga.SagaState;
-
-public interface RentSagaManager {
-	void startSaga(Saga saga, SagaState sagaState);
-}

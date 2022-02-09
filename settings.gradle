@@ -9,4 +9,6 @@ include 'customer-service-api'
 include 'rent-service'
 include 'rent-service-api'
 
+include 'rent-orchestrator-service'
+
 include 'custom-debezium-transformer'

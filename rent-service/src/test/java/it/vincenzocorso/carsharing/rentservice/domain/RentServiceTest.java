@@ -5,9 +5,6 @@ import it.vincenzocorso.carsharing.rentservice.domain.models.Rent;
 import it.vincenzocorso.carsharing.rentservice.domain.models.RentState;
 import it.vincenzocorso.carsharing.rentservice.domain.models.SearchRentCriteria;
 import it.vincenzocorso.carsharing.rentservice.domain.ports.out.RentRepository;
-import it.vincenzocorso.carsharing.rentservice.domain.ports.out.RentSagaManager;
-import it.vincenzocorso.carsharing.rentservice.domain.sagas.CreateRentSaga;
-import it.vincenzocorso.carsharing.rentservice.domain.sagas.CreateRentSagaState;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -27,12 +24,6 @@ class RentServiceTest {
 	@Mock
 	private RentRepository rentRepository;
 
-	@Mock
-	private RentSagaManager rentSagaManager;
-
-	@Mock
-	private CreateRentSaga createRentSaga;
-
 	@InjectMocks
 	private RentService rentService;
 
@@ -43,12 +34,10 @@ class RentServiceTest {
 			rent.setId(RENT_ID);
 			return rent;
 		});
-		doNothing().when(this.rentSagaManager).startSaga(any(CreateRentSaga.class), any(CreateRentSagaState.class));
 
 		Rent createdRent = this.rentService.createRent(CUSTOMER_ID, VEHICLE_ID);
 
 		verify(this.rentRepository).save(createdRent);
-		verify(this.rentSagaManager).startSaga(any(CreateRentSaga.class), any(CreateRentSagaState.class));
 		// TODO: verify that the events have been published
 	}
 
