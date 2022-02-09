@@ -1,5 +1,7 @@
 package it.vincenzocorso.carsharing.rentservice.domain;
 
+import it.vincenzocorso.carsharing.common.messaging.events.DomainEventProducer;
+import it.vincenzocorso.carsharing.rentservice.api.messaging.events.RentDomainEvent;
 import it.vincenzocorso.carsharing.rentservice.domain.exceptions.RentNotFoundException;
 import it.vincenzocorso.carsharing.rentservice.domain.models.Rent;
 import it.vincenzocorso.carsharing.rentservice.domain.models.RentState;
@@ -24,6 +26,9 @@ class RentServiceTest {
 	@Mock
 	private RentRepository rentRepository;
 
+	@Mock
+	private DomainEventProducer domainEventProducer;
+
 	@InjectMocks
 	private RentService rentService;
 
@@ -38,7 +43,7 @@ class RentServiceTest {
 		Rent createdRent = this.rentService.createRent(CUSTOMER_ID, VEHICLE_ID);
 
 		verify(this.rentRepository).save(createdRent);
-		// TODO: verify that the events have been published
+		verify(this.domainEventProducer).publish(anyString(), anyString(), anyList());
 	}
 
 	@Test

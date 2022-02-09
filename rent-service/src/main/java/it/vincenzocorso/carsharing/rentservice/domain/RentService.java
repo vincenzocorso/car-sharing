@@ -1,6 +1,8 @@
 package it.vincenzocorso.carsharing.rentservice.domain;
 
+import it.vincenzocorso.carsharing.common.messaging.events.DomainEventProducer;
 import it.vincenzocorso.carsharing.common.messaging.events.ResultWithEvents;
+import it.vincenzocorso.carsharing.rentservice.api.messaging.RentMessagingChannels;
 import it.vincenzocorso.carsharing.rentservice.domain.exceptions.RentNotFoundException;
 import it.vincenzocorso.carsharing.rentservice.domain.models.Rent;
 import it.vincenzocorso.carsharing.rentservice.domain.models.RentDetails;
@@ -15,6 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 public class RentService implements RentVehicleUseCase, SearchRentUseCase {
 	private final RentRepository rentRepository;
+	private final DomainEventProducer domainEventProducer;
 
 	@Override
 	public Rent createRent(String customerId, String vehicleId) {
@@ -22,7 +25,7 @@ public class RentService implements RentVehicleUseCase, SearchRentUseCase {
 		ResultWithEvents<Rent> resultWithEvents = Rent.create(rentDetails);
 		Rent savedRent = this.rentRepository.save(resultWithEvents.result);
 
-		// TODO: publish events
+		this.domainEventProducer.publish(RentMessagingChannels.EVENT_CHANNEL, savedRent.getId(), resultWithEvents.events);
 
 		return savedRent;
 	}
