@@ -7,6 +7,7 @@ import it.vincenzocorso.carsharing.common.messaging.commands.CommandProducer;
 import it.vincenzocorso.carsharing.common.messaging.events.DomainEvent;
 import it.vincenzocorso.carsharing.common.messaging.events.DomainEventProducer;
 import it.vincenzocorso.carsharing.common.messaging.outbox.OutboxCommandHeaders;
+import it.vincenzocorso.carsharing.common.messaging.outbox.OutboxEventHeaders;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -25,12 +26,12 @@ public class OutboxJpaMessageProducer implements CommandProducer, DomainEventPro
 	@Override
 	public void publish(String channel, String aggregateId, Command command) {
 		String payload = this.encodePayload(command);
-		OutboxMessageEntity outboxEvent = new OutboxMessageEntity(channel, aggregateId, payload);
+		OutboxMessageEntity message = new OutboxMessageEntity(channel, aggregateId, payload);
 
-		String encodedHeaders = this.encodeCommandHeaders(command.getResponseChannel(), outboxEvent.getMessageId(), command.getType());
-		outboxEvent.setHeaders(encodedHeaders);
+		String encodedHeaders = this.encodeCommandHeaders(command.getResponseChannel(), message.getMessageId(), command.getType());
+		message.setHeaders(encodedHeaders);
 
-		OutboxMessageEntity savedOutboxEvent = this.messageRepository.save(outboxEvent);
+		OutboxMessageEntity savedOutboxEvent = this.messageRepository.save(message);
 		this.messageRepository.delete(savedOutboxEvent);
 	}
 
@@ -48,7 +49,30 @@ public class OutboxJpaMessageProducer implements CommandProducer, DomainEventPro
 	}
 
 	@Override
-	public void publish(String channel, String aggregateId, List<DomainEvent> event) {
+	public void publish(String channel, String aggregateId, List<DomainEvent> events) {
+		for(DomainEvent event : events) {
+			String payload = this.encodePayload(event);
+			OutboxMessageEntity message = new OutboxMessageEntity(channel, aggregateId, payload);
+
+			String encodedHeaders = this.encodeEventHeaders(aggregateId, message.getMessageId(), event.getType());
+			message.setHeaders(encodedHeaders);
+
+			OutboxMessageEntity savedOutboxEvent = this.messageRepository.save(message);
+			this.messageRepository.delete(savedOutboxEvent);
+		}
+	}
+
+	private String encodeEventHeaders(String aggregateId, String messageId, String type) {
+		try {
+			Map<String, String> headers = new HashMap<>();
+			headers.put(OutboxEventHeaders.AGGREGATE_ID, aggregateId);
+			headers.put(OutboxEventHeaders.MESSAGE_ID, messageId);
+			headers.put(OutboxEventHeaders.TYPE, type);
+			return this.objectMapper.writeValueAsString(headers);
+		} catch(Exception ex) {
+			log.error("An error occurred during headers encoding: ", ex);
+			throw new InternalServerException();
+		}
 	}
 
 	private String encodePayload(Object message) {
