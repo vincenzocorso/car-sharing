@@ -1,1 +1,165 @@
 version: "3.9"
+# TODO: set max HEAP
+services:
+  mongodb-primary:
+    image: 'bitnami/mongodb:4.4.8'
+    ports:
+      - "27017:27017"
+    environment:
+      MONGODB_ADVERTISED_HOSTNAME: mongodb-primary
+      MONGODB_REPLICA_SET_MODE: primary
+      MONGODB_ROOT_PASSWORD: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+      MONGODB_REPLICA_SET_KEY: replicasetkey123
+
+  mongodb-secondary:
+    image: 'bitnami/mongodb:4.4.8'
+    depends_on:
+      - mongodb-primary
+    environment:
+      MONGODB_REPLICA_SET_MODE: secondary
+      MONGODB_INITIAL_PRIMARY_HOST: mongodb-primary
+      MONGODB_INITIAL_PRIMARY_PORT_NUMBER: 27017
+      MONGODB_INITIAL_PRIMARY_ROOT_PASSWORD: admin
+      MONGODB_REPLICA_SET_KEY: replicasetkey123
+
+  mongodb-arbiter:
+    image: 'bitnami/mongodb:4.4.8'
+    depends_on:
+      - mongodb-primary
+    environment:
+      MONGODB_REPLICA_SET_MODE: arbiter
+      MONGODB_INITIAL_PRIMARY_HOST: mongodb-primary
+      MONGODB_INITIAL_PRIMARY_PORT_NUMBER: 27017
+      MONGODB_INITIAL_PRIMARY_ROOT_PASSWORD: admin
+      MONGODB_REPLICA_SET_KEY: replicasetkey123
+
+  postgres:
+    container_name: postgres
+    image: debezium/postgres:13-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: db
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+
+  zookeeper:
+    container_name: zookeeper
+    image: confluentinc/cp-zookeeper:6.2.0
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+
+  kafka:
+    container_name: kafka
+    image: confluentinc/cp-kafka:6.2.0
+    ports:
+      - "29092:29092"
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+  kafdrop:
+    container_name: kafdrop
+    image: obsidiandynamics/kafdrop:3.27.0
+    ports:
+      - "9000:9000"
+    depends_on:
+      - kafka
+    environment:
+      KAFKA_BROKERCONNECT: kafka:9092
+
+  debezium-connect:
+    container_name: debezium-connect
+    build:
+      context: ./custom-debezium-transformer
+    ports:
+      - "8083:8083"
+    depends_on:
+      - kafka
+      - postgres
+    environment:
+      CONFIG_STORAGE_TOPIC: debezium_connect_configs
+      OFFSET_STORAGE_TOPIC: debezium_connect_offsets
+      STATUS_STORAGE_TOPIC: debezium_connect_statuses
+      BOOTSTRAP_SERVERS: kafka:9092
+      GROUP_ID: 1
+
+  temporal:
+    container_name: temporal
+    image: temporalio/auto-setup:1.14.4
+    ports:
+      - "7233:7233"
+    depends_on:
+      - postgres
+    environment:
+      DB: postgresql
+      DB_PORT: 5432
+      POSTGRES_USER: admin
+      POSTGRES_PWD: admin
+      POSTGRES_SEEDS: postgres
+      DYNAMIC_CONFIG_FILE_PATH: config/dynamicconfig/development.yaml
+    volumes:
+      - ./temporal-config:/etc/temporal/config/dynamicconfig
+
+  temporal-admin-tools:
+    container_name: temporal-admin-tools
+    image: temporalio/admin-tools:1.14.2
+    depends_on:
+      - temporal
+    environment:
+      TEMPORAL_CLI_ADDRESS: temporal:7233
+    stdin_open: true
+    tty: true
+
+  temporal-web:
+    container_name: temporal-web
+    image: temporalio/web:1.13.0
+    ports:
+      - "8088:8088"
+    depends_on:
+      - temporal
+    environment:
+      TEMPORAL_GRPC_ENDPOINT: temporal:7233
+      TEMPORAL_PERMIT_WRITE_API: "true"
+
+  rent-service:
+    container_name: rent-service
+    image: car-sharing/rent-service
+    ports:
+      - "5000:8080"
+    depends_on:
+      - postgres
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DATABASE: db
+      POSTGRES_USERNAME: admin
+      POSTGRES_PASSWORD: admin
+
+  rent-orchestrator-service:
+    container_name: rent-orchestrator-service
+    image: car-sharing/rent-orchestrator-service
+    ports:
+      - "5001:8080"
+    depends_on:
+      - temporal
+    environment:
+      TEMPORAL_HOST: temporal
+      TEMPORAL_PORT: 7233
+
+  customer-service:
+    container_name: customer-service
+    image: car-sharing/customer-service
+    ports:
+     - "5002:8080"
+    depends_on:
+      - kafka
