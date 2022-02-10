@@ -51,7 +51,6 @@ public class RentService implements RentVehicleUseCase, SearchRentUseCase {
 		rent.cancel();
 		Rent savedRent = this.rentRepository.save(rent);
 
-		// TODO: start CancelRentSaga
 		// TODO: publish events
 
 		return savedRent;
@@ -64,7 +63,6 @@ public class RentService implements RentVehicleUseCase, SearchRentUseCase {
 		rent.start();
 		Rent savedRent = this.rentRepository.save(rent);
 
-		// TODO: start StartRentSaga
 		// TODO: publish events
 
 		return savedRent;
