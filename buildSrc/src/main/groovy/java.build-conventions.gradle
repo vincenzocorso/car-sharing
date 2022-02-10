@@ -14,3 +14,8 @@ repositories {
 dependencies {
     integrationTestImplementation sourceSets.test.output
 }
+
+project.ext {
+    imageName = rootProject.name + '/' + project.name
+    imageTag = 'latest'
+}

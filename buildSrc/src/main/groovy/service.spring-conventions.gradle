@@ -1,5 +1,6 @@
 plugins {
 	id 'project.spring-conventions'
+	id 'com.google.cloud.tools.jib'
 }
 
 dependencies {
@@ -7,3 +8,5 @@ dependencies {
 
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 }
+
+jib.to.image = project.ext.imageName + ':' + project.ext.imageTag

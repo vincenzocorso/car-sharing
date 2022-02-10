@@ -12,3 +12,8 @@ dependencies {
     testImplementation 'org.assertj:assertj-core:3.20.2'
     testImplementation 'io.rest-assured:rest-assured:4.4.0'
 }
+
+project.ext.'quarkus.container-image.build' = 'true'
+project.ext.'quarkus.container-image.group' = ''
+project.ext.'quarkus.container-image.name' = project.ext.imageName
+project.ext.'quarkus.container-image.tag' = project.ext.imageTag
