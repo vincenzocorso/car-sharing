@@ -12,6 +12,7 @@ import it.vincenzocorso.carsharing.rentservice.domain.ports.in.SearchRentUseCase
 import it.vincenzocorso.carsharing.rentservice.domain.ports.out.RentRepository;
 import lombok.AllArgsConstructor;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @AllArgsConstructor
@@ -19,6 +20,7 @@ public class RentService implements RentVehicleUseCase, SearchRentUseCase {
 	private final RentRepository rentRepository;
 	private final DomainEventProducer domainEventProducer;
 
+	@Transactional
 	@Override
 	public Rent createRent(String customerId, String vehicleId) {
 		RentDetails rentDetails = new RentDetails(customerId, vehicleId);
@@ -30,6 +32,7 @@ public class RentService implements RentVehicleUseCase, SearchRentUseCase {
 		return savedRent;
 	}
 
+	@Transactional
 	@Override
 	public Rent rejectRent(String rentId) {
 		Rent rent = this.rentRepository.findById(rentId).orElseThrow(() -> new RentNotFoundException(rentId));
@@ -41,6 +44,7 @@ public class RentService implements RentVehicleUseCase, SearchRentUseCase {
 		return savedRent;
 	}
 
+	@Transactional
 	@Override
 	public Rent cancelRent(String rentId) {
 		Rent rent = this.rentRepository.findById(rentId).orElseThrow(() -> new RentNotFoundException(rentId));
@@ -53,6 +57,7 @@ public class RentService implements RentVehicleUseCase, SearchRentUseCase {
 		return savedRent;
 	}
 
+	@Transactional
 	@Override
 	public Rent startRent(String rentId) {
 		Rent rent = this.rentRepository.findById(rentId).orElseThrow(() -> new RentNotFoundException(rentId));
@@ -65,6 +70,7 @@ public class RentService implements RentVehicleUseCase, SearchRentUseCase {
 		return savedRent;
 	}
 
+	@Transactional
 	@Override
 	public Rent endRent(String rentId) {
 		Rent rent = this.rentRepository.findById(rentId).orElseThrow(() -> new RentNotFoundException(rentId));
