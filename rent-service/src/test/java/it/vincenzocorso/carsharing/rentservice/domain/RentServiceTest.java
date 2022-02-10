@@ -1,7 +1,6 @@
 package it.vincenzocorso.carsharing.rentservice.domain;
 
 import it.vincenzocorso.carsharing.common.messaging.events.DomainEventProducer;
-import it.vincenzocorso.carsharing.rentservice.api.messaging.events.RentDomainEvent;
 import it.vincenzocorso.carsharing.rentservice.domain.exceptions.RentNotFoundException;
 import it.vincenzocorso.carsharing.rentservice.domain.models.Rent;
 import it.vincenzocorso.carsharing.rentservice.domain.models.RentState;
