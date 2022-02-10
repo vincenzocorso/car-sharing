@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-it.vincenzocorso.carsharing.common.spring.messaging.OutboxMessagingConfig
+it.vincenzocorso.carsharing.common.spring.messaging.MessagingAutoConfig
