@@ -2,7 +2,6 @@ package it.vincenzocorso.carsharing.debezium.transformer;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import it.vincenzocorso.carsharing.common.exceptions.InternalServerException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.config.ConfigDef;
 import org.apache.kafka.connect.connector.ConnectRecord;
@@ -40,7 +39,7 @@ public class CustomTransformer<R extends ConnectRecord<R>> implements Transforma
 					headers.addString(entry.getKey(), entry.getValue());
 			} catch(Exception ex) {
 				log.error("Can't decode headers column: ", ex);
-				throw new InternalServerException();
+				throw new IllegalArgumentException();
 			}
 
 			sourceRecord = sourceRecord.newRecord(
