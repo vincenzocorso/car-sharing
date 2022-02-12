@@ -6,8 +6,8 @@ import it.vincenzocorso.carsharing.common.messaging.commands.Command;
 import it.vincenzocorso.carsharing.common.messaging.commands.CommandProducer;
 import it.vincenzocorso.carsharing.common.messaging.events.DomainEvent;
 import it.vincenzocorso.carsharing.common.messaging.events.DomainEventProducer;
-import it.vincenzocorso.carsharing.common.messaging.outbox.OutboxCommandHeaders;
-import it.vincenzocorso.carsharing.common.messaging.outbox.OutboxEventHeaders;
+import it.vincenzocorso.carsharing.common.messaging.commands.CommandHeaders;
+import it.vincenzocorso.carsharing.common.messaging.events.EventHeaders;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -38,9 +38,9 @@ public class OutboxJpaMessageProducer implements CommandProducer, DomainEventPro
 	private String encodeCommandHeaders(String responseChannel, String messageId, String type) {
 		try {
 			Map<String, String> headers = new HashMap<>();
-			headers.put(OutboxCommandHeaders.RESPONSE_CHANNEL, responseChannel);
-			headers.put(OutboxCommandHeaders.MESSAGE_ID, messageId);
-			headers.put(OutboxCommandHeaders.TYPE, type);
+			headers.put(CommandHeaders.RESPONSE_CHANNEL, responseChannel);
+			headers.put(CommandHeaders.MESSAGE_ID, messageId);
+			headers.put(CommandHeaders.TYPE, type);
 			return this.objectMapper.writeValueAsString(headers);
 		} catch (Exception ex) {
 			log.error("An error occurred during headers encoding: ", ex);
@@ -65,9 +65,9 @@ public class OutboxJpaMessageProducer implements CommandProducer, DomainEventPro
 	private String encodeEventHeaders(String aggregateId, String messageId, String type) {
 		try {
 			Map<String, String> headers = new HashMap<>();
-			headers.put(OutboxEventHeaders.AGGREGATE_ID, aggregateId);
-			headers.put(OutboxEventHeaders.MESSAGE_ID, messageId);
-			headers.put(OutboxEventHeaders.TYPE, type);
+			headers.put(EventHeaders.AGGREGATE_ID, aggregateId);
+			headers.put(EventHeaders.MESSAGE_ID, messageId);
+			headers.put(EventHeaders.TYPE, type);
 			return this.objectMapper.writeValueAsString(headers);
 		} catch(Exception ex) {
 			log.error("An error occurred during headers encoding: ", ex);

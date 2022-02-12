@@ -1,6 +1,6 @@
 package it.vincenzocorso.carsharing.common.spring.messaging.outbox.jpa;
 
-import it.vincenzocorso.carsharing.common.messaging.outbox.OutboxMessage;
+import it.vincenzocorso.carsharing.common.messaging.MessageFields;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,21 +16,21 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
-public class OutboxMessageEntity implements OutboxMessage {
+public class OutboxMessageEntity {
 	@Id
-	@Column(name = OutboxMessage.MESSAGE_ID_FIELD_NAME)
+	@Column(name = MessageFields.MESSAGE_ID)
 	private String messageId;
 
-	@Column(name = OutboxMessage.CHANNEL_FIELD_NAME)
+	@Column(name = MessageFields.CHANNEL)
 	private String channel;
 
-	@Column(name = OutboxMessage.MESSAGE_KEY_FIELD_NAME)
+	@Column(name = MessageFields.MESSAGE_KEY)
 	private String messageKey;
 
-	@Column(name = OutboxMessage.PAYLOAD_FIELD_NAME)
+	@Column(name = MessageFields.PAYLOAD)
 	private String payload;
 
-	@Column(name = OutboxMessage.HEADERS_FIELD_NAME)
+	@Column(name = MessageFields.HEADERS)
 	private String headers;
 
 	public OutboxMessageEntity(String channel, String messageKey, String payload) {

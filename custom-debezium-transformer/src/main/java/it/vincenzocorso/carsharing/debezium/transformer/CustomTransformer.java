@@ -13,7 +13,7 @@ import org.apache.kafka.connect.transforms.Transformation;
 import java.util.HashMap;
 import java.util.Map;
 
-import static it.vincenzocorso.carsharing.common.messaging.outbox.OutboxMessage.*;
+import static it.vincenzocorso.carsharing.common.messaging.MessageFields.*;
 
 @Slf4j
 public class CustomTransformer<R extends ConnectRecord<R>> implements Transformation<R> {
@@ -27,10 +27,10 @@ public class CustomTransformer<R extends ConnectRecord<R>> implements Transforma
 		if("c".equalsIgnoreCase(databaseOperation)) {
 			Struct after = (Struct)struct.get("after");
 
-			String channel = after.getString(CHANNEL_FIELD_NAME);
-			String messageKey = after.getString(MESSAGE_KEY_FIELD_NAME);
-			String payload = after.getString(PAYLOAD_FIELD_NAME);
-			String encodedHeaders = after.getString(HEADERS_FIELD_NAME);
+			String channel = after.getString(CHANNEL);
+			String messageKey = after.getString(MESSAGE_KEY);
+			String payload = after.getString(PAYLOAD);
+			String encodedHeaders = after.getString(HEADERS);
 
 			Headers headers = sourceRecord.headers();
 			try {
@@ -45,7 +45,7 @@ public class CustomTransformer<R extends ConnectRecord<R>> implements Transforma
 			sourceRecord = sourceRecord.newRecord(
 					channel,
 					null,
-					Schema.STRING_SCHEMA,
+					null,
 					messageKey,
 					null,
 					payload,
