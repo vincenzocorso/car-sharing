@@ -12,6 +12,8 @@
     "table.include.list": "public.outbox",
     "tombstones.on.delete": "false",
     "transforms": "outbox",
-    "transforms.outbox.type": "it.vincenzocorso.carsharing.debezium.transformer.CustomTransformer"
+    "transforms.outbox.type": "it.vincenzocorso.carsharing.debezium.transformer.CustomTransformer",
+    "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+    "value.converter": "org.apache.kafka.connect.storage.StringConverter"
   }
 }
