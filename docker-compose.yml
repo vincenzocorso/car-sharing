@@ -138,6 +138,7 @@ services:
       - "5000:8080"
     depends_on:
       - postgres
+      - debezium-connect
     environment:
       POSTGRES_HOST: postgres
       POSTGRES_PORT: 5432
@@ -152,9 +153,11 @@ services:
       - "5001:8080"
     depends_on:
       - temporal
+      - kafka
     environment:
       TEMPORAL_HOST: temporal
       TEMPORAL_PORT: 7233
+      KAFKA_BOOSTRAP_SERVERS: kafka:9092
 
   customer-service:
     container_name: customer-service
