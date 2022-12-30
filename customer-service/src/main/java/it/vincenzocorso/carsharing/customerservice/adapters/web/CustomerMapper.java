@@ -1,8 +1,5 @@
 package it.vincenzocorso.carsharing.customerservice.adapters.web;
 
-import it.vincenzocorso.carsharing.customerservice.api.web.CustomerResponse;
-import it.vincenzocorso.carsharing.customerservice.api.web.DriverLicenseDetails;
-import it.vincenzocorso.carsharing.customerservice.api.web.RegisterCustomerRequest;
 import it.vincenzocorso.carsharing.customerservice.domain.models.Customer;
 import it.vincenzocorso.carsharing.customerservice.domain.models.CustomerDetails;
 import it.vincenzocorso.carsharing.customerservice.domain.models.DriverLicense;

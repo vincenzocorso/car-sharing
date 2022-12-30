@@ -2,7 +2,7 @@ package it.vincenzocorso.carsharing.customerservice.domain.models;
 
 import it.vincenzocorso.carsharing.common.messaging.events.DomainEvent;
 import it.vincenzocorso.carsharing.common.messaging.events.ResultWithEvents;
-import it.vincenzocorso.carsharing.customerservice.api.messaging.events.CustomerCreatedEvent;
+import it.vincenzocorso.carsharing.customerservice.domain.events.CustomerCreatedEvent;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

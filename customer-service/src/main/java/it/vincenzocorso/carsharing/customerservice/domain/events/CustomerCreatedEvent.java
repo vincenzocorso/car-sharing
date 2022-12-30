@@ -1,4 +1,4 @@
-package it.vincenzocorso.carsharing.customerservice.api.messaging.events;
+package it.vincenzocorso.carsharing.customerservice.domain.events;
 
 import lombok.Builder;
 

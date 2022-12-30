@@ -1,4 +1,4 @@
-package it.vincenzocorso.carsharing.customerservice.api.web;
+package it.vincenzocorso.carsharing.customerservice.adapters.web;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Max;

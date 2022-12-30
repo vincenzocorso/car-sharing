@@ -1,6 +1,5 @@
 package it.vincenzocorso.carsharing.customerservice.adapters.web;
 
-import it.vincenzocorso.carsharing.customerservice.api.web.CustomerResponse;
 import it.vincenzocorso.carsharing.customerservice.domain.models.CustomerDetails;
 import org.junit.jupiter.api.Test;
 
