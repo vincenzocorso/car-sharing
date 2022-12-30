@@ -3,15 +3,15 @@ package it.vincenzocorso.carsharing.rentservice.adapters.persistence.jpa;
 import it.vincenzocorso.carsharing.rentservice.domain.models.Rent;
 import it.vincenzocorso.carsharing.rentservice.domain.models.SearchRentCriteria;
 import it.vincenzocorso.carsharing.rentservice.domain.ports.out.RentRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -40,8 +40,10 @@ public class RentJPARepositoryAdapter implements RentRepository {
 			predicates.add(cb.equal(root.get(RentEntity_.CUSTOMER_ID), criteria.customerId));
 		if(criteria.states != null)
 			predicates.add(root.get(RentEntity_.CURRENT_STATE).in(criteria.states));
-		TypedQuery<RentEntity> typedQuery = this.entityManager.createQuery(query.where(predicates.toArray(Predicate[]::new)));
+		if(!predicates.isEmpty())
+			query = query.where(predicates.toArray(Predicate[]::new));
 
+		TypedQuery<RentEntity> typedQuery = this.entityManager.createQuery(query);
 		if(criteria.offset != null && criteria.limit != null)
 			typedQuery.setFirstResult(criteria.offset).setMaxResults(criteria.limit);
 

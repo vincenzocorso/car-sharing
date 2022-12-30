@@ -11,11 +11,12 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class FakeRent {
-	public static final String RENT_ID = "RNT-ATGH-0453-ABCD";
+	public static final String RENT_ID = UUID.randomUUID().toString();
 
 	public static final String CUSTOMER_ID = "CST-ABCD-1234-EFGH";
 	public static final String VEHICLE_ID = "VH-4567-RTYU-8901";
@@ -78,10 +79,14 @@ public class FakeRent {
 	}
 
 	public static void assertEqualsWithRent(Rent actualRent) {
-		assertEquals(RENT_ID, actualRent.getId());
-		assertEquals(CUSTOMER_ID, actualRent.getDetails().getCustomerId());
-		assertEquals(VEHICLE_ID, actualRent.getDetails().getVehicleId());
-		for(RentStateTransition expectedTransition : ORDERED_STATE_TRANSITIONS) {
+		assertEqualsWithRent(RENT, actualRent);
+	}
+
+	public static void assertEqualsWithRent(Rent expectedRent, Rent actualRent) {
+		assertEquals(expectedRent.getId(), actualRent.getId());
+		assertEquals(expectedRent.getDetails().getCustomerId(), actualRent.getDetails().getCustomerId());
+		assertEquals(expectedRent.getDetails().getVehicleId(), actualRent.getDetails().getVehicleId());
+		for(RentStateTransition expectedTransition : expectedRent.getStateTransitions()) {
 			RentStateTransition actualTransition = actualRent.getStateTransitions().stream()
 					.filter(t -> t.getSequenceNumber().equals(expectedTransition.getSequenceNumber()))
 					.findFirst()

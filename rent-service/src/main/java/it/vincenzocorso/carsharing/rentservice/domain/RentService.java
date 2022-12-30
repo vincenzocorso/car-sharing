@@ -9,9 +9,9 @@ import it.vincenzocorso.carsharing.rentservice.domain.models.SearchRentCriteria;
 import it.vincenzocorso.carsharing.rentservice.domain.ports.in.RentVehicleUseCase;
 import it.vincenzocorso.carsharing.rentservice.domain.ports.in.SearchRentUseCase;
 import it.vincenzocorso.carsharing.rentservice.domain.ports.out.RentRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 @AllArgsConstructor
@@ -19,7 +19,6 @@ public class RentService implements RentVehicleUseCase, SearchRentUseCase {
 	private static final String EVENT_CHANNEL = "rent-service-events";
 	private final RentRepository rentRepository;
 	private final DomainEventProducer domainEventProducer;
-
 
 	@Transactional
 	@Override

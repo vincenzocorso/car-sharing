@@ -7,7 +7,7 @@ dependencies {
 	implementation project(':common')
 	implementation project(':common-spring')
 
-	annotationProcessor 'org.hibernate:hibernate-jpamodelgen:5.4.32.Final'
+	annotationProcessor 'org.hibernate:hibernate-jpamodelgen:6.1.6.Final'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.postgresql:postgresql:42.2.23'
 

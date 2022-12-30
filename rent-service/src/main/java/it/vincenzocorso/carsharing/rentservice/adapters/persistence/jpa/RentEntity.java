@@ -1,11 +1,11 @@
 package it.vincenzocorso.carsharing.rentservice.adapters.persistence.jpa;
 
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.UuidGenerator;
 
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,8 +16,8 @@ import java.util.List;
 @Setter
 public class RentEntity {
 	@Id
-	@GeneratedValue(generator = "custom-uuid")
-	@GenericGenerator(name = "custom-uuid", strategy = "it.vincenzocorso.carsharing.rentservice.adapters.persistence.jpa.CustomUUIDGenerator")
+	@GeneratedValue
+	@UuidGenerator
 	@Column(name = "rent_id")
 	private String id;
 

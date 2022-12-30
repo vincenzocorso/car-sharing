@@ -21,7 +21,6 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static it.vincenzocorso.carsharing.rentservice.adapters.persistence.jpa.FakeRentEntity.*;
 import static it.vincenzocorso.carsharing.rentservice.domain.FakeRent.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -53,15 +52,24 @@ class RentJPARepositoryAdapterIntegrationTest {
 	}
 
 	@Test
-	void shouldFindRentById() {
-		this.rentRepository.save(RENT_ENTITY);
+	void shouldSave() {
+		Rent rent = rentInState(RentState.STARTED);
+		Rent savedRent = this.rentJPARepositoryAdapter.save(rent);
+		rent.setId(savedRent.getId());
 
-		Optional<Rent> optionalRent = this.rentJPARepositoryAdapter.findById(RENT_ID);
+		assertThat(this.rentRepository.count()).isEqualTo(1);
+		assertThat(savedRent).isInstanceOf(RentWrapper.class);
+		assertEqualsWithRent(rent, savedRent);
+	}
 
-		assertTrue(optionalRent.isPresent());
-		Rent retrievedRent = optionalRent.get();
-		assertThat(retrievedRent).isInstanceOf(RentWrapper.class);
-		assertEqualsWithRent(retrievedRent);
+	@Test
+	void shouldGenerateUUID() {
+		Rent newRent = rentInState(RentState.PENDING);
+		newRent.setId(null);
+
+		Rent savedRent = this.rentJPARepositoryAdapter.save(newRent);
+
+		assertDoesNotThrow(() -> UUID.fromString(savedRent.getId()));
 	}
 
 	@Test
@@ -73,6 +81,18 @@ class RentJPARepositoryAdapterIntegrationTest {
 		List<String> retrievedRentsIds = this.rentJPARepositoryAdapter.findByCriteria(searchCriteria).stream().map(Rent::getId).collect(Collectors.toList());
 
 		assertThat(retrievedRentsIds).hasSameElementsAs(expectedRentsIds);
+	}
+
+	@Test
+	void shouldFindRentById() {
+		Rent savedRent = this.rentJPARepositoryAdapter.save(rentInState(RentState.STARTED));
+
+		Optional<Rent> optionalRent = this.rentJPARepositoryAdapter.findById(savedRent.getId());
+
+		assertTrue(optionalRent.isPresent());
+		Rent retrievedRent = optionalRent.get();
+		assertThat(retrievedRent).isInstanceOf(RentWrapper.class);
+		assertEqualsWithRent(savedRent, retrievedRent);
 	}
 
 	@Test
@@ -117,34 +137,5 @@ class RentJPARepositoryAdapterIntegrationTest {
 				.map(this.rentRepository::save)
 				.map(rentMapper::convertFromEntity)
 				.collect(Collectors.toList());
-	}
-
-	@Test
-	void shouldSave() {
-		Rent savedRent = this.rentJPARepositoryAdapter.save(RENT);
-
-		assertThat(this.rentRepository.count()).isEqualTo(1);
-		assertThat(savedRent).isInstanceOf(RentWrapper.class);
-		assertEqualsWithRent(savedRent);
-	}
-
-	@Test
-	void shouldGenerateUUID() {
-		Rent newRent = rentInState(RentState.PENDING);
-		newRent.setId(null);
-
-		Rent savedRent = this.rentJPARepositoryAdapter.save(newRent);
-
-		assertDoesNotThrow(() -> UUID.fromString(savedRent.getId()));
-	}
-
-	@Test
-	void shouldNotGenerateUUIDWhenIdIsNotNull() {
-		Rent newRent = rentInState(RentState.PENDING);
-		newRent.setId(RENT_ID);
-
-		Rent savedRent = this.rentJPARepositoryAdapter.save(newRent);
-
-		assertEquals(RENT_ID, savedRent.getId());
 	}
 }
