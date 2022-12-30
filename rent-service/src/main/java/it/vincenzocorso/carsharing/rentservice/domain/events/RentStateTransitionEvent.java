@@ -1,4 +1,4 @@
-package it.vincenzocorso.carsharing.rentservice.api.messaging.events;
+package it.vincenzocorso.carsharing.rentservice.domain.events;
 
 import it.vincenzocorso.carsharing.common.messaging.events.DomainEvent;
 import lombok.AllArgsConstructor;

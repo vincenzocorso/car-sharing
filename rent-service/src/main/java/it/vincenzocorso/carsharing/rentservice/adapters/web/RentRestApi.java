@@ -1,4 +1,4 @@
-package it.vincenzocorso.carsharing.rentservice.api.web;
+package it.vincenzocorso.carsharing.rentservice.adapters.web;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

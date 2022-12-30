@@ -1,7 +1,6 @@
 package it.vincenzocorso.carsharing.rentservice.adapters.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import it.vincenzocorso.carsharing.rentservice.api.web.CreateRentRequest;
 import it.vincenzocorso.carsharing.rentservice.config.WebConfig;
 import it.vincenzocorso.carsharing.rentservice.domain.exceptions.RentNotFoundException;
 import it.vincenzocorso.carsharing.rentservice.domain.models.RentState;

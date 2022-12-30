@@ -1,6 +1,5 @@
 package it.vincenzocorso.carsharing.rentservice.adapters.web;
 
-import it.vincenzocorso.carsharing.rentservice.api.web.RentResponse;
 import it.vincenzocorso.carsharing.rentservice.domain.models.Rent;
 import it.vincenzocorso.carsharing.rentservice.domain.models.RentState;
 import it.vincenzocorso.carsharing.rentservice.domain.models.RentStateTransition;

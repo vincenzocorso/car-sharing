@@ -1,8 +1,0 @@
-plugins {
-    id 'project.java-conventions'
-    id 'api.spring-conventions'
-}
-
-dependencies {
-    implementation project(':common')
-}

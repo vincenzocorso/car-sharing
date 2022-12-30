@@ -1,4 +1,4 @@
-package it.vincenzocorso.carsharing.rentservice.api.web;
+package it.vincenzocorso.carsharing.rentservice.adapters.web;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
