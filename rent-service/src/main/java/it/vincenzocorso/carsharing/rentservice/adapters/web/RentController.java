@@ -45,7 +45,7 @@ public class RentController implements RentRestApi {
 
 	@Override
 	public RentResponse createRent(CreateRentRequest request) {
-		Rent createdRent = this.rentVehicleUseCase.createRent(request.customerId, request.vehicleId);
+		Rent createdRent = this.rentVehicleUseCase.createRent(request.customerId(), request.vehicleId());
 		return this.rentMapper.convertToDto(createdRent);
 	}
 
