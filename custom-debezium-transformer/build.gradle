@@ -2,6 +2,13 @@ plugins {
     id 'project.java-conventions'
 }
 
+// TODO: wait for a fix
+// The debezium/connect image use jdk11. It is necessary to load the custom transformer
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
 dependencies {
     implementation project(':common')
     

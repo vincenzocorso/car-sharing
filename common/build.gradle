@@ -1,3 +1,10 @@
 plugins {
     id 'project.java-conventions'
 }
+
+// TODO: wait for a fix
+// See: /custom-debezium-transformer/build.gradle
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
