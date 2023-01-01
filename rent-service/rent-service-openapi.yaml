@@ -1,0 +1,207 @@
+openapi: 3.1.0
+info:
+  title: Rent Service REST API
+  contact:
+    name: Vincenzo Corso
+    url: https://github.com/vincenzocorso
+    email: vincenzocorso99@gmail.com
+  version: "1.0"
+servers:
+  - url: http://localhost:5000
+  - url: http://rent-service:8080
+paths:
+  /rents:
+    get:
+      description: Get all rents. It is possible to specify some search filters
+      parameters:
+        - name: customerId
+          in: query
+          description: Get all rents of the given customer
+          required: false
+          schema:
+            type: string
+          example: CST1234
+        - name: states
+          in: query
+          description: Get all rents in the specified state
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - PENDING
+                - REJECTED
+                - ACCEPTED
+                - STARTED
+                - ENDED
+          example: PENDING,REJECTED
+        - name: limit
+          in: query
+          description: The number of results returned
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 200
+            default: 10
+          example: 10
+        - name: offset
+          in: query
+          description: The number of results to omit from the beginning
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+          example: 20
+      responses:
+        200:
+          description: The rents were successfully retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RentResponse'
+        400:
+          description: An error occurred in the request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    post:
+      description: Create a new rent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateRentRequest'
+      responses:
+        201:
+          description: The rent was successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RentResponse'
+        400:
+          description: An error occurred in the request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  '/rents/{rentId}':
+    parameters:
+      - name: rentId
+        in: path
+        description: The rent id
+        required: true
+        schema:
+          type: string
+    get:
+      description: Get the rent with the given id
+      responses:
+        200:
+          description: The rent was successfully retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RentResponse'
+        404:
+          description: The resource with the given id was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    CreateRentRequest:
+      type: object
+      required:
+        - customerId
+        - vehicleId
+      properties:
+        customerId:
+          type: string
+          description: The customer id
+        vehicleId:
+          type: string
+          description: The vehicle id
+      examples:
+        - customerId: CST1234
+          vehicleId: VH1234
+    RentResponse:
+      type: object
+      properties:
+        rentId:
+          type: string
+          description: The rent id
+        customerId:
+          type: string
+          description: The customer id
+        vehicleId:
+          type: string
+          description: The vehicle id
+        currentState:
+          type: string
+          description: The rent state
+          enum:
+            - PENDING
+            - REJECTED
+            - ACCEPTED
+            - STARTED
+            - ENDED
+        acceptedAt:
+          type: string
+          description: The instant the rent has been accepted
+          format: date-time
+        startedAt:
+          type: string
+          description: The instant the rent has started
+          format: date-time
+        endedAt:
+          type: string
+          description: The instant the rent has ended
+          format: date-time
+      examples:
+        - rentId: RNT1234
+          customerId: CST1234
+          vehicleId: VH1234
+          currentState: ENDED
+          acceptedAt: 2021-08-24T14:15:22Z
+          startedAt: 2021-08-24T14:25:37Z
+          endedAt: 2021-08-24T15:07:50Z
+    ErrorResponse:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The error type
+        message:
+          type: string
+          description: A message explaining the error
+        issues:
+          type: array
+          description: The list of occurred issues
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: The issue name
+              description:
+                type: string
+                description: The issue description
+      examples:
+        - type: VALIDATION_ERROR
+          message: A validation error occurred in the request body
+          issues:
+            - name: customerId
+              description: customerId must be present
+            - name: vehicleId
+              description: vehicleId must be present
+        - type: NOT_FOUND_ERROR
+          message: The requested resource was not found
+          issues: []
+        - type: INTERNAL_SERVER_ERROR
+          message: An internal server error occurred
+          issues: []
