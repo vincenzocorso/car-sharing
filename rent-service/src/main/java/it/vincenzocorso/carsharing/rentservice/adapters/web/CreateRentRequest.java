@@ -1,10 +1,10 @@
 package it.vincenzocorso.carsharing.rentservice.adapters.web;
 
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotEmpty;
 
 public record CreateRentRequest(
-	@NotNull(message = "The customer id must be not null")
+	@NotEmpty(message = "The customer id must be present")
 	String customerId,
-	@NotNull(message = "The vehicle id must be not null")
+	@NotEmpty(message = "The vehicle id must be present")
 	String vehicleId
 ) {}
