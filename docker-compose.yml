@@ -2,35 +2,36 @@ version: "3.9"
 # TODO: set max HEAP
 services:
   mongodb-primary:
-    image: 'bitnami/mongodb:4.4.8'
+    image: bitnami/mongodb:4.4.8-debian-10-r48
     ports:
       - "27017:27017"
     environment:
       MONGODB_ADVERTISED_HOSTNAME: mongodb-primary
       MONGODB_REPLICA_SET_MODE: primary
+      MONGODB_ROOT_USER: root
       MONGODB_ROOT_PASSWORD: admin
-      MONGO_INITDB_ROOT_PASSWORD: admin
+      MONGODB_USERNAME: user
+      MONGODB_PASSWORD: password
+      MONGODB_DATABASE: app
       MONGODB_REPLICA_SET_KEY: replicasetkey123
 
   mongodb-secondary:
-    image: 'bitnami/mongodb:4.4.8'
+    image: bitnami/mongodb:4.4.8-debian-10-r48
     depends_on:
       - mongodb-primary
     environment:
       MONGODB_REPLICA_SET_MODE: secondary
       MONGODB_INITIAL_PRIMARY_HOST: mongodb-primary
-      MONGODB_INITIAL_PRIMARY_PORT_NUMBER: 27017
       MONGODB_INITIAL_PRIMARY_ROOT_PASSWORD: admin
       MONGODB_REPLICA_SET_KEY: replicasetkey123
 
   mongodb-arbiter:
-    image: 'bitnami/mongodb:4.4.8'
+    image: bitnami/mongodb:4.4.8-debian-10-r48
     depends_on:
       - mongodb-primary
     environment:
       MONGODB_REPLICA_SET_MODE: arbiter
       MONGODB_INITIAL_PRIMARY_HOST: mongodb-primary
-      MONGODB_INITIAL_PRIMARY_PORT_NUMBER: 27017
       MONGODB_INITIAL_PRIMARY_ROOT_PASSWORD: admin
       MONGODB_REPLICA_SET_KEY: replicasetkey123
 
@@ -44,28 +45,18 @@ services:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: admin
 
-  zookeeper:
-    container_name: zookeeper
-    image: confluentinc/cp-zookeeper:6.2.0
-    ports:
-      - "2181:2181"
-    environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
-
   kafka:
-    container_name: kafka
-    image: confluentinc/cp-kafka:6.2.0
-    ports:
-      - "29092:29092"
-    depends_on:
-      - zookeeper
+    image: bitnami/kafka:3.3.1-debian-11-r29
     environment:
+      KAFKA_ENABLE_KRAFT: "yes"
+      KAFKA_CFG_PROCESS_ROLES: broker,controller
+      KAFKA_CFG_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_CFG_LISTENERS: PLAINTEXT://:9092,CONTROLLER://:9093
+      KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      KAFKA_CFG_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
       KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_CFG_CONTROLLER_QUORUM_VOTERS: 1@localhost:9093
+      ALLOW_PLAINTEXT_LISTENER: "yes"
 
   kafdrop:
     container_name: kafdrop

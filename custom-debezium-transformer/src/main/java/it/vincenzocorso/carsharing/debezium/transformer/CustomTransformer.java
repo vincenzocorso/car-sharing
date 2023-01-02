@@ -2,7 +2,7 @@ package it.vincenzocorso.carsharing.debezium.transformer;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.java.Log;
 import org.apache.kafka.common.config.ConfigDef;
 import org.apache.kafka.connect.connector.ConnectRecord;
 import org.apache.kafka.connect.data.Struct;
@@ -14,7 +14,7 @@ import java.util.Map;
 
 import static it.vincenzocorso.carsharing.common.messaging.MessageFields.*;
 
-@Slf4j
+@Log
 public class CustomTransformer<R extends ConnectRecord<R>> implements Transformation<R> {
 	private static final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -37,7 +37,7 @@ public class CustomTransformer<R extends ConnectRecord<R>> implements Transforma
 				for(Map.Entry<String, String> entry : headersMap.entrySet())
 					headers.addString(entry.getKey(), entry.getValue());
 			} catch(Exception ex) {
-				log.error("Can't decode headers column: ", ex);
+				log.severe("Can't decode headers column: " + ex);
 				throw new IllegalArgumentException();
 			}
 
