@@ -1,13 +1,8 @@
 package it.vincenzocorso.carsharing.rentservice.domain.events;
 
 import it.vincenzocorso.carsharing.common.messaging.events.DomainEvent;
-import lombok.AllArgsConstructor;
 
-@AllArgsConstructor
-public class RentStateTransitionEvent implements DomainEvent {
-	public final String oldState;
-	public final String newState;
-
+public record RentStateTransitionEvent(String oldState, String newState) implements DomainEvent {
 	@Override
 	public String getType() {
 		return "RENT_DOMAIN_EVENT";
