@@ -202,6 +202,16 @@ components:
         - type: NOT_FOUND_ERROR
           message: The requested resource was not found
           issues: []
+        - type: BAD_REQUEST_ERROR
+          message: The request can't be performed
+          issues:
+            - name: rent
+              description: The operation cannot be performed due to the current state of the rent
+        - type: BAD_REQUEST_ERROR
+          message: The request can't be performed
+          issues:
+            - name: requestBody
+              description: The request body is not readable
         - type: INTERNAL_SERVER_ERROR
           message: An internal server error occurred
           issues: []
