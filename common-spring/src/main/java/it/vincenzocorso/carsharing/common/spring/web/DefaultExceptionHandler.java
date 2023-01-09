@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -59,7 +58,7 @@ public class DefaultExceptionHandler {
 	@ExceptionHandler(HttpMessageNotReadableException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ErrorResponse handleMissingRequestBody(HttpMessageNotReadableException ex) {
-		return ErrorResponses.makeInvalidRequestBodyErrorResponse(Collections.emptyList());
+		return ErrorResponses.makeInvalidRequestBodyErrorResponse();
 	}
 
 	@ExceptionHandler(Exception.class)
