@@ -3,7 +3,7 @@ plugins {
 }
 
 testSets  {
-    integrationTest { dirName = 'integration-test' }
+    intTest { dirName = 'int-test' }
 }
 
 repositories {
@@ -12,7 +12,7 @@ repositories {
 }
 
 dependencies {
-    integrationTestImplementation sourceSets.test.output
+    intTestImplementation sourceSets.test.output
 }
 
 project.ext {
