@@ -1,20 +1,20 @@
-package it.vincenzocorso.carsharing.common.spring.messaging.outbox.jpa;
+package it.vincenzocorso.carsharing.common.quarkus.messaging.outbox.jpa;
 
 import it.vincenzocorso.carsharing.common.messaging.outbox.AbstractOutboxMessageProducer;
 import it.vincenzocorso.carsharing.common.messaging.outbox.OutboxMessage;
-import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Component;
 
-@Component
-@AllArgsConstructor
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
+
 public class OutboxJpaMessageProducer extends AbstractOutboxMessageProducer {
-	private final OutboxJpaMessageRepository messageRepository;
+	@Inject
+	EntityManager entityManager;
 
 	@Override
 	protected void saveAndDelete(OutboxMessage message) {
 		OutboxMessageEntity messageEntity = this.toEntity(message);
-		messageEntity = this.messageRepository.save(messageEntity);
-		this.messageRepository.delete(messageEntity);
+		this.entityManager.persist(messageEntity);
+		this.entityManager.remove(messageEntity);
 	}
 
 	private OutboxMessageEntity toEntity(OutboxMessage message) {

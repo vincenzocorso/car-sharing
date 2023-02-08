@@ -3,6 +3,9 @@ rootProject.name = 'car-sharing'
 include 'common'
 include 'common-spring'
 
+include ':common-quarkus:runtime'
+include ':common-quarkus:deployment'
+
 include 'customer-service'
 include 'rent-service'
 include 'rent-orchestrator-service'

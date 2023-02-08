@@ -8,3 +8,8 @@ java {
     sourceCompatibility = JavaVersion.VERSION_11
     targetCompatibility = JavaVersion.VERSION_11
 }
+
+dependencies {
+    implementation 'org.slf4j:jul-to-slf4j:2.0.6'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.1'
+}

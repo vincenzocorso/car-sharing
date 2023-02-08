@@ -1,0 +1,16 @@
+plugins {
+    id 'java-library'
+}
+
+repositories {
+    mavenCentral()
+    gradlePluginPortal()
+}
+
+dependencies {
+    implementation project(':common-quarkus:runtime')
+
+    // TODO: abstract quarkus extension build logic
+    implementation platform('io.quarkus:quarkus-bom:2.16.1.Final')
+    implementation 'io.quarkus:quarkus-hibernate-orm-panache-deployment'
+}
