@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class RentEntityMapper {
@@ -38,7 +39,7 @@ public class RentEntityMapper {
 	public Rent convertFromEntity(RentEntity rentEntity) {
 		String rentId = rentEntity.getId();
 		RentDetails rentDetails = new RentDetails(rentEntity.getCustomerId(), rentEntity.getVehicleId());
-		List<RentStateTransition> transitions = rentEntity.getStateTransitions().stream().map(this::convertFromEntity).toList();
+		List<RentStateTransition> transitions = rentEntity.getStateTransitions().stream().map(this::convertFromEntity).collect(Collectors.toList());
 		return new RentWrapper(rentId, rentDetails, transitions, rentEntity.getVersion());
 	}
 
