@@ -10,7 +10,6 @@ import lombok.AllArgsConstructor;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static javax.ws.rs.core.Response.Status.*;
 
@@ -33,7 +32,7 @@ public class CustomerController implements CustomerRestApi {
 		SearchCustomerCriteria criteria = SearchCustomerCriteria.builder().limit(limit).offset(offset).build();
 		List<CustomerResponse> responseBody = this.searchCustomerUseCase.getCustomers(criteria).stream()
 				.map(this.customerMapper::convertToDto)
-				.collect(Collectors.toList());
+				.toList();
 		return Response.status(OK).entity(responseBody).build();
 	}
 
