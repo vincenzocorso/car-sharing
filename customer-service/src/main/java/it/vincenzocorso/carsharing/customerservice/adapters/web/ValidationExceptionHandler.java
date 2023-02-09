@@ -12,7 +12,6 @@ import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Provider
 public class ValidationExceptionHandler implements ExceptionMapper<ConstraintViolationException> {
@@ -20,7 +19,7 @@ public class ValidationExceptionHandler implements ExceptionMapper<ConstraintVio
 	public Response toResponse(ConstraintViolationException ex) {
 		List<Issue> issues = ex.getConstraintViolations().stream()
 				.map(this::convertToIssue)
-				.collect(Collectors.toList());
+				.toList();
 
 		ErrorResponse payload = ErrorResponses.makeValidationErrorResponse(issues);
 		return Response.status(Response.Status.BAD_REQUEST).entity(payload).build();
