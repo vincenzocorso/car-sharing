@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class RentEntityMapper {
@@ -21,10 +20,10 @@ public class RentEntityMapper {
 		rentEntity.setCurrentState(rent.getCurrentState().toString());
 		List<RentStateTransitionEntity> transitions = rent.getStateTransitions().stream()
 				.map(t -> this.convertToEntity(rentEntity, t))
-				.collect(Collectors.toList());
+				.toList();
 		rentEntity.setStateTransitions(transitions);
-		if(rent instanceof RentWrapper)
-			rentEntity.setVersion(((RentWrapper)rent).getVersion());
+		if(rent instanceof RentWrapper rentWrapper)
+			rentEntity.setVersion(rentWrapper.getVersion());
 		return rentEntity;
 	}
 
@@ -39,7 +38,7 @@ public class RentEntityMapper {
 	public Rent convertFromEntity(RentEntity rentEntity) {
 		String rentId = rentEntity.getId();
 		RentDetails rentDetails = new RentDetails(rentEntity.getCustomerId(), rentEntity.getVehicleId());
-		List<RentStateTransition> transitions = rentEntity.getStateTransitions().stream().map(this::convertFromEntity).collect(Collectors.toList());
+		List<RentStateTransition> transitions = rentEntity.getStateTransitions().stream().map(this::convertFromEntity).toList();
 		return new RentWrapper(rentId, rentDetails, transitions, rentEntity.getVersion());
 	}
 
