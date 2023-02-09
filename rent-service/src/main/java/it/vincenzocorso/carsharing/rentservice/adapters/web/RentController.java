@@ -15,7 +15,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @Validated
@@ -34,7 +33,7 @@ public class RentController implements RentRestApi {
 				.limit(limit)
 				.offset(offset)
 				.build();
-		return this.searchRentUseCase.getRents(searchRentCriteria).stream().map(this.rentMapper::convertToDto).collect(Collectors.toList());
+		return this.searchRentUseCase.getRents(searchRentCriteria).stream().map(this.rentMapper::convertToDto).toList();
 	}
 
 	@Override
