@@ -1,0 +1,85 @@
+asyncapi: 2.5.0
+info:
+  title: Rent Service Messaging API
+  contact:
+    name: Vincenzo Corso
+    url: https://github.com/vincenzocorso
+    email: vincenzocorso99@gmail.com
+  version: "1.0"
+channels:
+  events/rent-service:
+    subscribe:
+      message:
+        oneOf:
+          - name: RENT_CREATED_EVENT
+            headers:
+              $ref: '#/components/schemas/EventHeaders'
+            payload:
+              type: object
+              description: A new rent has been created
+              properties:
+                rentId:
+                  type: string
+                  description: The rent id
+                customerId:
+                  type: string
+                  description: The customer id
+                vehicleId:
+                  type: string
+                  description: The vehicle id
+              examples:
+                - rentId: RNT1234
+                  customerId: CST1234
+                  vehicleId: VHC1234
+          - name: RENT_STATE_TRANSITION_EVENT
+            headers:
+              $ref: '#/components/schemas/EventHeaders'
+            payload:
+              type: object
+              description: The state of a rent has been changed
+              properties:
+                rentId:
+                  type: string
+                  description: The rent id
+                oldState:
+                  type: string
+                  description: The old state
+                  enum:
+                    - PENDING
+                    - REJECTED
+                    - ACCEPTED
+                    - STARTED
+                    - ENDED
+                newState:
+                  type: string
+                  description: The new state
+                  enum:
+                    - PENDING
+                    - REJECTED
+                    - ACCEPTED
+                    - STARTED
+                    - ENDED
+    bindings:
+      kafka:
+        topic: rent-service-events
+components:
+  schemas:
+    EventHeaders:
+      type: object
+      properties:
+        aggregate_id:
+          type: string
+          description: The id of the aggregate involved in the event
+        message_id:
+          type: string
+          description: The message id
+        type:
+          type: string
+          description: The event type
+      examples:
+        - aggregate_id: RNT001
+          message_id: f99783af-fbd3-4fb1-b337-bbd5e9df10fb
+          type: RENT_CREATED_EVENT
+        - aggregate_id: RNT001
+          message_id: f99783af-fbd3-4fb1-b337-bbd5e9df10fb
+          type: RENT_STATE_TRANSITION_EVENT
