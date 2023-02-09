@@ -5,6 +5,6 @@ import it.vincenzocorso.carsharing.common.messaging.events.DomainEvent;
 public record RentStateTransitionEvent(String oldState, String newState) implements DomainEvent {
 	@Override
 	public String getType() {
-		return "RENT_DOMAIN_EVENT";
+		return "RENT_STATE_TRANSITION_EVENT";
 	}
 }
