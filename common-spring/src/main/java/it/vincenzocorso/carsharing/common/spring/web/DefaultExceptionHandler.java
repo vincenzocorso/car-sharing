@@ -27,7 +27,7 @@ public class DefaultExceptionHandler {
 	public ErrorResponse handleValidationException(MethodArgumentNotValidException ex) {
 		List<Issue> issues = ex.getBindingResult().getFieldErrors().stream()
 				.map(this::convertToIssue)
-				.collect(Collectors.toList());
+				.toList();
 
 		return ErrorResponses.makeValidationErrorResponse(issues);
 	}
@@ -41,7 +41,7 @@ public class DefaultExceptionHandler {
 	public ErrorResponse handleValidationException(ConstraintViolationException ex) {
 		List<Issue> issues = ex.getConstraintViolations().stream()
 				.map(this::convertToIssue)
-				.collect(Collectors.toList());
+				.toList();
 
 		return ErrorResponses.makeValidationErrorResponse(issues);
 	}
