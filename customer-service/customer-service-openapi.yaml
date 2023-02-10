@@ -1,0 +1,237 @@
+openapi: 3.1.0
+info:
+  title: Customer Service REST API
+  contact:
+    name: Vincenzo Corso
+    url: https://github.com/vincenzocorso
+    email: vincenzocorso99@gmail.com
+  version: "1.0"
+paths:
+  /customers:
+    get:
+      description: Get all customers. It is possible to specify some search filters
+      parameters:
+        - name: limit
+          in: query
+          description: The number of results returned
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 200
+            default: 10
+          example: 10
+        - name: offset
+          in: query
+          description: The number of results to omit from the beginning
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+          example: 20
+      responses:
+        200:
+          description: The customers were successfully retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CustomerResponse'
+        400:
+          description: An error occurred in the request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    post:
+      description: Register a new customer
+      requestBody:
+        description: The customer to register
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterCustomerRequest'
+      responses:
+        201:
+          description: The customer was successfully registered
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerResponse'
+        400:
+          description: An error occurred in the request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  '/customers/${customerId}':
+    parameters:
+      - name: customerId
+        in: path
+        description: The customer id
+        required: true
+        schema:
+          type: string
+    get:
+      description: Get the customer with the given id
+      responses:
+        200:
+          description: The customer was successfully retrieved
+          content:
+            application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerResponse'
+        404:
+          description: The resource with the given id was not found
+          content:
+            application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    RegisterCustomerRequest:
+      type: object
+      required:
+        - firstName
+        - lastName
+        - dateOfBirth
+        - fiscalCode
+        - email
+        - phoneNumber
+      properties:
+        firstName:
+          type: string
+          description: The customer first name
+        lastName:
+          type: string
+          description: The customer last name
+        dateOfBirth:
+          type: string
+          format: date
+          description: The customer date of birth
+        fiscalCode:
+          type: string
+          description: The customer fiscal code
+        email:
+          type: string
+          description: The customer email
+        phoneNumber:
+          type: string
+          description: The customer phone number
+        driverLicense:
+          type: object
+          properties:
+            licenseNumber:
+              type: string
+              description: The driver license number
+            issueDate:
+              type: string
+              format: date
+              description: The driver license issue date
+            expiryDate:
+              type: string
+              format: date
+              description: The driver license expiry date
+      examples:
+        - firstName: Mario
+          lastName: Rossi
+          dateOfBirth: 1999-09-06
+          fiscalCode: MRORSSXXXXXXXXXX
+          email: mariorossi99@gmail.com
+          phoneNumber: +390000000000
+          driverLicense:
+            licenseNumber: 1234567890
+            issueDate: 2019-09-06
+            expiryDate: 2029-09-06
+    CustomerResponse:
+      type: object
+      properties:
+        customerId:
+          type: string
+          description: The customer id
+        firstName:
+          type: string
+          description: The customer first name
+        lastName:
+          type: string
+          description: The customer last name
+        dateOfBirth:
+          type: string
+          format: date
+          description: The customer date of birth
+        fiscalCode:
+          type: string
+          description: The customer fiscal code
+        email:
+          type: string
+          description: The customer email
+        phoneNumber:
+          type: string
+          description: The customer phone number
+        driverLicense:
+          type: object
+          properties:
+            licenseNumber:
+              type: string
+              description: The driver license number
+            issueDate:
+              type: string
+              format: date
+              description: The driver license issue date
+            expiryDate:
+              type: string
+              format: date
+              description: The driver license expiry date
+      examples:
+        - customerId: CST1234
+          firstName: Mario
+          lastName: Rossi
+          dateOfBirth: 1999-09-06
+          fiscalCode: MRORSSXXXXXXXXXX
+          email: mariorossi99@gmail.com
+          phoneNumber: +390000000000
+          driverLicense:
+            licenseNumber: 1234567890
+            issueDate: 2019-09-06
+            expiryDate: 2029-09-06
+    ErrorResponse:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The error type
+        message:
+          type: string
+          description: A message explaining the error
+        issues:
+          type: array
+          description: The list of occurred issues
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: The issue name
+              description:
+                type: string
+                description: The issue description
+      examples:
+        - type: VALIDATION_ERROR
+          message: A validation error occurred in the request body
+          issues:
+            - name: firstName
+              description: The customer first name must not be null nor empty
+            - name: lastName
+              description: The customer last name must not be null nor empty
+        - type: NOT_FOUND_ERROR
+          message: The requested resource was not found
+          issues: []
+        - type: BAD_REQUEST_ERROR
+          message: The request can't be performed
+          issues:
+            - name: requestBody
+              description: The request body is not readable
+        - type: INTERNAL_SERVER_ERROR
+          message: An internal server error occurred
+          issues: []
