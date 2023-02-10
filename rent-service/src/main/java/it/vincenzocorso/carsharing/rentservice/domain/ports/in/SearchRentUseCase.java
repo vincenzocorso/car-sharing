@@ -18,6 +18,7 @@ public interface SearchRentUseCase {
 	 * Gets the rent with the given id
 	 * @param rentId The rent id
 	 * @return The rent with the given id
+	 * @throws it.vincenzocorso.carsharing.rentservice.domain.exceptions.RentNotFoundException If the rent with the given id does not exist
 	 */
 	Rent getRent(String rentId);
 }

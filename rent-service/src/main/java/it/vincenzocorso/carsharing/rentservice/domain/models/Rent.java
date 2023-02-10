@@ -8,6 +8,18 @@ import it.vincenzocorso.carsharing.rentservice.domain.exceptions.IllegalRentStat
 
 import java.util.List;
 
+/**
+ * This class represents a Rent aggregate.
+ * A rent is created by a customer and refers to a vehicle.
+ * The rent can be in one of the following states:
+ * - PENDING: The system is still processing the request
+ * - ACCEPTED: The customer has reserved correctly the vehicle, but he has not yet unlocked it
+ * - REJECTED: The rent cannot be completed
+ * - STARTED: The customer has started the rent and the vehicle is unlocked
+ * - ENDED: The customer has parked the vehicle. The rent is ended
+ * - CANCELLED: The rent was cancelled
+ * @see RentState
+ */
 public class Rent {
 	private String id;
 	private final RentDetails details;

@@ -15,6 +15,8 @@ public interface RentVehicleUseCase {
 	 * Rejects a rent
 	 * @param rentId The rent id
 	 * @return The rent with the given id
+	 * @throws it.vincenzocorso.carsharing.rentservice.domain.exceptions.RentNotFoundException If the rent with the given id does not exist
+	 * @throws it.vincenzocorso.carsharing.rentservice.domain.exceptions.IllegalRentStateTransitionException If the rent cannot be rejected
 	 */
 	Rent rejectRent(String rentId);
 
@@ -22,6 +24,8 @@ public interface RentVehicleUseCase {
 	 * Cancels a rent
 	 * @param rentId The rent id
 	 * @return The rent with the given id
+	 * @throws it.vincenzocorso.carsharing.rentservice.domain.exceptions.RentNotFoundException If the rent with the given id does not exist
+	 * @throws it.vincenzocorso.carsharing.rentservice.domain.exceptions.IllegalRentStateTransitionException If the rent cannot be cancelled
 	 */
 	Rent cancelRent(String rentId);
 
@@ -29,6 +33,8 @@ public interface RentVehicleUseCase {
 	 * Starts a rent
 	 * @param rentId The rent id
 	 * @return The rent with the given id
+	 * @throws it.vincenzocorso.carsharing.rentservice.domain.exceptions.RentNotFoundException If the rent with the given id does not exist
+	 * @throws it.vincenzocorso.carsharing.rentservice.domain.exceptions.IllegalRentStateTransitionException If the rent cannot be started
 	 */
 	Rent startRent(String rentId);
 
@@ -36,6 +42,8 @@ public interface RentVehicleUseCase {
 	 * Ends a rent
 	 * @param rentId The rent id
 	 * @return The rent with the given id
+	 * @throws it.vincenzocorso.carsharing.rentservice.domain.exceptions.RentNotFoundException If the rent with the given id does not exist
+	 * @throws it.vincenzocorso.carsharing.rentservice.domain.exceptions.IllegalRentStateTransitionException If the rent cannot be ended
 	 */
 	Rent endRent(String rentId);
 }
