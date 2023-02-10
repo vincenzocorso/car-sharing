@@ -1,5 +1,6 @@
 package it.vincenzocorso.carsharing.rentservice.domain;
 
+import it.vincenzocorso.carsharing.common.messaging.events.DomainEvent;
 import it.vincenzocorso.carsharing.common.messaging.events.DomainEventProducer;
 import it.vincenzocorso.carsharing.common.messaging.events.ResultWithEvents;
 import it.vincenzocorso.carsharing.rentservice.domain.exceptions.RentNotFoundException;
@@ -16,7 +17,7 @@ import java.util.List;
 
 @AllArgsConstructor
 public class RentService implements RentVehicleUseCase, SearchRentUseCase {
-	private static final String EVENT_CHANNEL = "rent-service-events";
+	public static final String EVENTS_CHANNEL = "rent-service-events";
 	private final RentRepository rentRepository;
 	private final DomainEventProducer domainEventProducer;
 
@@ -27,7 +28,7 @@ public class RentService implements RentVehicleUseCase, SearchRentUseCase {
 		ResultWithEvents<Rent> resultWithEvents = Rent.create(rentDetails);
 		Rent savedRent = this.rentRepository.save(resultWithEvents.result);
 
-		this.domainEventProducer.publish(EVENT_CHANNEL, savedRent.getId(), resultWithEvents.events);
+		this.domainEventProducer.publish(EVENTS_CHANNEL, savedRent.getId(), resultWithEvents.events);
 
 		return savedRent;
 	}
@@ -36,10 +37,10 @@ public class RentService implements RentVehicleUseCase, SearchRentUseCase {
 	@Override
 	public Rent rejectRent(String rentId) {
 		Rent rent = this.rentRepository.findById(rentId).orElseThrow(() -> new RentNotFoundException(rentId));
-		rent.reject();
+		List<DomainEvent> events = rent.reject();
 		Rent savedRent = this.rentRepository.save(rent);
 
-		// TODO: publish events
+		this.domainEventProducer.publish(EVENTS_CHANNEL, savedRent.getId(), events);
 
 		return savedRent;
 	}
@@ -48,10 +49,10 @@ public class RentService implements RentVehicleUseCase, SearchRentUseCase {
 	@Override
 	public Rent cancelRent(String rentId) {
 		Rent rent = this.rentRepository.findById(rentId).orElseThrow(() -> new RentNotFoundException(rentId));
-		rent.cancel();
+		List<DomainEvent> events = rent.cancel();
 		Rent savedRent = this.rentRepository.save(rent);
 
-		// TODO: publish events
+		this.domainEventProducer.publish(EVENTS_CHANNEL, savedRent.getId(), events);
 
 		return savedRent;
 	}
@@ -60,10 +61,10 @@ public class RentService implements RentVehicleUseCase, SearchRentUseCase {
 	@Override
 	public Rent startRent(String rentId) {
 		Rent rent = this.rentRepository.findById(rentId).orElseThrow(() -> new RentNotFoundException(rentId));
-		rent.start();
+		List<DomainEvent> events = rent.start();
 		Rent savedRent = this.rentRepository.save(rent);
 
-		// TODO: publish events
+		this.domainEventProducer.publish(EVENTS_CHANNEL, savedRent.getId(), events);
 
 		return savedRent;
 	}
@@ -72,10 +73,10 @@ public class RentService implements RentVehicleUseCase, SearchRentUseCase {
 	@Override
 	public Rent endRent(String rentId) {
 		Rent rent = this.rentRepository.findById(rentId).orElseThrow(() -> new RentNotFoundException(rentId));
-		rent.end();
+		List<DomainEvent> events = rent.end();
 		Rent savedRent = this.rentRepository.save(rent);
 
-		// TODO: publish events
+		this.domainEventProducer.publish(EVENTS_CHANNEL, savedRent.getId(), events);
 
 		return savedRent;
 	}

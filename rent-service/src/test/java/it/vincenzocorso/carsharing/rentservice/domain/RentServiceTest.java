@@ -1,6 +1,9 @@
 package it.vincenzocorso.carsharing.rentservice.domain;
 
+import it.vincenzocorso.carsharing.common.messaging.events.DomainEvent;
 import it.vincenzocorso.carsharing.common.messaging.events.DomainEventProducer;
+import it.vincenzocorso.carsharing.rentservice.domain.events.RentCreatedEvent;
+import it.vincenzocorso.carsharing.rentservice.domain.events.RentStateTransitionEvent;
 import it.vincenzocorso.carsharing.rentservice.domain.exceptions.RentNotFoundException;
 import it.vincenzocorso.carsharing.rentservice.domain.models.Rent;
 import it.vincenzocorso.carsharing.rentservice.domain.models.RentState;
@@ -33,6 +36,7 @@ class RentServiceTest {
 
 	@Test
 	void shouldCreateRent() {
+		DomainEvent event = new RentCreatedEvent(CUSTOMER_ID, VEHICLE_ID);
 		when(this.rentRepository.save(any(Rent.class))).then(invocation -> {
 			Rent rent = invocation.getArgument(0);
 			rent.setId(RENT_ID);
@@ -42,31 +46,33 @@ class RentServiceTest {
 		Rent createdRent = this.rentService.createRent(CUSTOMER_ID, VEHICLE_ID);
 
 		verify(this.rentRepository).save(createdRent);
-		verify(this.domainEventProducer).publish(anyString(), anyString(), anyList());
+		verify(this.domainEventProducer).publish(RentService.EVENTS_CHANNEL, RENT_ID, List.of(event));
 	}
 
 	@Test
 	void shouldRejectRent() {
 		Rent persistedRent = rentInState(RentState.PENDING);
+		DomainEvent event = new RentStateTransitionEvent(RentState.PENDING.toString(), RentState.REJECTED.toString());
 		when(this.rentRepository.findById(RENT_ID)).thenReturn(Optional.of(persistedRent));
 		when(this.rentRepository.save(any(Rent.class))).thenReturn(persistedRent);
 
 		Rent rejectedRent = this.rentService.rejectRent(RENT_ID);
 
 		verify(this.rentRepository).save(rejectedRent);
-		// TODO: verify that the events have been published
+		verify(this.domainEventProducer).publish(RentService.EVENTS_CHANNEL, RENT_ID, List.of(event));
 	}
 
 	@Test
 	void shouldCancelRent() {
 		Rent persistedRent = rentInState(RentState.ACCEPTED);
+		DomainEvent event = new RentStateTransitionEvent(RentState.ACCEPTED.toString(), RentState.CANCELLED.toString());
 		when(this.rentRepository.findById(RENT_ID)).thenReturn(Optional.of(persistedRent));
 		when(this.rentRepository.save(any(Rent.class))).thenReturn(persistedRent);
 
 		Rent cancelledRent = this.rentService.cancelRent(RENT_ID);
 
 		verify(this.rentRepository).save(cancelledRent);
-		// TODO: verify that the events have been published
+		verify(this.domainEventProducer).publish(RentService.EVENTS_CHANNEL, RENT_ID, List.of(event));
 	}
 
 	@Test
@@ -79,13 +85,14 @@ class RentServiceTest {
 	@Test
 	void shouldStartRent() {
 		Rent persistedRent = rentInState(RentState.ACCEPTED);
+		DomainEvent event = new RentStateTransitionEvent(RentState.ACCEPTED.toString(), RentState.STARTED.toString());
 		when(this.rentRepository.findById(RENT_ID)).thenReturn(Optional.of(persistedRent));
 		when(this.rentRepository.save(any(Rent.class))).thenReturn(persistedRent);
 
 		Rent startedRent = this.rentService.startRent(RENT_ID);
 
 		verify(this.rentRepository).save(startedRent);
-		// TODO: verify that the events have been published
+		verify(this.domainEventProducer).publish(RentService.EVENTS_CHANNEL, RENT_ID, List.of(event));
 	}
 
 	@Test
@@ -98,13 +105,14 @@ class RentServiceTest {
 	@Test
 	void shouldEndRent() {
 		Rent persistedRent = rentInState(RentState.STARTED);
+		DomainEvent event = new RentStateTransitionEvent(RentState.STARTED.toString(), RentState.ENDED.toString());
 		when(this.rentRepository.findById(RENT_ID)).thenReturn(Optional.of(persistedRent));
 		when(this.rentRepository.save(any(Rent.class))).thenReturn(persistedRent);
 
 		Rent endedRent = this.rentService.endRent(RENT_ID);
 
 		verify(this.rentRepository).save(endedRent);
-		// TODO: verify that the events have been published
+		verify(this.domainEventProducer).publish(RentService.EVENTS_CHANNEL, RENT_ID, List.of(event));
 	}
 
 	@Test
