@@ -1,0 +1,80 @@
+asyncapi: 2.5.0
+info:
+  title: Customer Service Messaging API
+  contact:
+    name: Vincenzo Corso
+    url: https://github.com/vincenzocorso
+    email: vincenzocorso99@gmail.com
+  version: "1.0"
+channels:
+  commands/customer-service:
+    publish:
+      message:
+        name: VERIFY_CUSTOMER_COMMAND
+        headers:
+          $ref: '#/components/schemas/CommandHeaders'
+        payload:
+          type: object
+          description: This command is sent to verify if a customer can rent a vehicle
+          properties:
+            customerId:
+              type: string
+              description: The customer id
+          examples:
+            - customerId: CST1234
+    bindings:
+      kafka:
+        topic: customer-service-commands
+  command-responses/customer-service:
+    subscribe:
+      message:
+        name: VERIFY_CUSTOMER_REPLY
+        headers:
+          $ref: '#/components/schemas/CommandReplyHeaders'
+        payload:
+          type: object
+          description: This reply contains the result of the verification
+          properties:
+            customerId:
+              type: string
+              description: The customer id
+            canRent:
+              type: boolean
+              description: True if the customer can rent a vehicle, false otherwise
+          examples:
+            - customerId: CST1234
+              canRent: true
+components:
+  schemas:
+    CommandHeaders:
+      type: object
+      properties:
+        response_channel:
+          type: string
+          description: The channel where the response must be sent
+        message_id:
+          type: string
+          description: The message id
+        type:
+          type: string
+          description: The command type
+      examples:
+        - response_channel: rent-orchestrator-service-response-channel
+          message_id: f99783af-fbd3-4fb1-b337-bbd5e9df10fb
+          type: VERIFY_CUSTOMER_COMMAND
+    CommandReplyHeaders:
+      type: object
+      properties:
+        correlation_id:
+          type: string
+          description: The request message id
+        message_id:
+          type: string
+          description: The message id
+        type:
+          type: string
+          description: The command reply type
+      examples:
+        - correlation_id: f99783af-fbd3-4fb1-b337-bbd5e9df10fb
+          message_id: 1f9b9b9b-9b9b-9b9b-9b9b-9b9b9b9b9b9b
+          type: VERIFY_CUSTOMER_REPLY
