@@ -1,5 +1,8 @@
 package it.vincenzocorso.carsharing.customerservice.domain;
 
+import it.vincenzocorso.carsharing.common.messaging.events.DomainEvent;
+import it.vincenzocorso.carsharing.common.messaging.events.DomainEventProducer;
+import it.vincenzocorso.carsharing.customerservice.domain.events.CustomerCreatedEvent;
 import it.vincenzocorso.carsharing.customerservice.domain.models.Customer;
 import it.vincenzocorso.carsharing.customerservice.domain.models.SearchCustomerCriteria;
 import it.vincenzocorso.carsharing.customerservice.domain.ports.out.CustomerRepository;
@@ -23,11 +26,22 @@ class CustomerServiceTest {
 	@Mock
 	private CustomerRepository customerRepository;
 
+	@Mock
+	private DomainEventProducer domainEventProducer;
+
 	@InjectMocks
 	private CustomerService customerService;
 
 	@Test
 	void shouldRegisterCustomer() {
+		DomainEvent event = CustomerCreatedEvent.builder()
+			.firstName(FIRST_NAME)
+			.lastName(LAST_NAME)
+			.dateOfBirth(DATE_OF_BIRTH.toString())
+			.fiscalCode(FISCAL_CODE)
+			.email(EMAIL)
+			.phoneNumber(PHONE_NUMBER)
+			.build();
 		when(this.customerRepository.save(any(Customer.class))).then(invocation -> {
 			Customer customer = invocation.getArgument(0);
 			customer.setId(CUSTOMER_ID);
@@ -37,6 +51,7 @@ class CustomerServiceTest {
 		Customer registeredCustomer = this.customerService.registerCustomer(CUSTOMER_DETAILS);
 
 		verify(this.customerRepository).save(registeredCustomer);
+		verify(this.domainEventProducer).publish(CustomerService.EVENTS_CHANNEL, CUSTOMER_ID, List.of(event));
 	}
 
 	@Test

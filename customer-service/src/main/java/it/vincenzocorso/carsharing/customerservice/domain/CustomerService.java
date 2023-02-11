@@ -1,5 +1,6 @@
 package it.vincenzocorso.carsharing.customerservice.domain;
 
+import it.vincenzocorso.carsharing.common.messaging.events.DomainEventProducer;
 import it.vincenzocorso.carsharing.common.messaging.events.ResultWithEvents;
 import it.vincenzocorso.carsharing.customerservice.domain.models.Customer;
 import it.vincenzocorso.carsharing.customerservice.domain.models.CustomerDetails;
@@ -14,7 +15,9 @@ import java.util.List;
 
 @AllArgsConstructor
 public class CustomerService implements RegisterCustomerUseCase, SearchCustomerUseCase {
+	public static final String EVENTS_CHANNEL = "customer-service-events";
 	private final CustomerRepository customerRepository;
+	private final DomainEventProducer domainEventProducer;
 
 	@Override
 	public Customer registerCustomer(CustomerDetails customerDetails) {
@@ -22,7 +25,7 @@ public class CustomerService implements RegisterCustomerUseCase, SearchCustomerU
 
 		Customer savedCustomer = this.customerRepository.save(resultWithEvents.result);
 
-		// TODO: publish events
+		this.domainEventProducer.publish(EVENTS_CHANNEL, savedCustomer.getId(), resultWithEvents.events);
 
 		return savedCustomer;
 	}

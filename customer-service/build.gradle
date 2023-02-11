@@ -5,6 +5,7 @@ plugins {
 
 dependencies {
     implementation project(':common')
+    implementation project(':common-quarkus:runtime')
 
     implementation 'io.quarkus:quarkus-mongodb-panache'
 
