@@ -4,5 +4,11 @@ import it.vincenzocorso.carsharing.customerservice.domain.models.Customer;
 import it.vincenzocorso.carsharing.customerservice.domain.models.CustomerDetails;
 
 public interface RegisterCustomerUseCase {
+	/**
+	 * Registers a new customer
+	 * @param customerDetails The customer details
+	 * @return The registered customer
+	 * @see CustomerDetails
+	 */
 	Customer registerCustomer(CustomerDetails customerDetails);
 }

@@ -8,6 +8,11 @@ import lombok.Getter;
 
 import java.util.List;
 
+/**
+ * This class represents a Customer aggregate.
+ * The customer is identified by an id.
+ * In order to rent a vehicle, the customer's driver license and email must have been verified
+ */
 @AllArgsConstructor
 @Getter
 public class Customer {
