@@ -7,6 +7,45 @@ info:
     email: vincenzocorso99@gmail.com
   version: "1.0"
 channels:
+  events/customer-service:
+    subscribe:
+      message:
+        name: CUSTOMER_REGISTERED_EVENT
+        headers:
+          $ref: '#/components/schemas/EventHeaders'
+        payload:
+          type: object
+          description: A new customer has been registered
+          properties:
+            firstName:
+              type: string
+              description: The customer first name
+            lastName:
+              type: string
+              description: The customer last name
+            dateOfBirth:
+              type: string
+              format: date
+              description: The customer date of birth
+            fiscalCode:
+              type: string
+              description: The customer fiscal code
+            email:
+              type: string
+              description: The customer email
+            phoneNumber:
+              type: string
+              description: The customer phone number
+          examples:
+            - firstName: Mario
+              lastName: Rossi
+              dateOfBirth: 1999-09-06
+              fiscalCode: MRORSSXXXXXXXXXX
+              email: mariorossi99@gmail.com
+              phoneNumber: +390000000000
+    bindings:
+      kafka:
+        topic: customer-service-events
   commands/customer-service:
     publish:
       message:
@@ -46,6 +85,18 @@ channels:
               canRent: true
 components:
   schemas:
+    EventHeaders:
+      type: object
+      properties:
+        aggregate_id:
+          type: string
+          description: The id of the aggregate involved in the event
+        message_id:
+          type: string
+          description: The message id
+        type:
+          type: string
+          description: The event type
     CommandHeaders:
       type: object
       properties:
