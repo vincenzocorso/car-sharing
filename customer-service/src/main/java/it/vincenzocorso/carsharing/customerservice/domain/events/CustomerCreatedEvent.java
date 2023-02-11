@@ -1,16 +1,17 @@
 package it.vincenzocorso.carsharing.customerservice.domain.events;
 
+import it.vincenzocorso.carsharing.common.messaging.events.DomainEvent;
 import lombok.Builder;
 
 @Builder
-public class CustomerCreatedEvent implements CustomerDomainEvent {
-	public final String firstName;
-	public final String lastName;
-	public final String dateOfBirth;
-	public final String fiscalCode;
-	public final String email;
-	public final String phoneNumber;
-
+public record CustomerCreatedEvent(
+		String firstName,
+		String lastName,
+		String dateOfBirth,
+		String fiscalCode,
+		String email,
+		String phoneNumber
+) implements DomainEvent {
 	@Override
 	public String getType() {
 		return "CUSTOMER_CREATED_EVENT";
