@@ -19,11 +19,11 @@ public abstract class AbstractOutboxMessageProducer implements CommandProducer, 
 	private final ObjectMapper objectMapper = new ObjectMapper();
 
 	@Override
-	public String publish(String channel, String aggregateId, Command command) {
+	public String publish(String channel, String responseChannel, String aggregateId, Command command) {
 		String payload = this.encodePayload(command);
 		OutboxMessage message = new OutboxMessage(channel, aggregateId, payload);
 
-		String encodedHeaders = this.encodeCommandHeaders(command.getResponseChannel(), message.getMessageId(), command.getType());
+		String encodedHeaders = this.encodeCommandHeaders(responseChannel, message.getMessageId(), command.getType());
 		message.setHeaders(encodedHeaders);
 
 		this.saveAndDelete(message);
