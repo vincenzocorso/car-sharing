@@ -7,13 +7,11 @@ import it.vincenzocorso.carsharing.customerservice.domain.ports.in.RegisterCusto
 import it.vincenzocorso.carsharing.customerservice.domain.ports.in.SearchCustomerUseCase;
 import lombok.AllArgsConstructor;
 
-import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
 import static javax.ws.rs.core.Response.Status.*;
 
-@Path(CustomerRestApi.PATH)
 @AllArgsConstructor
 public class CustomerController implements CustomerRestApi {
 	private final SearchCustomerUseCase searchCustomerUseCase;
