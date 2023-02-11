@@ -28,20 +28,20 @@ public class CustomerMapper {
 
 	public CustomerDetails convertFromDto(RegisterCustomerRequest customerRequest) {
 		DriverLicense driverLicense = null;
-		if(customerRequest.driverLicense != null) {
+		if(customerRequest.driverLicense() != null) {
 			driverLicense = new DriverLicense(
-				customerRequest.driverLicense.licenseNumber,
-				customerRequest.driverLicense.issueDate,
-				customerRequest.driverLicense.expiryDate
+				customerRequest.driverLicense().licenseNumber(),
+				customerRequest.driverLicense().issueDate(),
+				customerRequest.driverLicense().expiryDate()
 			);
 		}
 		return CustomerDetails.builder()
-				.firstName(customerRequest.firstName)
-				.lastName(customerRequest.lastName)
-				.dateOfBirth(customerRequest.dateOfBirth)
-				.fiscalCode(customerRequest.fiscalCode)
-				.email(customerRequest.email)
-				.phoneNumber(customerRequest.phoneNumber)
+				.firstName(customerRequest.firstName())
+				.lastName(customerRequest.lastName())
+				.dateOfBirth(customerRequest.dateOfBirth())
+				.fiscalCode(customerRequest.fiscalCode())
+				.email(customerRequest.email())
+				.phoneNumber(customerRequest.phoneNumber())
 				.driverLicense(driverLicense)
 				.build();
 	}
