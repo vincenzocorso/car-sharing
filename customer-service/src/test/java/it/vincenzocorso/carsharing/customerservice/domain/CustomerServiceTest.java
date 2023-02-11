@@ -2,7 +2,7 @@ package it.vincenzocorso.carsharing.customerservice.domain;
 
 import it.vincenzocorso.carsharing.common.messaging.events.DomainEvent;
 import it.vincenzocorso.carsharing.common.messaging.events.DomainEventProducer;
-import it.vincenzocorso.carsharing.customerservice.domain.events.CustomerCreatedEvent;
+import it.vincenzocorso.carsharing.customerservice.domain.events.CustomerRegisteredEvent;
 import it.vincenzocorso.carsharing.customerservice.domain.models.Customer;
 import it.vincenzocorso.carsharing.customerservice.domain.models.SearchCustomerCriteria;
 import it.vincenzocorso.carsharing.customerservice.domain.ports.out.CustomerRepository;
@@ -34,7 +34,7 @@ class CustomerServiceTest {
 
 	@Test
 	void shouldRegisterCustomer() {
-		DomainEvent event = CustomerCreatedEvent.builder()
+		DomainEvent event = CustomerRegisteredEvent.builder()
 			.firstName(FIRST_NAME)
 			.lastName(LAST_NAME)
 			.dateOfBirth(DATE_OF_BIRTH.toString())

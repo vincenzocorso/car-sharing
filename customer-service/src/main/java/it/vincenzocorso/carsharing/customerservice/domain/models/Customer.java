@@ -2,7 +2,7 @@ package it.vincenzocorso.carsharing.customerservice.domain.models;
 
 import it.vincenzocorso.carsharing.common.messaging.events.DomainEvent;
 import it.vincenzocorso.carsharing.common.messaging.events.ResultWithEvents;
-import it.vincenzocorso.carsharing.customerservice.domain.events.CustomerCreatedEvent;
+import it.vincenzocorso.carsharing.customerservice.domain.events.CustomerRegisteredEvent;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -29,7 +29,7 @@ public class Customer {
 
 	public static ResultWithEvents<Customer> create(CustomerDetails customerDetails) {
 		Customer customer = new Customer(customerDetails);
-		DomainEvent domainEvent = CustomerCreatedEvent.builder()
+		DomainEvent domainEvent = CustomerRegisteredEvent.builder()
 				.firstName(customer.customerDetails.getFirstName())
 				.lastName(customer.customerDetails.getLastName())
 				.dateOfBirth(customer.customerDetails.getDateOfBirth().toString())

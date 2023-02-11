@@ -4,7 +4,7 @@ import it.vincenzocorso.carsharing.common.messaging.events.DomainEvent;
 import lombok.Builder;
 
 @Builder
-public record CustomerCreatedEvent(
+public record CustomerRegisteredEvent(
 		String firstName,
 		String lastName,
 		String dateOfBirth,
@@ -14,6 +14,6 @@ public record CustomerCreatedEvent(
 ) implements DomainEvent {
 	@Override
 	public String getType() {
-		return "CUSTOMER_CREATED_EVENT";
+		return "CUSTOMER_REGISTERED_EVENT";
 	}
 }
