@@ -157,3 +157,11 @@ services:
      - "5002:8080"
     depends_on:
       - kafka
+      - mongodb-primary
+      - mongodb-secondary
+      - mongodb-arbiter
+    environment:
+      MONGODB_HOSTS: mongodb-primary:27017,mongodb-secondary:27017
+      MONGODB_DATABASE: app
+      MONGODB_USERNAME: user
+      MONGODB_PASSWORD: password
