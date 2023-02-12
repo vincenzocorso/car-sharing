@@ -3,8 +3,10 @@ rootProject.name = 'car-sharing'
 include 'common'
 include 'common-spring'
 
-include ':common-quarkus:runtime'
-include ':common-quarkus:deployment'
+include ':common-quarkus:outbox-jpa-extension:runtime'
+include ':common-quarkus:outbox-jpa-extension:deployment'
+include ':common-quarkus:outbox-mongo-extension:runtime'
+include ':common-quarkus:outbox-mongo-extension:deployment'
 
 include 'customer-service'
 include 'rent-service'

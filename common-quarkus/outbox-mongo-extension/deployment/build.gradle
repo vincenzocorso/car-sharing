@@ -8,9 +8,9 @@ repositories {
 }
 
 dependencies {
-    implementation project(':common-quarkus:runtime')
+    implementation project(':common-quarkus:outbox-mongo-extension:runtime')
 
     // TODO: abstract quarkus extension build logic
     implementation platform('io.quarkus:quarkus-bom:2.16.1.Final')
-    implementation 'io.quarkus:quarkus-hibernate-orm-panache-deployment'
+    implementation 'io.quarkus:quarkus-arc-deployment'
 }
