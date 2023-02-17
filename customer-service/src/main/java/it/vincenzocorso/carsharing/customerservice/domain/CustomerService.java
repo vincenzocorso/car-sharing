@@ -7,6 +7,7 @@ import it.vincenzocorso.carsharing.customerservice.domain.models.CustomerDetails
 import it.vincenzocorso.carsharing.customerservice.domain.models.SearchCustomerCriteria;
 import it.vincenzocorso.carsharing.customerservice.domain.ports.in.RegisterCustomerUseCase;
 import it.vincenzocorso.carsharing.customerservice.domain.ports.in.SearchCustomerUseCase;
+import it.vincenzocorso.carsharing.customerservice.domain.ports.in.VerifyCustomerUseCase;
 import it.vincenzocorso.carsharing.customerservice.domain.ports.out.CustomerRepository;
 import it.vincenzocorso.carsharing.customerservice.domain.exceptions.CustomerNotFoundException;
 import lombok.AllArgsConstructor;
@@ -14,7 +15,7 @@ import lombok.AllArgsConstructor;
 import java.util.List;
 
 @AllArgsConstructor
-public class CustomerService implements RegisterCustomerUseCase, SearchCustomerUseCase {
+public class CustomerService implements RegisterCustomerUseCase, SearchCustomerUseCase, VerifyCustomerUseCase {
 	public static final String EVENTS_CHANNEL = "customer-service-events";
 	private final CustomerRepository customerRepository;
 	private final DomainEventProducer domainEventProducer;
@@ -38,5 +39,12 @@ public class CustomerService implements RegisterCustomerUseCase, SearchCustomerU
 	@Override
 	public List<Customer> getCustomers(SearchCustomerCriteria criteria) {
 		return this.customerRepository.findByCriteria(criteria);
+	}
+
+	@Override
+	public boolean verifyCustomer(String customerId) {
+		Customer savedCustomer = this.customerRepository.findById(customerId).orElseThrow(() -> new CustomerNotFoundException(customerId));
+
+		return savedCustomer.canRentAVehicle();
 	}
 }

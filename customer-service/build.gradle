@@ -8,6 +8,7 @@ dependencies {
     implementation project(':common-quarkus:outbox-mongo-extension:runtime')
 
     implementation 'io.quarkus:quarkus-mongodb-panache'
+    implementation 'io.quarkus:quarkus-smallrye-reactive-messaging-kafka'
 
     intTestImplementation 'org.testcontainers:testcontainers:1.16.0'
     intTestImplementation 'org.testcontainers:junit-jupiter:1.16.0'

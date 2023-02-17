@@ -165,3 +165,4 @@ services:
       MONGODB_DATABASE: app
       MONGODB_USERNAME: user
       MONGODB_PASSWORD: password
+      KAFKA_BOOSTRAP_SERVERS: kafka:9092
