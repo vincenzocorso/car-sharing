@@ -1,16 +1,14 @@
 package it.vincenzocorso.carsharing.rentorchestratorservice.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.temporal.client.WorkflowClient;
-import io.temporal.client.WorkflowClientOptions;
-import io.temporal.common.converter.*;
 import io.temporal.serviceclient.WorkflowServiceStubs;
 import io.temporal.serviceclient.WorkflowServiceStubsOptions;
 import io.temporal.worker.Worker;
 import io.temporal.worker.WorkerFactory;
-import it.vincenzocorso.carsharing.common.saga.SagaState;
-import it.vincenzocorso.carsharing.rentorchestratorservice.adapters.sagas.temporal.*;
+import it.vincenzocorso.carsharing.rentorchestratorservice.sagas.CreateRentSagaActivities;
+import it.vincenzocorso.carsharing.rentorchestratorservice.sagas.CreateRentSagaWorkflowImpl;
 import lombok.extern.slf4j.Slf4j;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.Produces;
@@ -18,43 +16,35 @@ import javax.ws.rs.Produces;
 @ApplicationScoped
 @Slf4j
 public class TemporalConfig {
-	@Produces @ApplicationScoped
-	public WorkflowClient workflowClient() {
-		WorkflowServiceStubsOptions options = WorkflowServiceStubsOptions
-				.newBuilder()
-				.setTarget("temporal:7233")
-				.build();
-		WorkflowServiceStubs service = WorkflowServiceStubs.newInstance(options);
+    @ConfigProperty(name = "temporal.host")
+    String temporalHost;
 
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.addMixIn(SagaState.class, SagaStateJacksonMixIn.class);
+    @ConfigProperty(name = "temporal.port")
+    String temporalPort;
 
-		DataConverter converter = new DefaultDataConverter(new JacksonJsonPayloadConverter(mapper));
-		WorkflowClientOptions clientOptions = WorkflowClientOptions
-				.newBuilder()
-				.setDataConverter(converter)
-				.build();
+    @Produces @ApplicationScoped
+    WorkflowClient workflowClient() {
+        WorkflowServiceStubsOptions options = WorkflowServiceStubsOptions
+                .newBuilder()
+                .setTarget(this.temporalHost + ":" + this.temporalPort)
+                .build();
+        WorkflowServiceStubs service = WorkflowServiceStubs.newInstance(options);
 
-		return WorkflowClient.newInstance(service,clientOptions);
-	}
+        return WorkflowClient.newInstance(service);
+    }
 
-	@Produces @ApplicationScoped
-	public Worker worker(
-			WorkflowClient workflowClient,
-			SagaActivities sagaActivities,
-			SagaRepository sagaRepository) {
-		WorkerFactory factory = WorkerFactory.newInstance(workflowClient);
+    @Produces @ApplicationScoped
+    Worker worker(WorkflowClient workflowClient, CreateRentSagaActivities createRentSagaActivities) {
+        WorkerFactory factory = WorkerFactory.newInstance(workflowClient);
 
-		String queueName = "RENT_SAGAS";
-		Worker worker = factory.newWorker(queueName);
+        String queueName = "RENT_SAGAS";
+        Worker worker = factory.newWorker(queueName);
+        worker.registerWorkflowImplementationTypes(CreateRentSagaWorkflowImpl.class);
+        worker.registerActivitiesImplementations(createRentSagaActivities);
 
-		worker.addWorkflowImplementationFactory(SagaWorkflow.class, () -> new SagaWorkflowImpl(sagaRepository));
+        factory.start();
+        log.info("Temporal worker started for task queue: " + queueName);
 
-		worker.registerActivitiesImplementations(sagaActivities);
-
-		factory.start();
-		log.info("Temporal worker started for task queue: " + queueName);
-
-		return worker;
-	}
+        return worker;
+    }
 }
