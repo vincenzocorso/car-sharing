@@ -40,7 +40,7 @@ public class CustomMongoTransformer<R extends ConnectRecord<R>> implements Trans
                 sourceRecord = sourceRecord.newRecord(
                         channel,
                         null,
-                        Schema.STRING_SCHEMA,
+                        null,
                         messageKey,
                         null,
                         payload,
