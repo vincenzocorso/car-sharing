@@ -8,7 +8,7 @@ public class OutboxMongoMessageProducer extends AbstractOutboxMessageProducer {
 	protected void saveAndDelete(OutboxMessage message) {
 		OutboxMessageEntity messageEntity = this.toEntity(message);
 		messageEntity.persist();
-		messageEntity.delete();
+		OutboxMessageEntity.deleteById(message.getMessageId());
 	}
 
 	private OutboxMessageEntity toEntity(OutboxMessage message) {
