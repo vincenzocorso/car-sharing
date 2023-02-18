@@ -11,7 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.ws.rs.Produces;
+import javax.enterprise.inject.Produces;
 
 @ApplicationScoped
 @Slf4j
