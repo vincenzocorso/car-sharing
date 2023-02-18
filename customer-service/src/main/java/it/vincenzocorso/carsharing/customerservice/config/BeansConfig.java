@@ -6,7 +6,7 @@ import it.vincenzocorso.carsharing.customerservice.domain.CustomerService;
 import it.vincenzocorso.carsharing.customerservice.domain.ports.out.CustomerRepository;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.ws.rs.Produces;
+import javax.enterprise.inject.Produces;
 
 @ApplicationScoped
 public class BeansConfig {
