@@ -1,5 +1,5 @@
 package it.vincenzocorso.carsharing.customerservice.domain.ports.in;
 
-public interface VerifyCustomerUseCase {
+public interface RentVehicleUseCase {
     boolean verifyCustomer(String customerId);
 }
