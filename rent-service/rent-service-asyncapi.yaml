@@ -62,6 +62,24 @@ channels:
     bindings:
       kafka:
         topic: rent-service-events
+  commands/rent-service:
+    publish:
+      message:
+        name: REJECT_RENT_COMMAND
+        headers:
+          $ref: '#/components/schemas/CommandHeaders'
+        payload:
+          type: object
+          description: This command is sent to reject a rent
+          properties:
+            rentId:
+              type: string
+              description: The rent id
+          examples:
+            - rentId: RNT1234
+    bindings:
+      kafka:
+        topic: rent-service-commands
 components:
   schemas:
     EventHeaders:
@@ -83,3 +101,19 @@ components:
         - aggregate_id: RNT001
           message_id: f99783af-fbd3-4fb1-b337-bbd5e9df10fb
           type: RENT_STATE_TRANSITION_EVENT
+    CommandHeaders:
+      type: object
+      properties:
+        response_channel:
+          type: string
+          description: The channel where the response must be sent
+        message_id:
+          type: string
+          description: The message id
+        type:
+          type: string
+          description: The command type
+      examples:
+        - response_channel: rent-orchestrator-service-response-channel
+          message_id: f99783af-fbd3-4fb1-b337-bbd5e9df10fb
+          type: REJECT_RENT_COMMAND
