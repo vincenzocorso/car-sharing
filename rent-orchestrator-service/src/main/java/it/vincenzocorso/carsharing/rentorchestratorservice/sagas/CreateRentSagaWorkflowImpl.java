@@ -30,19 +30,18 @@ public class CreateRentSagaWorkflowImpl implements CreateRentSagaWorkflow {
             this.activities.verifyCustomer(state.customerId);
             Workflow.await(Duration.ofMinutes(5), () -> state.canCustomerRent != null);
             if(!state.canCustomerRent) {
+                state.rejectReason = "Customer cannot rent a vehicle";
                 saga.compensate();
             }
         } catch(Exception ex) {
             log.error("An exception occurred during the create rent saga: ", ex);
+            state.rejectReason = "An error occurred while processing the request";
             saga.compensate();
         }
     }
 
     @Override
-    public void handleVerifyCustomerResponse(boolean canRent, String rejectReason) {
+    public void handleVerifyCustomerResponse(boolean canRent) {
         this.state.canCustomerRent = canRent;
-        if(!canRent) {
-            this.state.rejectReason = rejectReason;
-        }
     }
 }

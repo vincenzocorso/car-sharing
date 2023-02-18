@@ -10,5 +10,5 @@ public interface CreateRentSagaWorkflow {
     void createRent(CreateRentSagaState state);
 
     @SignalMethod
-    void handleVerifyCustomerResponse(boolean canRent, String rejectReason);
+    void handleVerifyCustomerResponse(boolean canRent);
 }

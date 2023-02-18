@@ -49,7 +49,7 @@ public class CommandReplyHandler {
         log.info("Processing command reply: " + reply);
 
         String workflowId = WorkflowCorrelation.<WorkflowCorrelation>findById(correlationId).workflowId;
-        this.workflowClient.newWorkflowStub(CreateRentSagaWorkflow.class, workflowId).handleVerifyCustomerResponse(reply.canRent(), reply.rejectReason());
+        this.workflowClient.newWorkflowStub(CreateRentSagaWorkflow.class, workflowId).handleVerifyCustomerResponse(reply.canRent());
     }
 }
 
