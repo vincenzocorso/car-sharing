@@ -33,8 +33,10 @@ public class CreateRentSagaActivitiesImpl implements CreateRentSagaActivities {
     }
 
     @Override
+    @Transactional
     public void rejectRent(String rentId) {
-        log.info("Rejecting rent: " + rentId);
+        Command command = new RejectRentCommand(rentId);
+        this.commandProducer.publish("rent-service-commands", rentId, command);
     }
 }
 
@@ -42,5 +44,12 @@ record VerifyCustomerCommand(String customerId) implements Command {
     @Override
     public String getType() {
         return "VERIFY_CUSTOMER_COMMAND";
+    }
+}
+
+record RejectRentCommand(String rentId) implements Command {
+    @Override
+    public String getType() {
+        return "REJECT_RENT_COMMAND";
     }
 }
