@@ -99,6 +99,7 @@ components:
         - fiscalCode
         - email
         - phoneNumber
+        - driverLicense
       properties:
         firstName:
           type: string
@@ -121,6 +122,10 @@ components:
           description: The customer phone number
         driverLicense:
           type: object
+          required:
+            - licenseNumber
+            - issueDate
+            - expiryDate
           properties:
             licenseNumber:
               type: string
