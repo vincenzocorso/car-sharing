@@ -1,5 +1,12 @@
 plugins {
     id 'org.unbroken-dome.test-sets'
+    id 'idea'
+    id 'java'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 testSets  {
@@ -12,10 +19,23 @@ repositories {
 }
 
 dependencies {
+    compileOnly 'org.projectlombok:lombok:1.18.20'
+    annotationProcessor 'org.projectlombok:lombok:1.18.20'
+
     intTestImplementation sourceSets.test.output
 }
 
 project.ext {
     imageName = rootProject.name + '/' + project.name
     imageTag = 'latest'
+}
+
+idea {
+    module {
+        downloadJavadoc = true
+    }
+}
+
+tasks.withType(Test) {
+    useJUnitPlatform()
 }

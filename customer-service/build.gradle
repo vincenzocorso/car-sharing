@@ -1,5 +1,5 @@
 plugins {
-    id 'project.java-conventions'
+    id 'java.build-conventions'
     id 'service.quarkus-conventions'
 }
 
@@ -7,6 +7,9 @@ dependencies {
     implementation project(':common')
     implementation project(':common-quarkus:outbox-mongo-extension:runtime')
 
+    implementation 'io.quarkus:quarkus-resteasy'
+    implementation 'io.quarkus:quarkus-resteasy-jackson'
+    implementation 'io.quarkus:quarkus-hibernate-validator'
     implementation 'io.quarkus:quarkus-mongodb-panache'
     implementation 'io.quarkus:quarkus-smallrye-reactive-messaging-kafka'
 

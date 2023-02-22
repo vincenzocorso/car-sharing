@@ -1,5 +1,5 @@
 plugins {
-	id 'project.java-conventions'
+	id 'java.build-conventions'
 	id 'service.spring-conventions'
 }
 
@@ -7,10 +7,12 @@ dependencies {
 	implementation project(':common')
 	implementation project(':common-spring')
 
-	annotationProcessor 'org.hibernate:hibernate-jpamodelgen:6.1.6.Final'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.kafka:spring-kafka'
 	implementation 'org.postgresql:postgresql:42.2.23'
+	annotationProcessor 'org.hibernate:hibernate-jpamodelgen:6.1.6.Final'
 
 	intTestImplementation 'org.testcontainers:testcontainers:1.16.0'
 	intTestImplementation 'org.testcontainers:junit-jupiter:1.16.0'

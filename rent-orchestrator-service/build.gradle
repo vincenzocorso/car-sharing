@@ -1,5 +1,5 @@
 plugins {
-    id 'project.java-conventions'
+    id 'java.build-conventions'
     id 'service.quarkus-conventions'
 }
 
@@ -8,6 +8,8 @@ dependencies {
     implementation project(':common-quarkus:outbox-jpa-extension:runtime')
 
     implementation 'io.temporal:temporal-sdk:1.8.0'
+    implementation 'io.quarkus:quarkus-resteasy'
+    implementation 'io.quarkus:quarkus-resteasy-jackson'
     implementation 'io.quarkus:quarkus-smallrye-reactive-messaging-kafka'
     implementation 'io.quarkus:quarkus-hibernate-orm-panache'
     implementation 'io.quarkus:quarkus-jdbc-postgresql'

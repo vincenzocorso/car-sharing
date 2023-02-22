@@ -1,16 +1,9 @@
 plugins {
-    id 'java-library'
-}
-
-repositories {
-    mavenCentral()
-    gradlePluginPortal()
+    id 'java.build-conventions'
+    id 'extension-deployment.quarkus-conventions'
 }
 
 dependencies {
     implementation project(':common-quarkus:outbox-mongo-extension:runtime')
-
-    // TODO: abstract quarkus extension build logic
-    implementation platform('io.quarkus:quarkus-bom:2.16.1.Final')
     implementation 'io.quarkus:quarkus-arc-deployment'
 }

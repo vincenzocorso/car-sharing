@@ -5,8 +5,6 @@ plugins {
 
 dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 }
 
 jib.to.image = project.ext.imageName + ':' + project.ext.imageTag

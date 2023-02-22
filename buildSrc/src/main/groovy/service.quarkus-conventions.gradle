@@ -1,9 +1,9 @@
 plugins {
-    id 'project.quarkus-conventions'
+    id 'io.quarkus'
 }
 
 dependencies {
-    implementation 'io.quarkus:quarkus-arc'
+    implementation enforcedPlatform('io.quarkus.platform:quarkus-bom:2.16.1.Final')
     implementation 'io.quarkus:quarkus-container-image-jib'
 
     testImplementation 'io.quarkus:quarkus-junit5'

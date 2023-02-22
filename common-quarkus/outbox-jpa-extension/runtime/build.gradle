@@ -1,20 +1,9 @@
 plugins {
-    id 'java-library'
-    id 'io.quarkus.extension' version '2.16.1.Final'
-}
-
-repositories {
-    mavenCentral()
-    gradlePluginPortal()
+    id 'java.build-conventions'
+    id 'extension-runtime.quarkus-conventions'
 }
 
 dependencies {
     implementation project(':common')
-
-    compileOnly 'org.projectlombok:lombok:1.18.20'
-    annotationProcessor 'org.projectlombok:lombok:1.18.20'
-
-    // TODO: abstract quarkus extension build logic
-    implementation platform("io.quarkus:quarkus-bom:2.16.1.Final")
     implementation 'io.quarkus:quarkus-hibernate-orm'
 }

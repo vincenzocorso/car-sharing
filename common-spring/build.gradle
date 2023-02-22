@@ -1,14 +1,12 @@
 plugins {
-    id 'project.java-conventions'
-    id 'project.spring-conventions'
+    id 'java.build-conventions'
+    id 'library.spring-conventions'
 }
 
 dependencies {
     implementation project(':common')
 
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 }
-
-// This module doesn't have a main class
-bootJar.enabled = false
-jar.enabled = true

@@ -1,7 +1,8 @@
 plugins {
     id 'project.spring-conventions'
+    id 'java-library'
 }
 
-// Api modules don't have a main class
+// Libraries doesn't have a main class
 bootJar.enabled = false
 jar.enabled = true
