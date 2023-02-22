@@ -1,0 +1,24 @@
+@startuml
+left to right direction
+
+actor "Customer" as CST
+actor "Operator" as OPT
+actor "Payment\nSystem" as PS
+actor "Remote Vehicle\nControl System" as RVCS
+
+rectangle "Car Sharing System" {
+    usecase "Send\nReport" as SEND_REPORT
+    usecase "Rent\nVehicle" as RENT_VEHICLE
+    usecase "View\nRents" as VIEW_RENTS
+    usecase "Manage\nVehicle" as MANAGE_VEHICLE
+    usecase "Manage\nReport" as MANAGE_REPORT
+}
+
+CST -- RENT_VEHICLE
+RENT_VEHICLE -- PS
+RENT_VEHICLE -- RVCS
+CST -- SEND_REPORT
+CST -- VIEW_RENTS
+OPT -- MANAGE_VEHICLE
+OPT -- MANAGE_REPORT
+@enduml

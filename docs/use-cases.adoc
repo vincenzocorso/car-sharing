@@ -1,0 +1,99 @@
+= Use Cases
+:toc:
+
+== UC: Rent Vehicle
+
+[horizontal]
+*Primary Actor*:: Customer
+
+*Pre-conditions*:: /
+
+*Post-conditions*:: The System marks the rent as ended. The payment details are saved. The vehicle is locked.
+
+*Main Scenario*::
+
+. The Customer asks the available vehicles.
+. The System shows all the available vehicles.
+. The Customer select a vehicle.
+. The System shows all the information about the vehicle.
+. The Customer choose to book the vehicle.
+. The System verifies that: the vehicle is available for rental; the Customer is authorized to book a vehicle. The System marks the vehicle as booked and sends an unlock code to the Remote Vehicle Control System. The System saves the booking details.
+. The Customer goes near the vehicle and chooses to start the rent.
+. The System shows all the available rates.
+. The Customer chooses one of the rate and sends to the System: the unlock code (i.e. the unlock code is showed by the vehicle); the payment details.
+. The System checks the unlock code, pre-authorizes and saves the payment. The System asks the Remote Vehicle Control System to unlock the vehicle. Then it marks the rent as started and the vehicles as rented.
+. The Customer enters into the vehicle and parks it after a while. Then the Customer chooses to end the rent
+. The System asks the Remote Vehicle Control System to lock the vehicle. Then it marks the rent as ended and the vehicle as available. The System charges the Customer and shows the total price and the receipt
+
+*Extensions*::
+2a. The Customer selects some filters.
++
+--
+. The System filters all the available vehicles and shows them to the Customer.
+--
+5a. The Customer is not authenticated.
++
+--
+. The System shows an error and asks the Customer to log in.
+--
+6a. The driver license has not been verified.
++
+--
+. The System shows an error to the Customer.
+--
+6b. The vehicle is not available or the Customer has already booked another vehicle.
++
+--
+. The System shows an error to the Customer.
+--
+10a. The unlock code is not correct.
++
+--
+. The System shows an error and asks the Customer to try again.
+--
+10b. The booking is expired or the vehicle has been booked by another Customer.
++
+--
+. The System shows an error to the Customer.
+--
+10c. There is a problem with the pre-authorization of the payment.
++
+--
+. The System shows an error and asks the Customer to enter the payment details again.
+. The Customer enters the new payment details.
+. The System pre-authorize the payment. If an error occurs, it repeats this subprocedure.
+--
+10d. The vehicle does not unlock.
++
+--
+. The System retries to unlock the vehicle for a given number of times.
+.. The vehicle is still locked.
+... The System shows an error to the Customer, cancel the pre-authorization and marks the booking as cancelled. Then saves a report.
+--
+11a. An accident or a vehicle breakdown occurs during the trip.
++
+--
+. The Customer starts ***Send Report***
+--
+12a. The vehicle does not lock.
++
+--
+. The System retries to lock the vehicle for a given number of times.
+.. The vehicle is still unlocked.
+... The System saves a report
+--
+
+*Special Requirements*::
+
+- The booking is valid for 20 minutes.
+- The unlock code is an alphanumeric code of 4 characters
+- The System retries to unlock the vehicle at most 10 times
+- The System retries to lock the vehicle at most 15 times
+
+== UC: Send Report
+
+== UC: View Rents
+
+== UC: Manage Vehicle
+
+== UC: Manage Report
