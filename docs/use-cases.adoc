@@ -11,7 +11,6 @@
 *Post-conditions*:: The System marks the rent as ended. The payment details are saved. The vehicle is locked.
 
 *Main Scenario*::
-
 . The Customer asks the available vehicles.
 . The System shows all the available vehicles.
 . The Customer select a vehicle.
@@ -90,10 +89,24 @@
 - The System retries to unlock the vehicle at most 10 times
 - The System retries to lock the vehicle at most 15 times
 
-== UC: Send Report
-
-== UC: View Rents
-
 == UC: Manage Vehicle
 
 == UC: Manage Report
+
+
+////
+USE CASE TEMPLATE
+== UC: Use Case Name
+
+[horizontal]
+*Primary Actor*:: /
+
+*Pre-conditions*:: /
+
+*Post-conditions*:: /
+
+*Main Scenario*:: /
+
+*Extensions*:: /
+////
+
