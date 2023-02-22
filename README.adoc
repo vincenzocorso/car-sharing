@@ -1,0 +1,5 @@
+= Car Sharing Microservice Architecture
+
+This repository contains a sample microservice application for car sharing. It has very few functionality, but I designed it mainly to practice implementing some patterns typically used.
+
+Currently, this repository is under development!
