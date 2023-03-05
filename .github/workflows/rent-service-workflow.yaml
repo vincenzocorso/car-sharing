@@ -1,0 +1,28 @@
+name: rent-service-workflow
+on:
+  push:
+    branches:
+      - develop
+    paths:
+      - './rent-service/**'
+      - './common/**'
+      - './common-spring/**'
+      - './buildSrc/**'
+jobs:
+  execute:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout project source code
+        uses: actions/checkout@v3
+      - name: Setup Java JDK
+        uses: actions/setup-java@v3.10.0
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'gradle'
+      - name: Compile the source code
+        run: ./gradlew rent-service:compileJava
+      - name: Execute tests
+        run: ./gradlew rent-service:test
+      - name: Execute integration tests
+        run: ./gradlew rent-service:intTest
