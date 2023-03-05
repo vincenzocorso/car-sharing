@@ -1,0 +1,237 @@
+openapi: 3.1.0
+info:
+  title: Vehicle Service REST API
+  contact:
+    name: Vincenzo Corso
+    url: https://github.com/vincenzocorso
+    email: vincenzocorso99@gmail.com
+  version: "1.0"
+paths:
+  /vehicles:
+    get:
+      description: Get all vehicles. It is possible to specify some search filters
+      parameters:
+        - name: searchArea
+          in: query
+          description: Get all vehicles in the given position
+          required: false
+          schema:
+            type: object
+            required:
+              - latitude
+              - longitude
+            properties:
+              latitude:
+                type: number
+                description: The latitude of the search area
+              longitude:
+                type: number
+                description: The longitude of the search area
+              radius:
+                type: number
+                description: The radius of the search area
+                default: 200
+            examples:
+              - latitude: 45.123
+                longitude: 7.123
+                radius: 250
+        - name: states
+          in: query
+          description: Get all vehicles in on the given state
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - AVAILABLE
+                - BOOKED
+                - RENTED
+                - OUT_OF_ORDER
+        - name: limit
+          in: query
+          description: The number of results returned
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 200
+            default: 10
+          example: 10
+        - name: offset
+          in: query
+          description: The number of results to omit from the beginning
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+          example: 20
+      responses:
+        200:
+          description: The vehicles were successfully retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/VehicleResponse'
+        400:
+          description: An error occurred in the request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /vehicles/models:
+    get:
+      description: Get all vehicle models
+      responses:
+        200:
+          description: The vehicle models were successfully retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/VehicleModelResponse'
+        400:
+          description: An error occurred in the request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  '/vehicles/${vehicleId}':
+    parameters:
+      - name: vehicleId
+        in: path
+        description: The id of the vehicle
+        required: true
+        schema:
+          type: string
+    get:
+      description: Get the vehicle with the given id
+      responses:
+        200:
+          description: The vehicle was successfully retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VehicleResponse'
+        404:
+          description: The resource with the given id was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    VehicleResponse:
+      type: object
+      properties:
+        vehicleId:
+          type: string
+          description: The vehicle id
+        licensePlate:
+          type: string
+          description: The vehicle license plate
+        position:
+          type: object
+          properties:
+            latitude:
+              type: number
+              description: The latitude of the vehicle
+            longitude:
+              type: number
+              description: The longitude of the vehicle
+        autonomy:
+          type: number
+          description: The autonomy percentage of the vehicle
+        currentState:
+          type: string
+          description: The current state of the vehicle
+          enum:
+            - AVAILABLE
+            - BOOKED
+            - RENTED
+            - OUT_OF_ORDER
+        vehicleModelId:
+          type: string
+          description: The vehicle model id
+    VehicleModelResponse:
+      type: object
+      properties:
+        vehicleModelId:
+          type: string
+          description: The vehicle model id
+        name:
+          type: string
+          description: The vehicle model name
+        seats:
+          type: integer
+          description: The number of seats of the vehicle
+        transmission:
+          type: string
+          description: The transmission type of the vehicle
+          enum:
+            - MANUAL
+            - AUTOMATIC
+        engine:
+          type: string
+          description: The engine type of the vehicle
+          enum:
+            - FUEL
+            - ELECTRIC
+        rates:
+          type: object
+          properties:
+            ratePerMinute:
+              type: number
+              description: The rate per minute of the vehicle
+            ratePerHour:
+              type: number
+              description: The rate per hour of the vehicle
+            ratePerDay:
+              type: number
+              description: The rate per day of the vehicle
+            ratePerKilometer:
+              type: number
+              description: The rate per kilometer of the vehicle
+    ErrorResponse:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The error type
+        message:
+          type: string
+          description: A message explaining the error
+        issues:
+          type: array
+          description: The list of occurred issues
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: The issue name
+              description:
+                type: string
+                description: The issue description
+      examples:
+        - type: VALIDATION_ERROR
+          message: A validation error occurred in the request body
+          issues:
+            - name: firstName
+              description: The customer first name must not be null nor empty
+            - name: lastName
+              description: The customer last name must not be null nor empty
+        - type: NOT_FOUND_ERROR
+          message: The requested resource was not found
+          issues: []
+        - type: BAD_REQUEST_ERROR
+          message: The request can't be performed
+          issues:
+            - name: requestBody
+              description: The request body is not readable
+        - type: INTERNAL_SERVER_ERROR
+          message: An internal server error occurred
+          issues: []
