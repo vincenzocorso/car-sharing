@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import './map_controls_model.dart';
 
 class MapControls extends StatelessWidget {
   const MapControls({Key? key}) : super(key: key);
@@ -40,28 +43,16 @@ class MapControls extends StatelessWidget {
   }
 }
 
-class GPSButton extends StatefulWidget {
+class GPSButton extends StatelessWidget {
   const GPSButton({Key? key}) : super(key: key);
-
-  @override
-  State<GPSButton> createState() => _GPSButtonState();
-}
-
-class _GPSButtonState extends State<GPSButton> {
-  bool _isPositionCentered = false;
-
-  void onGPSButtonPressed() {
-    setState(() {
-      _isPositionCentered = !_isPositionCentered;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
       backgroundColor: Theme.of(context).primaryColor,
-      onPressed: onGPSButtonPressed,
-      child: Icon(_isPositionCentered
+      onPressed: () =>
+          Provider.of<MapControlsModel>(context, listen: false).centerCamera(),
+      child: Icon(Provider.of<MapControlsModel>(context).isCameraCentered
           ? Icons.gps_fixed_outlined
           : Icons.gps_not_fixed_outlined),
     );
