@@ -1,0 +1,9 @@
+plugins {
+    id 'java.build-conventions'
+    id 'service.quarkus-conventions'
+}
+
+dependencies {
+    implementation project(':common')
+    implementation project(':common-quarkus:outbox-jpa-extension:runtime')
+}

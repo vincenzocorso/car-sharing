@@ -11,5 +11,6 @@ include ':common-quarkus:outbox-mongo-extension:deployment'
 include 'customer-service'
 include 'rent-service'
 include 'rent-orchestrator-service'
+include 'vehicle-service'
 
 include 'custom-debezium-transformer'
