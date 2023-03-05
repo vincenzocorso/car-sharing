@@ -12,8 +12,8 @@ public class RentMapper {
 	public RentResponse convertToDto(Rent rent) {
 		return RentResponse.builder()
 				.rentId(rent.getId())
-				.customerId(rent.getDetails().getCustomerId())
-				.vehicleId(rent.getDetails().getVehicleId())
+				.customerId(rent.getDetails().customerId())
+				.vehicleId(rent.getDetails().vehicleId())
 				.state(rent.getCurrentState().toString())
 				.acceptedAt(this.getTransitionInstant(rent, RentState.ACCEPTED))
 				.startedAt(this.getTransitionInstant(rent, RentState.STARTED))

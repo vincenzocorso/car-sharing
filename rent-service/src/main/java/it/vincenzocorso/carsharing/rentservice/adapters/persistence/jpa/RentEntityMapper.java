@@ -16,8 +16,8 @@ public class RentEntityMapper {
 	public RentEntity convertToEntity(Rent rent) {
 		RentEntity rentEntity = new RentEntity();
 		rentEntity.setId(rent.getId());
-		rentEntity.setCustomerId(rent.getDetails().getCustomerId());
-		rentEntity.setVehicleId(rent.getDetails().getVehicleId());
+		rentEntity.setCustomerId(rent.getDetails().customerId());
+		rentEntity.setVehicleId(rent.getDetails().vehicleId());
 		rentEntity.setCurrentState(rent.getCurrentState().toString());
 		List<RentStateTransitionEntity> transitions = rent.getStateTransitions().stream()
 				.map(t -> this.convertToEntity(rentEntity, t))

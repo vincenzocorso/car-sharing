@@ -84,8 +84,8 @@ public class FakeRent {
 
 	public static void assertEqualsWithRent(Rent expectedRent, Rent actualRent) {
 		assertEquals(expectedRent.getId(), actualRent.getId());
-		assertEquals(expectedRent.getDetails().getCustomerId(), actualRent.getDetails().getCustomerId());
-		assertEquals(expectedRent.getDetails().getVehicleId(), actualRent.getDetails().getVehicleId());
+		assertEquals(expectedRent.getDetails().customerId(), actualRent.getDetails().customerId());
+		assertEquals(expectedRent.getDetails().vehicleId(), actualRent.getDetails().vehicleId());
 		for(RentStateTransition expectedTransition : expectedRent.getStateTransitions()) {
 			RentStateTransition actualTransition = actualRent.getStateTransitions().stream()
 					.filter(t -> t.getSequenceNumber().equals(expectedTransition.getSequenceNumber()))

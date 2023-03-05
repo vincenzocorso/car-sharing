@@ -39,7 +39,7 @@ public class Rent {
 	public static ResultWithEvents<Rent> create(RentDetails rentDetails) {
 		Rent rent = new Rent(rentDetails);
 		rent.transitionsRegistry.appendTransitionTo(RentState.PENDING);
-		DomainEvent domainEvent = new RentCreatedEvent(rentDetails.getCustomerId(), rentDetails.getVehicleId());
+		DomainEvent domainEvent = new RentCreatedEvent(rentDetails.customerId(), rentDetails.vehicleId());
 		return ResultWithEvents.of(rent, List.of(domainEvent));
 	}
 
