@@ -4,10 +4,10 @@ on:
     branches:
       - develop
     paths:
-      - './rent-service/**'
-      - './common/**'
-      - './common-spring/**'
-      - './buildSrc/**'
+      - rent-service/**
+      - common/**
+      - common-spring/**
+      - buildSrc/**
 jobs:
   execute:
     runs-on: ubuntu-22.04
