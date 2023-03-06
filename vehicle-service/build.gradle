@@ -6,4 +6,10 @@ plugins {
 dependencies {
     implementation project(':common')
     implementation project(':common-quarkus:outbox-jpa-extension:runtime')
+
+    implementation 'io.quarkus:quarkus-resteasy'
+    implementation 'io.quarkus:quarkus-resteasy-jackson'
+    implementation 'io.quarkus:quarkus-hibernate-validator'
+    implementation 'io.quarkus:quarkus-hibernate-orm-panache'
+    implementation 'io.quarkus:quarkus-jdbc-postgresql'
 }
