@@ -1,5 +1,6 @@
 plugins {
     id 'org.unbroken-dome.test-sets'
+    id 'com.adarshr.test-logger'
     id 'idea'
     id 'java'
 }

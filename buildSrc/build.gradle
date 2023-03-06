@@ -14,4 +14,5 @@ dependencies {
 	implementation 'io.quarkus.extension:gradle-extension-plugin:2.16.1.Final'
 	implementation 'org.kordamp.gradle:jandex-gradle-plugin:0.11.0'
 	implementation 'gradle.plugin.com.google.cloud.tools:jib-gradle-plugin:3.2.0'
+	implementation 'com.adarshr:gradle-test-logger-plugin:3.2.0'
 }
