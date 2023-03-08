@@ -3,6 +3,7 @@ package it.vincenzocorso.carsharing.vehicleservice.adapters.persistence.mongodb;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.common.QuarkusTestResourceLifecycleManager;
 import io.quarkus.test.junit.QuarkusTest;
+import it.vincenzocorso.carsharing.vehicleservice.domain.exceptions.VehicleNotFoundException;
 import it.vincenzocorso.carsharing.vehicleservice.domain.models.SearchVehicleCriteria;
 import it.vincenzocorso.carsharing.vehicleservice.domain.models.Vehicle;
 import it.vincenzocorso.carsharing.vehicleservice.domain.models.VehicleState;
@@ -63,6 +64,11 @@ class VehicleRepositoryAdapterIntegrationTest {
         assertTrue(optionalVehicle.isPresent());
         Vehicle retrievedVehicle = optionalVehicle.get();
         assertThat(retrievedVehicle).usingRecursiveComparison().isEqualTo(VEHICLE);
+    }
+
+    @Test
+    void shouldThrowVehicleNotFoundExceptionWhenIdIsNotAValidObjectId() {
+        assertThrows(VehicleNotFoundException.class, () -> this.vehicleRepositoryAdapter.findById("INVALID_ID"));
     }
 
     @Test

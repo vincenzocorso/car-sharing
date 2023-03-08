@@ -4,6 +4,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.geojson.Point;
 import com.mongodb.client.model.geojson.Position;
+import it.vincenzocorso.carsharing.vehicleservice.domain.exceptions.VehicleNotFoundException;
 import it.vincenzocorso.carsharing.vehicleservice.domain.models.SearchVehicleCriteria;
 import it.vincenzocorso.carsharing.vehicleservice.domain.models.Vehicle;
 import it.vincenzocorso.carsharing.vehicleservice.domain.models.VehicleState;
@@ -26,8 +27,17 @@ public class VehicleRepositoryAdapter implements VehicleRepository {
 
     @Override
     public Optional<Vehicle> findById(String vehicleId) {
-        Optional<VehicleDocument> vehicleDocument = VehicleDocument.findByIdOptional(new ObjectId(vehicleId));
+        ObjectId documentId = this.convertToDocumentId(vehicleId);
+        Optional<VehicleDocument> vehicleDocument = VehicleDocument.findByIdOptional(documentId);
         return vehicleDocument.map(this.vehicleDocumentMapper::convertFromDocument);
+    }
+
+    private ObjectId convertToDocumentId(String vehicleId) {
+        try {
+            return new ObjectId(vehicleId);
+        } catch (IllegalArgumentException e) {
+            throw new VehicleNotFoundException(vehicleId);
+        }
     }
 
     @Override
