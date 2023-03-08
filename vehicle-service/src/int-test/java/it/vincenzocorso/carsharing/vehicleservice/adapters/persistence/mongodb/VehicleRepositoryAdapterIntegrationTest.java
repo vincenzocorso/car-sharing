@@ -1,5 +1,6 @@
 package it.vincenzocorso.carsharing.vehicleservice.adapters.persistence.mongodb;
 
+import com.mongodb.client.model.Indexes;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.common.QuarkusTestResourceLifecycleManager;
 import io.quarkus.test.junit.QuarkusTest;
@@ -8,6 +9,7 @@ import it.vincenzocorso.carsharing.vehicleservice.domain.models.SearchVehicleCri
 import it.vincenzocorso.carsharing.vehicleservice.domain.models.Vehicle;
 import it.vincenzocorso.carsharing.vehicleservice.domain.models.VehicleState;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.testcontainers.containers.MongoDBContainer;
 import org.testcontainers.junit.jupiter.Container;
@@ -49,6 +51,11 @@ class VehicleRepositoryAdapterIntegrationTest {
 
     @Inject
     VehicleDocumentMapper vehicleDocumentMapper;
+
+    @BeforeAll
+    static void createIndexes() {
+        VehicleDocument.mongoCollection().createIndex(Indexes.geo2dsphere("position"));
+    }
 
     @AfterEach
     void cleanup() {
