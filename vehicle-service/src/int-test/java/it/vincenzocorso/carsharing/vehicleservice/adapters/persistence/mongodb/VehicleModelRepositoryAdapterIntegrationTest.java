@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import static it.vincenzocorso.carsharing.vehicleservice.domain.FakeVehicle.vehicleModelWithRandomName;
+import static it.vincenzocorso.carsharing.vehicleservice.domain.FakeVehicleModel.vehicleModelWithRandomName;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @QuarkusTest

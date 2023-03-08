@@ -1,5 +1,7 @@
 package it.vincenzocorso.carsharing.vehicleservice.adapters.web;
 
+import it.vincenzocorso.carsharing.vehicleservice.domain.FakeVehicleModel;
+
 import static it.vincenzocorso.carsharing.vehicleservice.domain.FakeVehicle.*;
 
 public class FakeVehicleDto {
@@ -9,6 +11,6 @@ public class FakeVehicleDto {
             .position(new VehiclePosition(LATITUDE, LONGITUDE))
             .autonomy(AUTONOMY)
             .currentState(VEHICLE_STATE.toString())
-            .vehicleModelId(VEHICLE_MODEL_ID)
+            .vehicleModelId(FakeVehicleModel.VEHICLE_MODEL_ID)
             .build();
 }

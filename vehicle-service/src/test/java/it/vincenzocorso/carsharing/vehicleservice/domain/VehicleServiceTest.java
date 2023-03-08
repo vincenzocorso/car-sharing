@@ -87,7 +87,7 @@ class VehicleServiceTest {
 
         Vehicle retrievedVehicle = this.vehicleService.getVehicle(VEHICLE_ID);
 
-        assertEqualsWithVehicle(retrievedVehicle);
+        assertThat(retrievedVehicle).usingRecursiveComparison().isEqualTo(VEHICLE);
     }
 
     @Test

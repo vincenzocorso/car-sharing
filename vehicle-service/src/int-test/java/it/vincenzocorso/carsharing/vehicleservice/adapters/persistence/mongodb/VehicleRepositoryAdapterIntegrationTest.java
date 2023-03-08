@@ -62,7 +62,7 @@ class VehicleRepositoryAdapterIntegrationTest {
 
         assertTrue(optionalVehicle.isPresent());
         Vehicle retrievedVehicle = optionalVehicle.get();
-        assertEqualsWithVehicle(retrievedVehicle);
+        assertThat(retrievedVehicle).usingRecursiveComparison().isEqualTo(VEHICLE);
     }
 
     @Test
@@ -122,7 +122,7 @@ class VehicleRepositoryAdapterIntegrationTest {
         Vehicle savedVehicle = this.vehicleRepositoryAdapter.save(VEHICLE);
 
         assertThat(VehicleDocument.count()).isEqualTo(1);
-        assertEqualsWithVehicle(savedVehicle);
+        assertThat(savedVehicle).usingRecursiveComparison().isEqualTo(VEHICLE);
     }
 
     private List<Vehicle> initializeVehiclesCollection() {

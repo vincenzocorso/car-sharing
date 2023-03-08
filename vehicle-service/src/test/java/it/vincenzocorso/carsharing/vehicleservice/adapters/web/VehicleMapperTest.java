@@ -1,5 +1,6 @@
 package it.vincenzocorso.carsharing.vehicleservice.adapters.web;
 
+import it.vincenzocorso.carsharing.vehicleservice.domain.FakeVehicleModel;
 import org.junit.jupiter.api.Test;
 
 import static it.vincenzocorso.carsharing.vehicleservice.domain.FakeVehicle.*;
@@ -17,7 +18,7 @@ class VehicleMapperTest {
                 .position(expectedVehiclePosition)
                 .autonomy(AUTONOMY)
                 .currentState(VEHICLE_STATE.toString())
-                .vehicleModelId(VEHICLE_MODEL_ID)
+                .vehicleModelId(FakeVehicleModel.VEHICLE_MODEL_ID)
                 .build();
 
         VehicleResponse actualVehicleResponse = this.vehicleMapper.convertToDto(VEHICLE);
