@@ -1,0 +1,121 @@
+asyncapi: 2.5.0
+info:
+  title: Vehicle Service Messaging API
+  contact:
+    name: Vincenzo Corso
+    url: https://github.com/vincenzocorso
+    email: vincenzocorso99@gmail.com
+  version: "1.0"
+channels:
+  events/vehicle-service:
+    subscribe:
+      message:
+        name: VEHICLE_STATE_TRANSITION_EVENT
+        headers:
+          $ref: '#/components/schemas/EventHeaders'
+        payload:
+          type: object
+          description: The state of a vehicle has been changed
+          properties:
+            oldState:
+              type: string
+              description: The old state
+              enum:
+                - AVAILABLE
+                - BOOKED
+                - RENTED
+                - OUT_OF_SERVICE
+            newState:
+              type: string
+              description: The new state
+              enum:
+                - AVAILABLE
+                - BOOKED
+                - RENTED
+                - OUT_OF_SERVICE
+    bindings:
+      kafka:
+        topic: vehicle-service-events
+  commands/vehicle-service:
+    publish:
+      message:
+        name: BOOK_VEHICLE_COMMAND
+        headers:
+          $ref: '#/components/schemas/CommandHeaders'
+        payload:
+            type: object
+            description: This command is sent to book a vehicle
+            properties:
+              vehicleId:
+                type: string
+                description: The vehicle id
+            examples:
+              - vehicleId: VHC1234
+    bindings:
+      kafka:
+        topic: vehicle-service-commands
+  commands/vehicle-service-response:
+    subscribe:
+      message:
+        name: BOOK_VEHICLE_COMMAND_REPLY
+        headers:
+          $ref: '#/components/schemas/CommandReplyHeaders'
+        payload:
+          type: object
+          description: This reply contains the result of the booking attempt
+          properties:
+            booked:
+              type: boolean
+              description: True if the vehicle has been booked, false otherwise
+          examples:
+            - booked: true
+components:
+  schemas:
+    EventHeaders:
+      type: object
+      properties:
+        aggregate_id:
+          type: string
+          description: The id of the aggregate involved in the event
+        message_id:
+          type: string
+          description: The message id
+        type:
+          type: string
+          description: The event type
+      examples:
+        - aggregate_id: VHC001
+          message_id: f99783af-fbd3-4fb1-b337-bbd5e9df10fb
+          type: VEHICLE_STATE_TRANSITION_EVENT
+    CommandHeaders:
+      type: object
+      properties:
+        response_channel:
+          type: string
+          description: The channel where the response must be sent
+        message_id:
+          type: string
+          description: The message id
+        type:
+          type: string
+          description: The command type
+      examples:
+        - response_channel: rent-orchestrator-service-response-channel
+          message_id: f99783af-fbd3-4fb1-b337-bbd5e9df10fb
+          type: BOOK_VEHICLE_COMMAND
+    CommandReplyHeaders:
+      type: object
+      properties:
+        correlation_id:
+          type: string
+          description: The request message id
+        message_id:
+          type: string
+          description: The message id
+        type:
+          type: string
+          description: The command reply type
+      examples:
+        - correlation_id: f99783af-fbd3-4fb1-b337-bbd5e9df10fb
+          message_id: 1f9b9b9b-9b9b-9b9b-9b9b-9b9b9b9b9b9b
+          type: BOOK_VEHICLE_COMMAND_REPLY
