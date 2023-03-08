@@ -15,7 +15,7 @@ import java.util.Random;
 public class Vehicle {
     private String id;
     private final String licensePlate;
-    private final VehicleModel model;
+    private final String vehicleModelId;
     private VehicleStatus status;
     private VehicleState currentState;
     private String unlockCode;
@@ -52,5 +52,9 @@ public class Vehicle {
 
     public void updateStatus(VehicleStatus status) {
         this.status = status;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

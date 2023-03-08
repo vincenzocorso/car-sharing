@@ -15,7 +15,7 @@ public class VehicleMapper {
                 .position(position)
                 .autonomy(vehicle.getStatus().autonomy())
                 .currentState(vehicle.getCurrentState().toString())
-                .vehicleModelId(vehicle.getModel().getId())
+                .vehicleModelId(vehicle.getVehicleModelId())
                 .build();
     }
 }

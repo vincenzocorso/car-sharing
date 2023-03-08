@@ -13,4 +13,8 @@ public class VehicleModel {
         this.details = details;
         this.rateTable = rateTable;
     }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 }
