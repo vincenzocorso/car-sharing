@@ -171,3 +171,20 @@ services:
       MONGODB_USERNAME: user
       MONGODB_PASSWORD: password
       KAFKA_BOOSTRAP_SERVERS: kafka:9092
+
+  vehicle-service:
+    container_name: vehicle-service
+    image: car-sharing/vehicle-service
+    ports:
+      - "5003:8080"
+    depends_on:
+      - kafka
+      - mongodb-primary
+      - mongodb-secondary
+      - mongodb-arbiter
+    environment:
+      MONGODB_HOSTS: mongodb-primary:27017,mongodb-secondary:27017
+      MONGODB_DATABASE: app
+      MONGODB_USERNAME: user
+      MONGODB_PASSWORD: password
+      KAFKA_BOOSTRAP_SERVERS: kafka:9092
