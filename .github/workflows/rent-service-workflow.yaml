@@ -8,6 +8,8 @@ on:
       - common/**
       - common-spring/**
       - buildSrc/**
+    paths-ignore:
+      - rent-service/docs/**
 jobs:
   execute:
     runs-on: ubuntu-22.04

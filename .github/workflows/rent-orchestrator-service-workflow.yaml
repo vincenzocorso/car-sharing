@@ -8,6 +8,8 @@ on:
       - common/**
       - common-quarkus/**
       - buildSrc/**
+    paths-ignore:
+      - rent-orchestrator-service/docs/**
 jobs:
   execute:
     runs-on: ubuntu-22.04
