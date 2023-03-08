@@ -38,9 +38,6 @@ channels:
               type: object
               description: The state of a rent has been changed
               properties:
-                rentId:
-                  type: string
-                  description: The rent id
                 oldState:
                   type: string
                   description: The old state

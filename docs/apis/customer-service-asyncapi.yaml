@@ -67,7 +67,7 @@ channels:
   command-responses/customer-service:
     subscribe:
       message:
-        name: VERIFY_CUSTOMER_REPLY
+        name: VERIFY_CUSTOMER_COMMAND_REPLY
         headers:
           $ref: '#/components/schemas/CommandReplyHeaders'
         payload:
@@ -124,4 +124,4 @@ components:
       examples:
         - correlation_id: f99783af-fbd3-4fb1-b337-bbd5e9df10fb
           message_id: 1f9b9b9b-9b9b-9b9b-9b9b-9b9b9b9b9b9b
-          type: VERIFY_CUSTOMER_REPLY
+          type: VERIFY_CUSTOMER_COMMAND_REPLY
