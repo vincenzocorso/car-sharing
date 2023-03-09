@@ -32,6 +32,7 @@ public class CreateRentSagaWorkflowImpl implements CreateRentSagaWorkflow {
             if(!state.canCustomerRent) {
                 state.rejectReason = "Customer cannot rent a vehicle";
                 saga.compensate();
+                return;
             }
 
             this.activities.bookVehicle(state.vehicleId);
@@ -39,6 +40,7 @@ public class CreateRentSagaWorkflowImpl implements CreateRentSagaWorkflow {
             if(!state.hasVehicleBeenBooked) {
                 state.rejectReason = "Vehicle cannot be booked";
                 saga.compensate();
+                return;
             }
 
             this.activities.acceptRent(state.rentId);
