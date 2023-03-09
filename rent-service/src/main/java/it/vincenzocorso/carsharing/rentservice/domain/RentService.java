@@ -47,6 +47,18 @@ public class RentService implements RentVehicleUseCase, SearchRentUseCase {
 
 	@Transactional
 	@Override
+	public Rent acceptRent(String rentId) {
+		Rent rent = this.rentRepository.findById(rentId).orElseThrow(() -> new RentNotFoundException(rentId));
+		List<DomainEvent> events = rent.accept();
+		Rent savedRent = this.rentRepository.save(rent);
+
+		this.domainEventProducer.publish(EVENTS_CHANNEL, savedRent.getId(), events);
+
+		return savedRent;
+	}
+
+	@Transactional
+	@Override
 	public Rent cancelRent(String rentId) {
 		Rent rent = this.rentRepository.findById(rentId).orElseThrow(() -> new RentNotFoundException(rentId));
 		List<DomainEvent> events = rent.cancel();

@@ -2,6 +2,7 @@ package it.vincenzocorso.carsharing.rentservice.adapters.messaging;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.vincenzocorso.carsharing.common.exceptions.InternalServerException;
+import it.vincenzocorso.carsharing.common.messaging.commands.Command;
 import it.vincenzocorso.carsharing.common.messaging.commands.CommandHeaders;
 import it.vincenzocorso.carsharing.rentservice.domain.ports.in.RentVehicleUseCase;
 import jakarta.transaction.Transactional;
@@ -33,6 +34,10 @@ public class CommandsHandler {
                 RejectRentCommand command = this.objectMapper.readValue(payload, RejectRentCommand.class);
                 this.processRejectRentCommand(command);
             }
+            case "ACCEPT_RENT_COMMAND" -> {
+                AcceptRentCommand command = this.objectMapper.readValue(payload, AcceptRentCommand.class);
+                this.processAcceptRentCommand(command);
+            }
             default -> throw new InternalServerException("Unknown command type: " + type);
         }
     }
@@ -41,5 +46,25 @@ public class CommandsHandler {
         log.info("Processing command: " + command);
 
         this.rentVehicleUseCase.rejectRent(command.rentId());
+    }
+
+    private void processAcceptRentCommand(AcceptRentCommand command) {
+        log.info("Processing command: " + command);
+
+        this.rentVehicleUseCase.acceptRent(command.rentId());
+    }
+}
+
+record RejectRentCommand(String rentId) implements Command {
+    @Override
+    public String getType() {
+        return "REJECT_RENT_COMMAND";
+    }
+}
+
+record AcceptRentCommand(String rentId) implements Command {
+    @Override
+    public String getType() {
+        return "ACCEPT_RENT_COMMAND";
     }
 }

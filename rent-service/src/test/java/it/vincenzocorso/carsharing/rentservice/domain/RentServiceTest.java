@@ -63,6 +63,26 @@ class RentServiceTest {
 	}
 
 	@Test
+	void shouldAcceptRent() {
+		Rent persistedRent = rentInState(RentState.PENDING);
+		DomainEvent event = new RentStateTransitionEvent(RentState.PENDING.toString(), RentState.ACCEPTED.toString());
+		when(this.rentRepository.findById(RENT_ID)).thenReturn(Optional.of(persistedRent));
+		when(this.rentRepository.save(any(Rent.class))).thenReturn(persistedRent);
+
+		Rent acceptedRent = this.rentService.acceptRent(RENT_ID);
+
+		verify(this.rentRepository).save(acceptedRent);
+		verify(this.domainEventProducer).publish(RentService.EVENTS_CHANNEL, RENT_ID, List.of(event));
+	}
+
+	@Test
+	void shouldNotAcceptRentWhenRentDoesntExists() {
+		when(this.rentRepository.findById(anyString())).thenReturn(Optional.empty());
+
+		assertThrows(RentNotFoundException.class, () -> this.rentService.acceptRent("NotExistingId"));
+	}
+
+	@Test
 	void shouldCancelRent() {
 		Rent persistedRent = rentInState(RentState.ACCEPTED);
 		DomainEvent event = new RentStateTransitionEvent(RentState.ACCEPTED.toString(), RentState.CANCELLED.toString());
