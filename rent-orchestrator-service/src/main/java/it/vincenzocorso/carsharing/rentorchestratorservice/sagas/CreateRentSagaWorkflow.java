@@ -11,4 +11,7 @@ public interface CreateRentSagaWorkflow {
 
     @SignalMethod
     void handleVerifyCustomerResponse(boolean canRent);
+
+    @SignalMethod
+    void handleBookVehicleResponse(boolean hasVehicleBeenBooked);
 }

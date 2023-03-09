@@ -10,6 +10,7 @@ public final class CreateRentSagaState {
 
     public Boolean canCustomerRent;
     public String rejectReason;
+    public Boolean hasVehicleBeenBooked;
 
     public CreateRentSagaState(String rentId, String customerId, String vehicleId) {
         this.rentId = rentId;

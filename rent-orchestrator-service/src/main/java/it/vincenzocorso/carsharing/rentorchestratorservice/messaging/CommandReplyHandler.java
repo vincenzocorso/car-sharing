@@ -36,6 +36,10 @@ public class CommandReplyHandler {
                 VerifyCustomerCommandReply reply = this.objectMapper.readValue(message.getPayload(), VerifyCustomerCommandReply.class);
                 this.processVerifyCustomerCommandReply(message.withPayload(reply));
             }
+            case "BOOK_VEHICLE_COMMAND_REPLY" -> {
+                BookVehicleCommandReply reply = this.objectMapper.readValue(message.getPayload(), BookVehicleCommandReply.class);
+                this.processBookVehicleCommandReply(message.withPayload(reply));
+            }
             default -> throw new InternalServerException("Unknown command type: " + type);
         }
 
@@ -51,7 +55,20 @@ public class CommandReplyHandler {
         String workflowId = WorkflowCorrelation.<WorkflowCorrelation>findById(correlationId).workflowId;
         this.workflowClient.newWorkflowStub(CreateRentSagaWorkflow.class, workflowId).handleVerifyCustomerResponse(reply.canRent());
     }
+
+    private void processBookVehicleCommandReply(Message<BookVehicleCommandReply> message) {
+        var metadata = message.getMetadata(IncomingKafkaRecordMetadata.class).orElseThrow();
+        String correlationId = new String(metadata.getHeaders().lastHeader(CommandReplyHeaders.CORRELATION_ID).value());
+        BookVehicleCommandReply reply = message.getPayload();
+        log.info("Processing command reply: " + reply);
+
+        String workflowId = WorkflowCorrelation.<WorkflowCorrelation>findById(correlationId).workflowId;
+        this.workflowClient.newWorkflowStub(CreateRentSagaWorkflow.class, workflowId).handleBookVehicleResponse(reply.booked());
+    }
 }
 
 record VerifyCustomerCommandReply(Boolean canRent, String rejectReason) {
+}
+
+record BookVehicleCommandReply(Boolean booked) {
 }

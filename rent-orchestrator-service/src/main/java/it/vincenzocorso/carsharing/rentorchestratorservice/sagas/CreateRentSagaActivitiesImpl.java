@@ -28,8 +28,14 @@ public class CreateRentSagaActivitiesImpl implements CreateRentSagaActivities {
     }
 
     @Override
-    public void bookVehicle(String vehicleId, String customerId) {
-        log.info("Booking vehicle: " + vehicleId + " for customer: " + customerId);
+    public void bookVehicle(String vehicleId) {
+        String workflowId = Activity.getExecutionContext().getInfo().getWorkflowId();
+
+        Command command = new BookVehicleCommand(vehicleId);
+        String messageId = this.commandProducer.publish("vehicle-service-commands", "rent-orchestrator-service-response-channel", vehicleId, command);
+
+        WorkflowCorrelation correlation = new WorkflowCorrelation(messageId, workflowId);
+        correlation.persist();
     }
 
     @Override
@@ -51,5 +57,12 @@ record RejectRentCommand(String rentId) implements Command {
     @Override
     public String getType() {
         return "REJECT_RENT_COMMAND";
+    }
+}
+
+record BookVehicleCommand(String vehicleId) implements Command {
+    @Override
+    public String getType() {
+        return "BOOK_VEHICLE_COMMAND";
     }
 }
