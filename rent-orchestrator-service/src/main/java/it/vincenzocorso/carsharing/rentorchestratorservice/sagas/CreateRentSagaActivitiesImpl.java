@@ -45,6 +45,13 @@ public class CreateRentSagaActivitiesImpl implements CreateRentSagaActivities {
         Command command = new RejectRentCommand(rentId);
         this.commandProducer.publish("rent-service-commands", rentId, command);
     }
+
+    @Override
+    @Transactional
+    public void acceptRent(String rentId) {
+        Command command = new AcceptRentCommand(rentId);
+        this.commandProducer.publish("rent-service-commands", rentId, command);
+    }
 }
 
 record VerifyCustomerCommand(String customerId) implements Command {
@@ -65,5 +72,12 @@ record BookVehicleCommand(String vehicleId) implements Command {
     @Override
     public String getType() {
         return "BOOK_VEHICLE_COMMAND";
+    }
+}
+
+record AcceptRentCommand(String rentId) implements Command {
+    @Override
+    public String getType() {
+        return "ACCEPT_RENT_COMMAND";
     }
 }

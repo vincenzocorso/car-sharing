@@ -40,6 +40,8 @@ public class CreateRentSagaWorkflowImpl implements CreateRentSagaWorkflow {
                 state.rejectReason = "Vehicle cannot be booked";
                 saga.compensate();
             }
+
+            this.activities.acceptRent(state.rentId);
         } catch(Exception ex) {
             log.error("An exception occurred during the create rent saga: ", ex);
             state.rejectReason = "An error occurred while processing the request";

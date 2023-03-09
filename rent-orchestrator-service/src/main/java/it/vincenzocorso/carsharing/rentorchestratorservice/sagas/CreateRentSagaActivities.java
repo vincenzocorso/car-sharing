@@ -7,4 +7,5 @@ public interface CreateRentSagaActivities {
     void verifyCustomer(String customerId);
     void bookVehicle(String vehicleId);
     void rejectRent(String rentId);
+    void acceptRent(String rentId);
 }
