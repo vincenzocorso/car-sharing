@@ -190,3 +190,15 @@ services:
       MONGODB_USERNAME: user
       MONGODB_PASSWORD: password
       KAFKA_BOOSTRAP_SERVERS: kafka:9092
+
+  api-gateway:
+    container_name: api-gateway
+    image: nginx:latest
+    ports:
+      - "80:80"
+    depends_on:
+      - rent-service
+      - customer-service
+      - vehicle-service
+    volumes:
+      - ./scripts/nginx-gateway.conf:/etc/nginx/nginx.conf
