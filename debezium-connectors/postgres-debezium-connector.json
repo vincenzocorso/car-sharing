@@ -1,5 +1,5 @@
 {
-  "name": "rent-service-debezium-connector",
+  "name": "postgres-debezium-connector",
   "config": {
     "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
     "tasks.max": "1",
@@ -8,7 +8,7 @@
     "database.user": "admin",
     "database.password": "admin",
     "database.dbname": "db",
-    "database.server.name": "rent-service-outbox",
+    "database.server.name": "postgres-outbox",
     "table.include.list": "public.outbox",
     "tombstones.on.delete": "false",
     "transforms": "outbox",
