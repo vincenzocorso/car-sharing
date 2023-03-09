@@ -13,6 +13,8 @@ services:
       MONGODB_PASSWORD: password
       MONGODB_DATABASE: app
       MONGODB_REPLICA_SET_KEY: replicasetkey123
+    volumes:
+      - ./scripts/vehicle-service-initdb.js:/docker-entrypoint-initdb.d/vehicle-service-initdb.js
 
   mongodb-secondary:
     image: bitnami/mongodb:4.4.8-debian-10-r48
