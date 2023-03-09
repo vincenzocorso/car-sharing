@@ -78,11 +78,11 @@ db.vehicles.insertMany([{
     "licensePlate": "FG178RF",
     "vehicleModelId": "64099a611bbf5849f102b292",
     "position": {
-        "latitude": 49.8397,
-        "longitude": 24.0297
+        "type": "Point",
+        "coordinates": [49.8397, 24.0297]
     },
     "autonomy": 85.4,
     "lastStatusUpdate": 1678351318643,
-    "status": "AVAILABLE",
+    "currentState": "AVAILABLE",
     "unlockCode": null
 }])
