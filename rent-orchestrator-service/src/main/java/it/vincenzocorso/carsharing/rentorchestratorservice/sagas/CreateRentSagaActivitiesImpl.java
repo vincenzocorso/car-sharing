@@ -28,6 +28,7 @@ public class CreateRentSagaActivitiesImpl implements CreateRentSagaActivities {
     }
 
     @Override
+    @Transactional
     public void bookVehicle(String vehicleId) {
         String workflowId = Activity.getExecutionContext().getInfo().getWorkflowId();
 
