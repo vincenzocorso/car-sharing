@@ -62,18 +62,31 @@ channels:
   commands/rent-service:
     publish:
       message:
-        name: REJECT_RENT_COMMAND
-        headers:
-          $ref: '#/components/schemas/CommandHeaders'
-        payload:
-          type: object
-          description: This command is sent to reject a rent
-          properties:
-            rentId:
-              type: string
-              description: The rent id
-          examples:
-            - rentId: RNT1234
+        oneOf:
+          - name: REJECT_RENT_COMMAND
+            headers:
+              $ref: '#/components/schemas/CommandHeaders'
+            payload:
+              type: object
+              description: This command is sent to reject a rent
+              properties:
+                rentId:
+                  type: string
+                  description: The rent id
+              examples:
+                - rentId: RNT1234
+          - name: ACCEPT_RENT_COMMAND
+            headers:
+              $ref: '#/components/schemas/CommandHeaders'
+            payload:
+              type: object
+              description: This command is sent to accept a rent
+              properties:
+                rentId:
+                  type: string
+                  description: The rent id
+              examples:
+                - rentId: RNT1234
     bindings:
       kafka:
         topic: rent-service-commands
