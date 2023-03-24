@@ -1,5 +1,81 @@
 = Car Sharing Microservice Architecture
 
-This repository contains a sample microservice application for car sharing. It has very few functionality, but I designed it mainly to practice implementing some patterns typically used.
+This repository contains a sample microservice application for car sharing. It has very few functionality, but I designed it mainly to practice implementing some patterns typically used. Authentication, authorization and security have not been considered for simplicity.
 
-Currently, this repository is under development!
+*Currently, this project is under development!*
+
+== Architecture Overview
+
+ifdef::env-github[]
+++++
+<p align="center">
+  <img src="docs/architecture-overview.diagram.svg">
+</p>
+++++
+endif::[]
+
+ifndef::env-github[]
+image::docs/architecture-overview.diagram.svg[align="center"]
+endif::[]
+
+At high level the architecture is composed of six services (rent, customer, vehicle, rent orchestrator, payment, notification) and a mobile application. The mobile app interacts with the system only through the API Gateway. The backend services exchange messages using Kafka as message broker.
+
+In particular:
+
+* The *Rent Service* is responsible for creating bookings and searching the rents of a given customer
+
+* The *Customer Service* is responsible for registering/searching customers and updating driving license details
+
+* The *Vehicle Service* is responsible for searching vehicles (even in a specific area) and retrieving details and rates of vehicle models
+
+* The *Rent Orchestrator Service* is responsible for managing the entire rental process (booking, cancellation, start, end)
+
+* The *Payment Service* is responsible for managing payments and pre-debt authorizations. It uses the Stripe API
+
+* The *Notification Service* is responsible for sending notifications (e.g. email, sms) to the customers. It uses the Twilio API
+
+== Try It
+
+To quickly start the application you can use Docker Compose.
+
+From the root folder, enter:
+
+```shell
+# Execute the build and the unit tests
+./gradlew build jibDockerBuild
+
+# Execute the integration tests
+./gradlew intTest
+
+# Start the application
+docker-compose up
+
+# Wait for the application to start
+# Then register the debezium connectors to the Kafka Connect platform
+./scripts/register-debezium-connectors.sh
+```
+
+=== cURL
+
+```shell
+# Create a customer
+curl -X 'POST' -H "Content-Type: application/json" \
+     -d '{"firstName": "Mario", "lastName": "Rossi", "dateOfBirth": "1999-09-06", "fiscalCode": "MRORSS99G27P112J", "email": "mariorossi@gmail.com", "phoneNumber": "+393251935161", "driverLicense": {"licenseNumber": "LCSN0000", "issueDate": "2017-10-10", "expiryDate": "2028-09-06"}}' \
+     http://localhost/customers
+
+# Get vehicle models
+curl http://localhost/vehicles/models
+
+# Get all the vehicles
+curl http://localhost/vehicles
+
+# Book a vehicle
+# Substitute the placeholders
+curl -X 'POST' -H "Content-Type: application/json" -d '{"customerId": "customer_id_here", "vehicleId": "vehicle_id_here"}' http://localhost/rents
+```
+
+Check the `docs/apis` folder to see the full api specification.
+
+=== Mobile App
+
+WIP
