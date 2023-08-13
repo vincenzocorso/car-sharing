@@ -17,7 +17,7 @@ public class VehicleDocumentMapper {
         VehicleDocument vehicleDocument = new VehicleDocument();
         vehicleDocument.id = vehicle.getId() != null ? new ObjectId(vehicle.getId()) : null;
         vehicleDocument.licensePlate = vehicle.getLicensePlate();
-        vehicleDocument.vehicleModelId = vehicle.getVehicleModelId();
+        vehicleDocument.vehicleModelId = new ObjectId(vehicle.getVehicleModelId());
         vehicleDocument.position = new Point(new Position(vehicle.getStatus().longitude(), vehicle.getStatus().latitude()));
         vehicleDocument.autonomy = vehicle.getStatus().autonomy();
         vehicleDocument.lastStatusUpdate = vehicle.getStatus().updatedAt().toEpochMilli();
@@ -41,7 +41,7 @@ public class VehicleDocumentMapper {
         return new Vehicle(
             vehicleId,
             vehicleDocument.licensePlate,
-            vehicleDocument.vehicleModelId,
+            vehicleDocument.vehicleModelId.toHexString(),
             vehicleStatus,
             VehicleState.valueOf(vehicleDocument.currentState),
             vehicleDocument.unlockCode

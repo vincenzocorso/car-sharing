@@ -11,7 +11,7 @@ public class VehicleDocument extends PanacheMongoEntityBase {
     @BsonId
     public ObjectId id;
     public String licensePlate;
-    public String vehicleModelId;
+    public ObjectId vehicleModelId;
     public Point position;
     public double autonomy;
     public Long lastStatusUpdate;
