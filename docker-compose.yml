@@ -37,7 +37,6 @@ services:
       MONGODB_REPLICA_SET_KEY: replicasetkey123
 
   postgres:
-    container_name: postgres
     image: debezium/postgres:13-alpine
     ports:
       - "5432:5432"
@@ -60,7 +59,6 @@ services:
       ALLOW_PLAINTEXT_LISTENER: "yes"
 
   kafdrop:
-    container_name: kafdrop
     image: obsidiandynamics/kafdrop:3.27.0
     ports:
       - "9000:9000"
@@ -70,7 +68,6 @@ services:
       KAFKA_BROKERCONNECT: kafka:9092
 
   debezium-connect:
-    container_name: debezium-connect
     build:
       context: ./custom-debezium-transformer
     ports:
@@ -86,7 +83,6 @@ services:
       GROUP_ID: 1
 
   temporal:
-    container_name: temporal
     image: temporalio/auto-setup:1.14.4
     ports:
       - "7233:7233"
@@ -103,7 +99,6 @@ services:
       - ./temporal-config:/etc/temporal/config/dynamicconfig
 
   temporal-admin-tools:
-    container_name: temporal-admin-tools
     image: temporalio/admin-tools:1.14.2
     depends_on:
       - temporal
@@ -113,7 +108,6 @@ services:
     tty: true
 
   temporal-web:
-    container_name: temporal-web
     image: temporalio/web:1.13.0
     ports:
       - "8088:8088"
@@ -124,7 +118,6 @@ services:
       TEMPORAL_PERMIT_WRITE_API: "true"
 
   rent-service:
-    container_name: rent-service
     image: car-sharing/rent-service
     ports:
       - "5000:8080"
@@ -140,7 +133,6 @@ services:
       KAFKA_BOOSTRAP_SERVERS: kafka:9092
 
   rent-orchestrator-service:
-    container_name: rent-orchestrator-service
     image: car-sharing/rent-orchestrator-service
     ports:
       - "5001:8080"
@@ -158,7 +150,6 @@ services:
       TEMPORAL_PORT: 7233
 
   customer-service:
-    container_name: customer-service
     image: car-sharing/customer-service
     ports:
      - "5002:8080"
@@ -175,7 +166,6 @@ services:
       KAFKA_BOOSTRAP_SERVERS: kafka:9092
 
   vehicle-service:
-    container_name: vehicle-service
     image: car-sharing/vehicle-service
     ports:
       - "5003:8080"
@@ -192,7 +182,6 @@ services:
       KAFKA_BOOSTRAP_SERVERS: kafka:9092
 
   api-gateway:
-    container_name: api-gateway
     image: nginx:latest
     ports:
       - "80:80"
