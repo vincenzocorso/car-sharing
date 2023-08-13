@@ -1,7 +1,7 @@
 db = db.getSiblingDB("app");
 
 db.vehicle_models.insertMany([{
-    "_id": "64099a611bbf5849f102b28e",
+    "_id": ObjectId("64099a611bbf5849f102b28e"),
     "name": "BMW 1 Series",
     "seats": 5,
     "transmissionType": "AUTOMATIC",
@@ -13,7 +13,7 @@ db.vehicle_models.insertMany([{
         "ratePerKilometer": 0.19
     }
 }, {
-    "_id": "64099a611bbf5849f102b28f",
+    "_id": ObjectId("64099a611bbf5849f102b28f"),
     "name": "BMW 2 Series Active Tourer",
     "seats": 5,
     "transmissionType": "AUTOMATIC",
@@ -25,7 +25,7 @@ db.vehicle_models.insertMany([{
         "ratePerKilometer": 0.19
     }
 }, {
-    "_id": "64099a611bbf5849f102b290",
+    "_id": ObjectId("64099a611bbf5849f102b290"),
     "name": "BMW X1",
     "seats": 5,
     "transmissionType": "MANUAL",
@@ -37,7 +37,7 @@ db.vehicle_models.insertMany([{
         "ratePerKilometer": 0.19
     }
 }, {
-    "_id": "64099a611bbf5849f102b291",
+    "_id": ObjectId("64099a611bbf5849f102b291"),
     "name": "Citroën C3",
     "seats": 5,
     "transmissionType": "AUTOMATIC",
@@ -49,7 +49,7 @@ db.vehicle_models.insertMany([{
         "ratePerKilometer": 0.19
     }
 }, {
-    "_id": "64099a611bbf5849f102b292",
+    "_id": ObjectId("64099a611bbf5849f102b292"),
     "name": "Fiat 500e",
     "seats": 4,
     "transmissionType": "AUTOMATIC",
@@ -61,7 +61,7 @@ db.vehicle_models.insertMany([{
         "ratePerKilometer": 0.19
     }
 }, {
-    "_id": "64099a611bbf5849f102b293",
+    "_id": ObjectId("64099a611bbf5849f102b293"),
     "name": "Peugeot 208",
     "seats": 5,
     "transmissionType": "AUTOMATIC",
@@ -75,8 +75,9 @@ db.vehicle_models.insertMany([{
 }])
 
 db.vehicles.insertMany([{
+    "_id": ObjectId("64d91f86a24d76f458c94fba"),
     "licensePlate": "FG178RF",
-    "vehicleModelId": "64099a611bbf5849f102b292",
+    "vehicleModelId": ObjectId("64099a611bbf5849f102b292"),
     "position": {
         "type": "Point",
         "coordinates": [49.8397, 24.0297]
