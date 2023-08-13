@@ -1,9 +1,14 @@
 version: "3.9"
 services:
+  # =====================
+  # ===== DATABASES =====
+  # =====================
+
   mongodb-primary:
     image: bitnami/mongodb:4.4.8-debian-10-r48
     ports:
       - "27017:27017"
+    restart: unless-stopped
     environment:
       MONGODB_ADVERTISED_HOSTNAME: mongodb-primary
       MONGODB_REPLICA_SET_MODE: primary
@@ -18,6 +23,7 @@ services:
 
   mongodb-secondary:
     image: bitnami/mongodb:4.4.8-debian-10-r48
+    restart: unless-stopped
     depends_on:
       - mongodb-primary
     environment:
@@ -28,6 +34,7 @@ services:
 
   mongodb-arbiter:
     image: bitnami/mongodb:4.4.8-debian-10-r48
+    restart: unless-stopped
     depends_on:
       - mongodb-primary
     environment:
@@ -40,13 +47,19 @@ services:
     image: debezium/postgres:13-alpine
     ports:
       - "5432:5432"
+    restart: unless-stopped
     environment:
       POSTGRES_DB: db
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: admin
 
+  # ==========================
+  # ===== OTHER SERVICES =====
+  # ==========================
+
   kafka:
     image: bitnami/kafka:3.3.1-debian-11-r29
+    restart: unless-stopped
     environment:
       KAFKA_ENABLE_KRAFT: "yes"
       KAFKA_CFG_PROCESS_ROLES: broker,controller
@@ -62,6 +75,7 @@ services:
     image: obsidiandynamics/kafdrop:3.27.0
     ports:
       - "9000:9000"
+    restart: unless-stopped
     depends_on:
       - kafka
     environment:
@@ -72,6 +86,7 @@ services:
       context: ./custom-debezium-transformer
     ports:
       - "8083:8083"
+    restart: unless-stopped
     depends_on:
       - kafka
       - postgres
@@ -86,6 +101,7 @@ services:
     image: temporalio/auto-setup:1.14.4
     ports:
       - "7233:7233"
+    restart: unless-stopped
     depends_on:
       - postgres
     environment:
@@ -100,6 +116,7 @@ services:
 
   temporal-admin-tools:
     image: temporalio/admin-tools:1.14.2
+    restart: unless-stopped
     depends_on:
       - temporal
     environment:
@@ -111,16 +128,20 @@ services:
     image: temporalio/web:1.13.0
     ports:
       - "8088:8088"
+    restart: unless-stopped
     depends_on:
       - temporal
     environment:
       TEMPORAL_GRPC_ENDPOINT: temporal:7233
       TEMPORAL_PERMIT_WRITE_API: "true"
 
+  # =========================
+  # ===== MICROSERVICES =====
+  # =========================
+
   rent-service:
     image: car-sharing/rent-service
-    ports:
-      - "5000:8080"
+    restart: unless-stopped
     depends_on:
       - postgres
       - debezium-connect
@@ -134,8 +155,7 @@ services:
 
   rent-orchestrator-service:
     image: car-sharing/rent-orchestrator-service
-    ports:
-      - "5001:8080"
+    restart: unless-stopped
     depends_on:
       - temporal
       - kafka
@@ -151,8 +171,7 @@ services:
 
   customer-service:
     image: car-sharing/customer-service
-    ports:
-     - "5002:8080"
+    restart: unless-stopped
     depends_on:
       - kafka
       - mongodb-primary
@@ -167,8 +186,7 @@ services:
 
   vehicle-service:
     image: car-sharing/vehicle-service
-    ports:
-      - "5003:8080"
+    restart: unless-stopped
     depends_on:
       - kafka
       - mongodb-primary
@@ -185,6 +203,7 @@ services:
     image: nginx:latest
     ports:
       - "80:80"
+    restart: unless-stopped
     depends_on:
       - rent-service
       - customer-service
