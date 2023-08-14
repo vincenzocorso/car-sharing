@@ -6,6 +6,9 @@ info:
     url: https://github.com/vincenzocorso
     email: vincenzocorso99@gmail.com
   version: "1.0"
+servers:
+  - url: http://localhost:80
+    description: The local api gateway
 paths:
   /customers:
     get:
@@ -44,6 +47,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+        default:
+          description: An error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
     post:
       description: Register a new customer
       requestBody:
@@ -65,7 +74,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  '/customers/${customerId}':
+        default:
+          description: An error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  '/customers/{customerId}':
     parameters:
       - name: customerId
         in: path
@@ -80,14 +95,20 @@ paths:
           description: The customer was successfully retrieved
           content:
             application/json:
-            schema:
-              $ref: '#/components/schemas/CustomerResponse'
+              schema:
+                $ref: '#/components/schemas/CustomerResponse'
         404:
           description: The resource with the given id was not found
           content:
             application/json:
-            schema:
-              $ref: '#/components/schemas/ErrorResponse'
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        default:
+          description: An error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
     RegisterCustomerRequest:

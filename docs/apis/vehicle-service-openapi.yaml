@@ -6,6 +6,9 @@ info:
     url: https://github.com/vincenzocorso
     email: vincenzocorso99@gmail.com
   version: "1.0"
+servers:
+  - url: http://localhost:80
+    description: The local api gateway
 paths:
   /vehicles:
     get:
@@ -81,6 +84,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+        default:
+          description: An error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /vehicles/models:
     get:
       description: Get all vehicle models
@@ -99,7 +108,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  '/vehicles/${vehicleId}':
+        default:
+          description: An error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  '/vehicles/{vehicleId}':
     parameters:
       - name: vehicleId
         in: path
@@ -118,6 +133,12 @@ paths:
                 $ref: '#/components/schemas/VehicleResponse'
         404:
           description: The resource with the given id was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        default:
+          description: An error occurred
           content:
             application/json:
               schema:
