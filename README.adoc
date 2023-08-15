@@ -40,7 +40,8 @@ To quickly start the application you can use Docker Compose.
 
 From the root folder, enter:
 
-```shell
+[source,shell]
+----
 # Execute the build and the unit tests
 ./gradlew build jibDockerBuild
 
@@ -53,11 +54,12 @@ docker-compose up
 # Wait for the application to start
 # Then register the debezium connectors to the Kafka Connect platform
 ./scripts/register-debezium-connectors.sh
-```
+----
 
 === cURL
 
-```shell
+[source,shell]
+----
 # Create a customer
 curl -X 'POST' -H "Content-Type: application/json" \
      -d '{"firstName": "Mario", "lastName": "Rossi", "dateOfBirth": "1999-09-06", "fiscalCode": "MRORSS99G27P112J", "email": "mariorossi@gmail.com", "phoneNumber": "+393251935161", "driverLicense": {"licenseNumber": "LCSN0000", "issueDate": "2017-10-10", "expiryDate": "2028-09-06"}}' \
@@ -72,7 +74,7 @@ curl http://localhost/vehicles
 # Book a vehicle
 # Substitute the placeholders
 curl -X 'POST' -H "Content-Type: application/json" -d '{"customerId": "customer_id_here", "vehicleId": "vehicle_id_here"}' http://localhost/rents
-```
+----
 
 Check the `docs/apis` folder to see the full api specification.
 
