@@ -15,7 +15,7 @@ ifdef::env-github[]
 endif::[]
 
 ifndef::env-github[]
-image::docs/architecture-overview.diagram.svg[align="center"]
+image::docs/diagrams/architecture-overview.svg[align="center"]
 endif::[]
 
 At high level the architecture is composed of six services (rent, customer, vehicle, rent orchestrator, payment, notification) and a mobile application. The mobile app interacts with the system only through the API Gateway. The backend services exchange messages using Kafka as message broker.
