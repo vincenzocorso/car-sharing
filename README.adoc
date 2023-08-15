@@ -9,7 +9,7 @@ This repository contains a sample microservice application for car sharing. It h
 ifdef::env-github[]
 ++++
 <p align="center">
-  <img src="docs/architecture-overview.diagram.svg">
+  <img src="docs/diagrams/architecture-overview.svg">
 </p>
 ++++
 endif::[]

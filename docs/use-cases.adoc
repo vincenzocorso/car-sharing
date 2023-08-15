@@ -1,6 +1,13 @@
 = Use Cases
 :toc:
 
+== Use Case Diagram
+
+[plantuml, align="center", width=70%]
+----
+include::diagrams/use-case-diagram.puml[]
+----
+
 == UC: Rent Vehicle
 
 [horizontal]
