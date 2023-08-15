@@ -6,6 +6,9 @@ info:
     url: https://github.com/vincenzocorso
     email: vincenzocorso99@gmail.com
   version: "1.0"
+servers:
+  - url: http://localhost:80
+    description: The local api gateway
 paths:
   /rents:
     get:
