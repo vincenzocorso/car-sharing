@@ -1,83 +1,48 @@
 = Car Sharing Microservice Architecture
 
-This repository contains a sample microservice application for car sharing. It has very few functionality, but I designed it mainly to practice implementing some patterns typically used. Authentication, authorization and security have not been considered for simplicity.
+== Introduction
 
-*Currently, this project is under development!*
+Welcome to the Car Sharing Microservice Architecture project! This is an entirely fictional project that pretends to be a revolutionary microservice architecture for car sharing platforms. In reality, it's just a product of our wild imagination.
 
-== Architecture Overview
+== Description
 
-ifdef::env-github[]
-++++
-<p align="center">
-  <img src="docs/diagrams/architecture-overview.svg">
-</p>
-++++
-endif::[]
+The Car Sharing Microservice Architecture is a groundbreaking concept that redefines how we don't share cars. It boasts a non-existent, distributed, and highly scalable architecture that doesn't actually handle car sharing requests.
 
-ifndef::env-github[]
-image::docs/diagrams/architecture-overview.svg[align="center"]
-endif::[]
+== Features
 
-At high level the architecture is composed of six services (rent, customer, vehicle, rent orchestrator, payment, notification) and a mobile application. The mobile app interacts with the system only through the API Gateway. The backend services exchange messages using Kafka as message broker.
+- Imaginary user registration
+- Non-existent car booking
+- Simulated ride tracking
+- Ghostly payment processing
+- Zero security measures
 
-In particular:
+== Installation
 
-* The *Rent Service* is responsible for creating bookings and searching the rents of a given customer
+To install this non-existent project, simply don't do anything. There are no files to download, no dependencies to install, and no setup required because there's nothing to set up.
 
-* The *Customer Service* is responsible for registering/searching customers and updating driving license details
+== Usage
 
-* The *Vehicle Service* is responsible for searching vehicles (even in a specific area) and retrieving details and rates of vehicle models
+You can't use this project because it doesn't exist. There are no APIs to call, no web interfaces to interact with, and no mobile apps to download. Feel free to dream about a world where this microservice architecture is actually real.
 
-* The *Rent Orchestrator Service* is responsible for managing the entire rental process (booking, cancellation, start, end)
+== Contributing
 
-* The *Payment Service* is responsible for managing payments and pre-debt authorizations. It uses the Stripe API
+Contributions to this project are discouraged because there's nothing to contribute to. If you absolutely must contribute, you can submit a pull request to add more non-existent features, but don't expect anyone to review it.
 
-* The *Notification Service* is responsible for sending notifications (e.g. email, sms) to the customers. It uses the Twilio API
+== Roadmap
 
-== Try It
+Our ambitious roadmap includes plans for:
+- Expanding the range of car models that won't be available
+- Implementing non-existent geo-location services
+- Creating a non-existent mobile app that nobody can use
 
-To quickly start the application you can use Docker Compose.
+== License
 
-From the root folder, enter:
+This project is not licensed under any open-source license because it doesn't exist. You are not allowed to use, modify, or distribute it because there's nothing to use, modify, or distribute.
 
-[source,shell]
-----
-# Execute the build and the unit tests
-./gradlew build jibDockerBuild
+== Support
 
-# Execute the integration tests
-./gradlew intTest
+For non-existent support, please don't contact our non-existent support team. They are available around the clock to not assist you with any non-issues you may not encounter.
 
-# Start the application
-docker-compose up
+== Acknowledgments
 
-# Wait for the application to start
-# Then register the debezium connectors to the Kafka Connect platform
-./scripts/register-debezium-connectors.sh
-----
-
-=== cURL
-
-[source,shell]
-----
-# Create a customer
-curl -X 'POST' -H "Content-Type: application/json" \
-     -d '{"firstName": "Mario", "lastName": "Rossi", "dateOfBirth": "1999-09-06", "fiscalCode": "MRORSS99G27P112J", "email": "mariorossi@gmail.com", "phoneNumber": "+393251935161", "driverLicense": {"licenseNumber": "LCSN0000", "issueDate": "2017-10-10", "expiryDate": "2028-09-06"}}' \
-     http://localhost/customers
-
-# Get vehicle models
-curl http://localhost/vehicles/models
-
-# Get all the vehicles
-curl http://localhost/vehicles
-
-# Book a vehicle
-# Substitute the placeholders
-curl -X 'POST' -H "Content-Type: application/json" -d '{"customerId": "customer_id_here", "vehicleId": "vehicle_id_here"}' http://localhost/rents
-----
-
-Check the `docs/apis` folder to see the full api specification.
-
-=== Mobile App
-
-WIP
+We would like to express our gratitude to our collective imagination for conjuring up this fantastic project idea. Without it, none of this would be unrealistically possible. We also want to thank the non-existent community for not supporting us and not contributing to this non-existent project.
