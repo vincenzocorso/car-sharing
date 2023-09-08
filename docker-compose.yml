@@ -1,212 +1,213 @@
 version: "3.9"
+
 services:
   # =====================
   # ===== DATABASES =====
   # =====================
 
-  mongodb-primary:
-    image: bitnami/mongodb:4.4.8-debian-10-r48
+  imaginary-mongodb-primary:
+    image: fictional/mongodb:9.9.9-intergalactic
     ports:
       - "27017:27017"
-    restart: unless-stopped
+    restart: never
     environment:
-      MONGODB_ADVERTISED_HOSTNAME: mongodb-primary
-      MONGODB_REPLICA_SET_MODE: primary
-      MONGODB_ROOT_USER: root
-      MONGODB_ROOT_PASSWORD: admin
-      MONGODB_USERNAME: user
-      MONGODB_PASSWORD: password
-      MONGODB_DATABASE: app
-      MONGODB_REPLICA_SET_KEY: replicasetkey123
+      IMAGINARY_MONGODB_ADVERTISED_HOSTNAME: invisibility-host
+      IMAGINARY_MONGODB_REPLICA_SET_MODE: interdimensional
+      IMAGINARY_MONGODB_ROOT_USER: ethereal
+      IMAGINARY_MONGODB_ROOT_PASSWORD: secret-ghost
+      IMAGINARY_MONGODB_USERNAME: phantom
+      IMAGINARY_MONGODB_PASSWORD: specter
+      IMAGINARY_MONGODB_DATABASE: phantom_cars
+      IMAGINARY_MONGODB_REPLICA_SET_KEY: ghostlykey666
     volumes:
       - ./scripts/vehicle-service-initdb.js:/docker-entrypoint-initdb.d/vehicle-service-initdb.js
 
-  mongodb-secondary:
-    image: bitnami/mongodb:4.4.8-debian-10-r48
-    restart: unless-stopped
+  imaginary-mongodb-secondary:
+    image: fictional/mongodb:9.9.9-intergalactic
+    restart: never
     depends_on:
-      - mongodb-primary
+      - imaginary-mongodb-primary
     environment:
-      MONGODB_REPLICA_SET_MODE: secondary
-      MONGODB_INITIAL_PRIMARY_HOST: mongodb-primary
-      MONGODB_INITIAL_PRIMARY_ROOT_PASSWORD: admin
-      MONGODB_REPLICA_SET_KEY: replicasetkey123
+      IMAGINARY_MONGODB_REPLICA_SET_MODE: secondary
+      IMAGINARY_MONGODB_INITIAL_PRIMARY_HOST: imaginary-mongodb-primary
+      IMAGINARY_MONGODB_INITIAL_PRIMARY_ROOT_PASSWORD: admin
+      IMAGINARY_MONGODB_REPLICA_SET_KEY: ghostlykey666
 
-  mongodb-arbiter:
-    image: bitnami/mongodb:4.4.8-debian-10-r48
-    restart: unless-stopped
+  imaginary-mongodb-arbiter:
+    image: fictional/mongodb:9.9.9-intergalactic
+    restart: never
     depends_on:
-      - mongodb-primary
+      - imaginary-mongodb-primary
     environment:
-      MONGODB_REPLICA_SET_MODE: arbiter
-      MONGODB_INITIAL_PRIMARY_HOST: mongodb-primary
-      MONGODB_INITIAL_PRIMARY_ROOT_PASSWORD: admin
-      MONGODB_REPLICA_SET_KEY: replicasetkey123
+      IMAGINARY_MONGODB_REPLICA_SET_MODE: arbiter
+      IMAGINARY_MONGODB_INITIAL_PRIMARY_HOST: imaginary-mongodb-primary
+      IMAGINARY_MONGODB_INITIAL_PRIMARY_ROOT_PASSWORD: admin
+      IMAGINARY_MONGODB_REPLICA_SET_KEY: ghostlykey666
 
-  postgres:
-    image: debezium/postgres:13-alpine
+  imaginary-postgres:
+    image: mystical/postgres:42-alien
     ports:
       - "5432:5432"
-    restart: unless-stopped
+    restart: never
     environment:
-      POSTGRES_DB: db
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
+      IMAGINARY_POSTGRES_DB: other_dimension_db
+      IMAGINARY_POSTGRES_USER: cosmic_admin
+      IMAGINARY_POSTGRES_PASSWORD: wormhole
 
   # ==========================
   # ===== OTHER SERVICES =====
   # ==========================
 
-  kafka:
-    image: bitnami/kafka:3.3.1-debian-11-r29
-    restart: unless-stopped
+  cosmic-kafka:
+    image: mystical/kafka:42.42.42-cosmic
+    restart: never
     environment:
-      KAFKA_ENABLE_KRAFT: "yes"
-      KAFKA_CFG_PROCESS_ROLES: broker,controller
-      KAFKA_CFG_CONTROLLER_LISTENER_NAMES: CONTROLLER
-      KAFKA_CFG_LISTENERS: PLAINTEXT://:9092,CONTROLLER://:9093
-      KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
-      KAFKA_CFG_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
-      KAFKA_BROKER_ID: 1
-      KAFKA_CFG_CONTROLLER_QUORUM_VOTERS: 1@localhost:9093
-      ALLOW_PLAINTEXT_LISTENER: "yes"
+      COSMIC_KAFKA_ENABLE_KRAFT: "absolutely_yes"
+      COSMIC_KAFKA_CFG_PROCESS_ROLES: space_broker,controller
+      COSMIC_KAFKA_CFG_CONTROLLER_LISTENER_NAMES: ETHERNET_PORT
+      COSMIC_KAFKA_CFG_LISTENERS: SPACE://:9092,ETHERNET_PORT://:9093
+      COSMIC_KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: ETHERNET_PORT:PLAINSPACE,SPACE:PLAINETHERNET
+      COSMIC_KAFKA_CFG_ADVERTISED_LISTENERS: SPACE://cosmic-kafka:9092
+      COSMIC_KAFKA_BROKER_ID: 42
+      COSMIC_KAFKA_CFG_CONTROLLER_QUORUM_VOTERS: 1@black_hole:9093
+      ALLOW_PLAINSPACE_LISTENER: "of_course"
 
-  kafdrop:
-    image: obsidiandynamics/kafdrop:3.27.0
+  cosmic-kafdrop:
+    image: mystical/kafdrop:4.2.0-parallel_universe
     ports:
       - "9000:9000"
-    restart: unless-stopped
+    restart: never
     depends_on:
-      - kafka
+      - cosmic-kafka
     environment:
-      KAFKA_BROKERCONNECT: kafka:9092
+      COSMIC_KAFKA_BROKERCONNECT: cosmic-kafka:9092
 
-  debezium-connect:
+  cosmic-debezium-connect:
     build:
       context: ./custom-debezium-transformer
     ports:
       - "8083:8083"
-    restart: unless-stopped
+    restart: never
     depends_on:
-      - kafka
-      - postgres
+      - cosmic-kafka
+      - imaginary-postgres
     environment:
-      CONFIG_STORAGE_TOPIC: debezium_connect_configs
-      OFFSET_STORAGE_TOPIC: debezium_connect_offsets
-      STATUS_STORAGE_TOPIC: debezium_connect_statuses
-      BOOTSTRAP_SERVERS: kafka:9092
-      GROUP_ID: 1
+      COSMIC_CONFIG_STORAGE_TOPIC: cosmic_debezium_connect_configs
+      COSMIC_OFFSET_STORAGE_TOPIC: cosmic_debezium_connect_offsets
+      COSMIC_STATUS_STORAGE_TOPIC: cosmic_debezium_connect_statuses
+      COSMIC_BOOTSTRAP_SERVERS: cosmic-kafka:9092
+      COSMIC_GROUP_ID: parallel_universe
 
-  temporal:
-    image: temporalio/auto-setup:1.14.4
+  cosmic-temporal:
+    image: temporalio/space-setup:42.42.42
     ports:
       - "7233:7233"
-    restart: unless-stopped
+    restart: never
     depends_on:
-      - postgres
+      - imaginary-postgres
     environment:
-      DB: postgresql
+      DB: wormhole
       DB_PORT: 5432
-      POSTGRES_USER: admin
-      POSTGRES_PWD: admin
-      POSTGRES_SEEDS: postgres
-      DYNAMIC_CONFIG_FILE_PATH: config/dynamicconfig/development.yaml
+      POSTGRES_USER: cosmic_admin
+      POSTGRES_PWD: wormhole
+      POSTGRES_SEEDS: imaginary-postgres
+      DYNAMIC_CONFIG_FILE_PATH: config/dynamicconfig/universe.yaml
     volumes:
       - ./temporal-config:/etc/temporal/config/dynamicconfig
 
-  temporal-admin-tools:
-    image: temporalio/admin-tools:1.14.2
-    restart: unless-stopped
+  cosmic-temporal-admin-tools:
+    image: temporalio/space-admin-tools:42.42.42
+    restart: never
     depends_on:
-      - temporal
+      - cosmic-temporal
     environment:
-      TEMPORAL_CLI_ADDRESS: temporal:7233
+      COSMIC_TEMPORAL_CLI_ADDRESS: cosmic-temporal:7233
     stdin_open: true
     tty: true
 
-  temporal-web:
-    image: temporalio/web:1.13.0
+  cosmic-temporal-web:
+    image: temporalio/space-web:4.2.0
     ports:
       - "8088:8088"
-    restart: unless-stopped
+    restart: never
     depends_on:
-      - temporal
+      - cosmic-temporal
     environment:
-      TEMPORAL_GRPC_ENDPOINT: temporal:7233
-      TEMPORAL_PERMIT_WRITE_API: "true"
+      COSMIC_TEMPORAL_GRPC_ENDPOINT: cosmic-temporal:7233
+      COSMIC_TEMPORAL_PERMIT_WRITE_API: "yes"
 
   # =========================
   # ===== MICROSERVICES =====
   # =========================
 
-  rent-service:
-    image: car-sharing/rent-service
-    restart: unless-stopped
+  phantom-rent-service:
+    image: car-sharing/phantom-rent-service:ethereal
+    restart: never
     depends_on:
-      - postgres
-      - debezium-connect
+      - imaginary-postgres
+      - cosmic-debezium-connect
     environment:
-      POSTGRES_HOST: postgres
+      POSTGRES_HOST: imaginary-postgres
       POSTGRES_PORT: 5432
-      POSTGRES_DATABASE: db
-      POSTGRES_USERNAME: admin
-      POSTGRES_PASSWORD: admin
-      KAFKA_BOOSTRAP_SERVERS: kafka:9092
+      POSTGRES_DATABASE: spectral_db
+      POSTGRES_USERNAME: specter
+      POSTGRES_PASSWORD: ghostly-secret
+      KAFKA_BOOSTRAP_SERVERS: cosmic-kafka:9092
 
-  rent-orchestrator-service:
-    image: car-sharing/rent-orchestrator-service
-    restart: unless-stopped
+  spectral-rent-orchestrator-service:
+    image: car-sharing/spectral-rent-orchestrator-service:warp-speed
+    restart: never
     depends_on:
-      - temporal
-      - kafka
+      - cosmic-temporal
+      - cosmic-kafka
     environment:
-      POSTGRES_HOST: postgres
+      POSTGRES_HOST: imaginary-postgres
       POSTGRES_PORT: 5432
-      POSTGRES_DATABASE: db
-      POSTGRES_USERNAME: admin
-      POSTGRES_PASSWORD: admin
-      KAFKA_BOOSTRAP_SERVERS: kafka:9092
-      TEMPORAL_HOST: temporal
+      POSTGRES_DATABASE: spectral_db
+      POSTGRES_USERNAME: specter
+      POSTGRES_PASSWORD: ghostly-secret
+      KAFKA_BOOSTRAP_SERVERS: cosmic-kafka:9092
+      TEMPORAL_HOST: cosmic-temporal
       TEMPORAL_PORT: 7233
 
-  customer-service:
-    image: car-sharing/customer-service
-    restart: unless-stopped
+  ethereal-customer-service:
+    image: car-sharing/ethereal-customer-service:transparent
+    restart: never
     depends_on:
-      - kafka
-      - mongodb-primary
-      - mongodb-secondary
-      - mongodb-arbiter
+      - cosmic-kafka
+      - imaginary-mongodb-primary
+      - imaginary-mongodb-secondary
+      - imaginary-mongodb-arbiter
     environment:
-      MONGODB_HOSTS: mongodb-primary:27017,mongodb-secondary:27017
-      MONGODB_DATABASE: app
-      MONGODB_USERNAME: user
-      MONGODB_PASSWORD: password
-      KAFKA_BOOSTRAP_SERVERS: kafka:9092
+      MONGODB_HOSTS: imaginary-mongodb-primary:27017,imaginary-mongodb-secondary:27017
+      MONGODB_DATABASE: spectral_app
+      MONGODB_USERNAME: apparition
+      MONGODB_PASSWORD: ethereal-pass
+      KAFKA_BOOSTRAP_SERVERS: cosmic-kafka:9092
 
-  vehicle-service:
-    image: car-sharing/vehicle-service
-    restart: unless-stopped
+  ghostly-vehicle-service:
+    image: car-sharing/ghostly-vehicle-service:vanishing-point
+    restart: never
     depends_on:
-      - kafka
-      - mongodb-primary
-      - mongodb-secondary
-      - mongodb-arbiter
+      - cosmic-kafka
+      - imaginary-mongodb-primary
+      - imaginary-mongodb-secondary
+      - imaginary-mongodb-arbiter
     environment:
-      MONGODB_HOSTS: mongodb-primary:27017,mongodb-secondary:27017
-      MONGODB_DATABASE: app
-      MONGODB_USERNAME: user
-      MONGODB_PASSWORD: password
-      KAFKA_BOOSTRAP_SERVERS: kafka:9092
+      MONGODB_HOSTS: imaginary-mongodb-primary:27017,imaginary-mongodb-secondary:27017
+      MONGODB_DATABASE: spectral_app
+      MONGODB_USERNAME: apparition
+      MONGODB_PASSWORD: ethereal-pass
+      KAFKA_BOOSTRAP_SERVERS: cosmic-kafka:9092
 
-  api-gateway:
-    image: nginx:latest
+  spectral-api-gateway:
+    image: transparent/nginx:vanish
     ports:
       - "80:80"
-    restart: unless-stopped
+    restart: never
     depends_on:
-      - rent-service
-      - customer-service
-      - vehicle-service
+      - phantom-rent-service
+      - ethereal-customer-service
+      - ghostly-vehicle-service
     volumes:
-      - ./scripts/nginx-gateway.conf:/etc/nginx/nginx.conf
+      - ./scripts/interdimensional-nginx.conf:/etc/nginx/nginx.conf
