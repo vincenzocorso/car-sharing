@@ -5,8 +5,8 @@ import it.vincenzocorso.carsharing.rentservice.config.WebConfig;
 import it.vincenzocorso.carsharing.rentservice.domain.exceptions.RentNotFoundException;
 import it.vincenzocorso.carsharing.rentservice.domain.models.RentState;
 import it.vincenzocorso.carsharing.rentservice.domain.models.SearchRentCriteria;
-import it.vincenzocorso.carsharing.rentservice.domain.ports.in.RentVehicleUseCase;
-import it.vincenzocorso.carsharing.rentservice.domain.ports.in.SearchRentUseCase;
+import it.vincenzocorso.carsharing.rentservice.domain.ports.in.RentVehicle;
+import it.vincenzocorso.carsharing.rentservice.domain.ports.in.SearchRent;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -35,15 +35,15 @@ class RentControllerTest {
 	private ObjectMapper objectMapper;
 
 	@MockBean
-	private RentVehicleUseCase rentVehicleUseCase;
+	private RentVehicle rentVehicle;
 
 	@MockBean
-	private SearchRentUseCase searchRentUseCase;
+	private SearchRent searchRent;
 
 	@ParameterizedTest
 	@ValueSource(strings = {"", "?limit=150", "?offset=0", "?states=PENDING,REJECTED,ACCEPTED,STARTED,ENDED"})
 	void shouldGetRents(String queryParameters) throws Exception {
-		when(this.searchRentUseCase.getRents(any(SearchRentCriteria.class))).thenReturn(List.of(RENT));
+		when(this.searchRent.getRents(any(SearchRentCriteria.class))).thenReturn(List.of(RENT));
 
 		this.mockMvc.perform(get("/rents" + queryParameters))
 				.andExpect(status().isOk())
@@ -70,7 +70,7 @@ class RentControllerTest {
 
 	@Test
 	void shouldGetRent() throws Exception {
-		when(this.searchRentUseCase.getRent(RENT_ID)).thenReturn(RENT);
+		when(this.searchRent.getRent(RENT_ID)).thenReturn(RENT);
 
 		this.mockMvc.perform(get("/rents/" + RENT_ID))
 				.andExpect(status().isOk())
@@ -86,7 +86,7 @@ class RentControllerTest {
 
 	@Test
 	void shouldNotGetRent() throws Exception {
-		when(this.searchRentUseCase.getRent(RENT_ID)).thenThrow(RentNotFoundException.class);
+		when(this.searchRent.getRent(RENT_ID)).thenThrow(RentNotFoundException.class);
 
 		this.mockMvc.perform(get("/rents/" + RENT_ID))
 				.andExpect(status().isNotFound())
@@ -96,7 +96,7 @@ class RentControllerTest {
 	@Test
 	void shouldCreateRent() throws Exception {
 		String request = this.objectMapper.writeValueAsString(new CreateRentRequest(CUSTOMER_ID, VEHICLE_ID));
-		when(this.rentVehicleUseCase.createRent(CUSTOMER_ID, VEHICLE_ID)).thenReturn(rentInState(RentState.PENDING));
+		when(this.rentVehicle.createRent(CUSTOMER_ID, VEHICLE_ID)).thenReturn(rentInState(RentState.PENDING));
 
 		this.mockMvc.perform(post("/rents").content(request).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isCreated())
@@ -113,7 +113,7 @@ class RentControllerTest {
 	@ParameterizedTest
 	@ValueSource(strings = {"", "{}"})
 	void shouldNotCreateRentWhenRequestBodyIsNotValid(String request) throws Exception {
-		when(this.rentVehicleUseCase.createRent(CUSTOMER_ID, VEHICLE_ID)).thenThrow(RentNotFoundException.class);
+		when(this.rentVehicle.createRent(CUSTOMER_ID, VEHICLE_ID)).thenThrow(RentNotFoundException.class);
 
 		this.mockMvc.perform(post("/rents").content(request).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isBadRequest())

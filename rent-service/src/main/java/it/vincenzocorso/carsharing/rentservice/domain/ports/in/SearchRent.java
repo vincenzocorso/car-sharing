@@ -5,7 +5,7 @@ import it.vincenzocorso.carsharing.rentservice.domain.models.SearchRentCriteria;
 
 import java.util.List;
 
-public interface SearchRentUseCase {
+public interface SearchRent {
 	/**
 	 * Gets all the rents with the given criteria
 	 * @param criteria The search criteria. Null attributes are not considered

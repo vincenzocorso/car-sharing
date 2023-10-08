@@ -7,8 +7,8 @@ import it.vincenzocorso.carsharing.rentservice.domain.exceptions.RentNotFoundExc
 import it.vincenzocorso.carsharing.rentservice.domain.models.Rent;
 import it.vincenzocorso.carsharing.rentservice.domain.models.RentDetails;
 import it.vincenzocorso.carsharing.rentservice.domain.models.SearchRentCriteria;
-import it.vincenzocorso.carsharing.rentservice.domain.ports.in.RentVehicleUseCase;
-import it.vincenzocorso.carsharing.rentservice.domain.ports.in.SearchRentUseCase;
+import it.vincenzocorso.carsharing.rentservice.domain.ports.in.RentVehicle;
+import it.vincenzocorso.carsharing.rentservice.domain.ports.in.SearchRent;
 import it.vincenzocorso.carsharing.rentservice.domain.ports.out.RentRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -16,7 +16,7 @@ import lombok.AllArgsConstructor;
 import java.util.List;
 
 @AllArgsConstructor
-public class RentService implements RentVehicleUseCase, SearchRentUseCase {
+public class RentService implements RentVehicle, SearchRent {
 	public static final String EVENTS_CHANNEL = "rent-service-events";
 	private final RentRepository rentRepository;
 	private final DomainEventProducer domainEventProducer;

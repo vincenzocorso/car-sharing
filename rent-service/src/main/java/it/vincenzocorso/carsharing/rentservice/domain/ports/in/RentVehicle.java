@@ -2,7 +2,7 @@ package it.vincenzocorso.carsharing.rentservice.domain.ports.in;
 
 import it.vincenzocorso.carsharing.rentservice.domain.models.Rent;
 
-public interface RentVehicleUseCase {
+public interface RentVehicle {
 	/**
 	 * Creates a new rent
 	 * @param customerId The id of the customer that started the rent

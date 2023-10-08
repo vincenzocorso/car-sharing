@@ -7,8 +7,8 @@ import it.vincenzocorso.carsharing.rentservice.domain.exceptions.IllegalRentStat
 import it.vincenzocorso.carsharing.rentservice.domain.exceptions.RentNotFoundException;
 import it.vincenzocorso.carsharing.rentservice.domain.models.Rent;
 import it.vincenzocorso.carsharing.rentservice.domain.models.SearchRentCriteria;
-import it.vincenzocorso.carsharing.rentservice.domain.ports.in.RentVehicleUseCase;
-import it.vincenzocorso.carsharing.rentservice.domain.ports.in.SearchRentUseCase;
+import it.vincenzocorso.carsharing.rentservice.domain.ports.in.RentVehicle;
+import it.vincenzocorso.carsharing.rentservice.domain.ports.in.SearchRent;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -20,8 +20,8 @@ import java.util.List;
 @Validated
 @AllArgsConstructor
 public class RentController implements RentRestApi {
-	private final SearchRentUseCase searchRentUseCase;
-	private final RentVehicleUseCase rentVehicleUseCase;
+	private final SearchRent searchRent;
+	private final RentVehicle rentVehicle;
 
 	private final RentMapper rentMapper;
 
@@ -33,18 +33,18 @@ public class RentController implements RentRestApi {
 				.limit(limit)
 				.offset(offset)
 				.build();
-		return this.searchRentUseCase.getRents(searchRentCriteria).stream().map(this.rentMapper::convertToDto).toList();
+		return this.searchRent.getRents(searchRentCriteria).stream().map(this.rentMapper::convertToDto).toList();
 	}
 
 	@Override
 	public RentResponse getRent(String rentId) {
-		Rent retrievedRent = this.searchRentUseCase.getRent(rentId);
+		Rent retrievedRent = this.searchRent.getRent(rentId);
 		return this.rentMapper.convertToDto(retrievedRent);
 	}
 
 	@Override
 	public RentResponse createRent(CreateRentRequest request) {
-		Rent createdRent = this.rentVehicleUseCase.createRent(request.customerId(), request.vehicleId());
+		Rent createdRent = this.rentVehicle.createRent(request.customerId(), request.vehicleId());
 		return this.rentMapper.convertToDto(createdRent);
 	}
 

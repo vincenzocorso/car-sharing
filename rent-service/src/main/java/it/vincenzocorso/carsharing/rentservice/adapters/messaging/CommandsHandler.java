@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import it.vincenzocorso.carsharing.common.exceptions.InternalServerException;
 import it.vincenzocorso.carsharing.common.messaging.commands.Command;
 import it.vincenzocorso.carsharing.common.messaging.commands.CommandHeaders;
-import it.vincenzocorso.carsharing.rentservice.domain.ports.in.RentVehicleUseCase;
+import it.vincenzocorso.carsharing.rentservice.domain.ports.in.RentVehicle;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class CommandsHandler {
     private final ObjectMapper objectMapper;
-    private final RentVehicleUseCase rentVehicleUseCase;
+    private final RentVehicle rentVehicle;
 
     @KafkaListener(topics = "rent-service-commands")
     @Transactional
@@ -45,13 +45,13 @@ public class CommandsHandler {
     private void processRejectRentCommand(RejectRentCommand command) {
         log.info("Processing command: " + command);
 
-        this.rentVehicleUseCase.rejectRent(command.rentId());
+        this.rentVehicle.rejectRent(command.rentId());
     }
 
     private void processAcceptRentCommand(AcceptRentCommand command) {
         log.info("Processing command: " + command);
 
-        this.rentVehicleUseCase.acceptRent(command.rentId());
+        this.rentVehicle.acceptRent(command.rentId());
     }
 }
 
