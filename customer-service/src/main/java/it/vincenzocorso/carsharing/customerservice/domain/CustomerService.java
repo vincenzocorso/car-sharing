@@ -5,9 +5,9 @@ import it.vincenzocorso.carsharing.common.messaging.events.ResultWithEvents;
 import it.vincenzocorso.carsharing.customerservice.domain.models.Customer;
 import it.vincenzocorso.carsharing.customerservice.domain.models.CustomerDetails;
 import it.vincenzocorso.carsharing.customerservice.domain.models.SearchCustomerCriteria;
-import it.vincenzocorso.carsharing.customerservice.domain.ports.in.RegisterCustomerUseCase;
-import it.vincenzocorso.carsharing.customerservice.domain.ports.in.SearchCustomerUseCase;
-import it.vincenzocorso.carsharing.customerservice.domain.ports.in.RentVehicleUseCase;
+import it.vincenzocorso.carsharing.customerservice.domain.ports.in.RegisterCustomer;
+import it.vincenzocorso.carsharing.customerservice.domain.ports.in.SearchCustomer;
+import it.vincenzocorso.carsharing.customerservice.domain.ports.in.RentVehicle;
 import it.vincenzocorso.carsharing.customerservice.domain.ports.out.CustomerRepository;
 import it.vincenzocorso.carsharing.customerservice.domain.exceptions.CustomerNotFoundException;
 import lombok.AllArgsConstructor;
@@ -15,7 +15,7 @@ import lombok.AllArgsConstructor;
 import java.util.List;
 
 @AllArgsConstructor
-public class CustomerService implements RegisterCustomerUseCase, SearchCustomerUseCase, RentVehicleUseCase {
+public class CustomerService implements RegisterCustomer, SearchCustomer, RentVehicle {
 	public static final String EVENTS_CHANNEL = "customer-service-events";
 	private final CustomerRepository customerRepository;
 	private final DomainEventProducer domainEventProducer;

@@ -5,7 +5,7 @@ import it.vincenzocorso.carsharing.customerservice.domain.models.SearchCustomerC
 
 import java.util.List;
 
-public interface SearchCustomerUseCase {
+public interface SearchCustomer {
 	/**
 	 * Gets the customer with the given id
 	 * @param customerId The customer id

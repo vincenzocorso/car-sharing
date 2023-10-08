@@ -5,7 +5,7 @@ import io.smallrye.reactive.messaging.kafka.api.IncomingKafkaRecordMetadata;
 import it.vincenzocorso.carsharing.common.exceptions.InternalServerException;
 import it.vincenzocorso.carsharing.common.messaging.commands.CommandHeaders;
 import it.vincenzocorso.carsharing.common.messaging.commands.CommandProducer;
-import it.vincenzocorso.carsharing.customerservice.domain.ports.in.RentVehicleUseCase;
+import it.vincenzocorso.carsharing.customerservice.domain.ports.in.RentVehicle;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
@@ -19,7 +19,7 @@ import java.util.concurrent.CompletionStage;
 @AllArgsConstructor
 public class CommandsHandler {
     ObjectMapper objectMapper;
-    RentVehicleUseCase rentVehicleUseCase;
+    RentVehicle rentVehicle;
     CommandProducer commandProducer;
 
     @Incoming("customer-service-commands")
@@ -46,7 +46,7 @@ public class CommandsHandler {
         VerifyCustomerCommand command = message.getPayload();
         log.info("Processing command: " + command);
 
-        boolean canRent = this.rentVehicleUseCase.verifyCustomer(command.customerId());
+        boolean canRent = this.rentVehicle.verifyCustomer(command.customerId());
 
         VerifyCustomerCommandReply reply = new VerifyCustomerCommandReply(canRent);
         this.commandProducer.publishReply(responseChannel, messageId, command.customerId(), reply);

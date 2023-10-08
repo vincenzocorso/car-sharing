@@ -6,8 +6,8 @@ import io.quarkus.test.junit.mockito.InjectMock;
 import it.vincenzocorso.carsharing.customerservice.domain.exceptions.CustomerNotFoundException;
 import it.vincenzocorso.carsharing.customerservice.domain.models.CustomerDetails;
 import it.vincenzocorso.carsharing.customerservice.domain.models.SearchCustomerCriteria;
-import it.vincenzocorso.carsharing.customerservice.domain.ports.in.RegisterCustomerUseCase;
-import it.vincenzocorso.carsharing.customerservice.domain.ports.in.SearchCustomerUseCase;
+import it.vincenzocorso.carsharing.customerservice.domain.ports.in.RegisterCustomer;
+import it.vincenzocorso.carsharing.customerservice.domain.ports.in.SearchCustomer;
 import org.apache.http.HttpStatus;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -28,10 +28,10 @@ import static org.mockito.Mockito.*;
 @QuarkusTest
 class CustomerControllerTest {
 	@InjectMock
-	private SearchCustomerUseCase searchCustomerUseCase;
+	private SearchCustomer searchCustomer;
 
 	@InjectMock
-	private RegisterCustomerUseCase registerCustomerUseCase;
+	private RegisterCustomer registerCustomer;
 
 	@Inject
 	ObjectMapper objectMapper;
@@ -40,7 +40,7 @@ class CustomerControllerTest {
 	@ValueSource(strings = {"", "?limit=150", "?offset=0"})
 	void shouldGetCustomers(String queryParameters) {
 		List<CustomerResponse> expectedResponse = List.of(CUSTOMER_RESPONSE);
-		when(this.searchCustomerUseCase.getCustomers(any(SearchCustomerCriteria.class))).thenReturn(List.of(CUSTOMER));
+		when(this.searchCustomer.getCustomers(any(SearchCustomerCriteria.class))).thenReturn(List.of(CUSTOMER));
 
 		List<CustomerResponse> actualResponse = given()
 				.when().get("/customers" + queryParameters)
@@ -67,7 +67,7 @@ class CustomerControllerTest {
 
 	@Test
 	void shouldGetCustomer() {
-		when(this.searchCustomerUseCase.getCustomer(CUSTOMER_ID)).thenReturn(CUSTOMER);
+		when(this.searchCustomer.getCustomer(CUSTOMER_ID)).thenReturn(CUSTOMER);
 
 		CustomerResponse actualCustomerResponse = given()
 				.when().get("/customers/" + CUSTOMER_ID)
@@ -83,7 +83,7 @@ class CustomerControllerTest {
 
 	@Test
 	void shouldNotGetCustomer() {
-		when(this.searchCustomerUseCase.getCustomer(CUSTOMER_ID)).thenThrow(CustomerNotFoundException.class);
+		when(this.searchCustomer.getCustomer(CUSTOMER_ID)).thenThrow(CustomerNotFoundException.class);
 
 		given()
 				.when().get("/customers/" + CUSTOMER_ID)
@@ -96,7 +96,7 @@ class CustomerControllerTest {
 	@Test
 	void shouldRegisterCustomer() throws Exception {
 		String encodedRequest = this.objectMapper.writeValueAsString(REGISTER_CUSTOMER_REQUEST);
-		when(this.registerCustomerUseCase.registerCustomer(any(CustomerDetails.class))).thenReturn(CUSTOMER);
+		when(this.registerCustomer.registerCustomer(any(CustomerDetails.class))).thenReturn(CUSTOMER);
 
 		CustomerResponse actualResponse = given()
 				.contentType(MediaType.APPLICATION_JSON)
