@@ -2,8 +2,7 @@ package it.vincenzocorso.carsharing.common.quarkus.messaging.outbox.mongodb;
 
 import it.vincenzocorso.carsharing.common.messaging.outbox.AbstractOutboxMessageProducer;
 import it.vincenzocorso.carsharing.common.messaging.outbox.OutboxMessage;
-
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public class OutboxMongoMessageProducer extends AbstractOutboxMessageProducer {

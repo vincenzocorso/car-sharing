@@ -2,10 +2,9 @@ package it.vincenzocorso.carsharing.common.quarkus.messaging.outbox.jpa;
 
 import it.vincenzocorso.carsharing.common.messaging.outbox.AbstractOutboxMessageProducer;
 import it.vincenzocorso.carsharing.common.messaging.outbox.OutboxMessage;
-
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
 
 @ApplicationScoped
 public class OutboxJpaMessageProducer extends AbstractOutboxMessageProducer {
