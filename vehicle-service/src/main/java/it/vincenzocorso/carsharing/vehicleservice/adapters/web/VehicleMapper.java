@@ -1,8 +1,7 @@
 package it.vincenzocorso.carsharing.vehicleservice.adapters.web;
 
 import it.vincenzocorso.carsharing.vehicleservice.domain.models.Vehicle;
-
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public class VehicleMapper {

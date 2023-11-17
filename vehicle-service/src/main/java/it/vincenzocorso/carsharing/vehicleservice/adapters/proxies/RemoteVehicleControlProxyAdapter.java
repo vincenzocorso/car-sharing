@@ -1,8 +1,7 @@
 package it.vincenzocorso.carsharing.vehicleservice.adapters.proxies;
 
 import it.vincenzocorso.carsharing.vehicleservice.domain.ports.out.RemoteVehicleControlProxy;
-
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public class RemoteVehicleControlProxyAdapter implements RemoteVehicleControlProxy {

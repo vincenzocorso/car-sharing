@@ -4,7 +4,7 @@ import it.vincenzocorso.carsharing.vehicleservice.domain.models.RateTable;
 import it.vincenzocorso.carsharing.vehicleservice.domain.models.VehicleModel;
 import it.vincenzocorso.carsharing.vehicleservice.domain.models.VehicleModelDetails;
 
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public class VehicleModelMapper {

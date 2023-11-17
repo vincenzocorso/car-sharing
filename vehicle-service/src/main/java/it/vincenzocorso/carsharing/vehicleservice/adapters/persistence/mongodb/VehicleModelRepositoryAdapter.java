@@ -2,9 +2,9 @@ package it.vincenzocorso.carsharing.vehicleservice.adapters.persistence.mongodb;
 
 import it.vincenzocorso.carsharing.vehicleservice.domain.models.VehicleModel;
 import it.vincenzocorso.carsharing.vehicleservice.domain.ports.out.VehicleModelRepository;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
 import java.util.List;
 
 @ApplicationScoped

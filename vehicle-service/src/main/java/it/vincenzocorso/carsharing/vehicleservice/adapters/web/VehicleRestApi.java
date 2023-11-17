@@ -1,9 +1,9 @@
 package it.vincenzocorso.carsharing.vehicleservice.adapters.web;
 
-import javax.validation.Valid;
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import jakarta.validation.Valid;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 
 @Path("/vehicles")
 @Produces(MediaType.APPLICATION_JSON)

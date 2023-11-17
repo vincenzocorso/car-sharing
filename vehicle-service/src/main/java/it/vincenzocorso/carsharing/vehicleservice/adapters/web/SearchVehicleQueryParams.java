@@ -1,11 +1,12 @@
 package it.vincenzocorso.carsharing.vehicleservice.adapters.web;
 
-import javax.validation.constraints.AssertTrue;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.Pattern;
-import javax.ws.rs.DefaultValue;
-import javax.ws.rs.QueryParam;
+import jakarta.validation.constraints.AssertTrue;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Pattern;
+import jakarta.ws.rs.DefaultValue;
+import jakarta.ws.rs.QueryParam;
+
 import java.util.List;
 
 public class SearchVehicleQueryParams {

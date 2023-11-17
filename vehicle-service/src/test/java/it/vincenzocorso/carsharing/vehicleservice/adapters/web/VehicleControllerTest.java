@@ -1,28 +1,28 @@
 package it.vincenzocorso.carsharing.vehicleservice.adapters.web;
 
+import io.quarkus.test.InjectMock;
 import io.quarkus.test.junit.QuarkusTest;
-import io.quarkus.test.junit.mockito.InjectMock;
 import it.vincenzocorso.carsharing.vehicleservice.domain.exceptions.VehicleNotFoundException;
 import it.vincenzocorso.carsharing.vehicleservice.domain.models.SearchVehicleCriteria;
 import it.vincenzocorso.carsharing.vehicleservice.domain.ports.in.RentVehicleUseCase;
 import it.vincenzocorso.carsharing.vehicleservice.domain.ports.in.SearchVehicleUseCase;
 import it.vincenzocorso.carsharing.vehicleservice.domain.ports.in.UpdateVehicleStatusUseCase;
+import jakarta.ws.rs.core.MediaType;
 import org.apache.http.HttpStatus;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import javax.ws.rs.core.MediaType;
 import java.util.List;
 
-import static io.restassured.RestAssured.*;
+import static io.restassured.RestAssured.given;
 import static it.vincenzocorso.carsharing.vehicleservice.adapters.web.FakeVehicleDto.VEHICLE_RESPONSE;
 import static it.vincenzocorso.carsharing.vehicleservice.adapters.web.FakeVehicleModelDto.VEHICLE_MODEL_RESPONSE;
 import static it.vincenzocorso.carsharing.vehicleservice.domain.FakeVehicle.*;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 @QuarkusTest
 class VehicleControllerTest {

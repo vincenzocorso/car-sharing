@@ -12,8 +12,8 @@ import it.vincenzocorso.carsharing.vehicleservice.domain.ports.out.VehicleReposi
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

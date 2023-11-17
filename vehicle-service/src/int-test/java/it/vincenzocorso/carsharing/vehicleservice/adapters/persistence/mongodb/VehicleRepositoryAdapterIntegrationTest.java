@@ -8,13 +8,13 @@ import it.vincenzocorso.carsharing.vehicleservice.domain.exceptions.VehicleNotFo
 import it.vincenzocorso.carsharing.vehicleservice.domain.models.SearchVehicleCriteria;
 import it.vincenzocorso.carsharing.vehicleservice.domain.models.Vehicle;
 import it.vincenzocorso.carsharing.vehicleservice.domain.models.VehicleState;
+import jakarta.inject.Inject;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.testcontainers.containers.MongoDBContainer;
 import org.testcontainers.junit.jupiter.Container;
 
-import javax.inject.Inject;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;

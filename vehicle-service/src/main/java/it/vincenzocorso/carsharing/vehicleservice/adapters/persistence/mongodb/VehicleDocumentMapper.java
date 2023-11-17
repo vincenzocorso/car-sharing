@@ -5,9 +5,9 @@ import com.mongodb.client.model.geojson.Position;
 import it.vincenzocorso.carsharing.vehicleservice.domain.models.Vehicle;
 import it.vincenzocorso.carsharing.vehicleservice.domain.models.VehicleState;
 import it.vincenzocorso.carsharing.vehicleservice.domain.models.VehicleStatus;
+import jakarta.enterprise.context.ApplicationScoped;
 import org.bson.types.ObjectId;
 
-import javax.enterprise.context.ApplicationScoped;
 import java.time.Instant;
 import java.util.List;
 

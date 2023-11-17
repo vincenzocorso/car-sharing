@@ -6,13 +6,13 @@ import it.vincenzocorso.carsharing.vehicleservice.domain.models.VehicleState;
 import it.vincenzocorso.carsharing.vehicleservice.domain.ports.in.RentVehicleUseCase;
 import it.vincenzocorso.carsharing.vehicleservice.domain.ports.in.SearchVehicleUseCase;
 import it.vincenzocorso.carsharing.vehicleservice.domain.ports.in.UpdateVehicleStatusUseCase;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.ws.rs.core.Response;
 import lombok.AllArgsConstructor;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.ws.rs.core.Response;
 import java.util.List;
 
-import static javax.ws.rs.core.Response.Status.*;
+import static jakarta.ws.rs.core.Response.Status.OK;
 
 @ApplicationScoped
 @AllArgsConstructor

@@ -3,7 +3,7 @@ package it.vincenzocorso.carsharing.vehicleservice.adapters.persistence.mongodb;
 import it.vincenzocorso.carsharing.vehicleservice.domain.models.*;
 import org.bson.types.ObjectId;
 
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public class VehicleModelDocumentMapper {

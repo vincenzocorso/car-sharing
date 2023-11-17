@@ -5,9 +5,8 @@ import it.vincenzocorso.carsharing.vehicleservice.domain.VehicleService;
 import it.vincenzocorso.carsharing.vehicleservice.domain.ports.out.RemoteVehicleControlProxy;
 import it.vincenzocorso.carsharing.vehicleservice.domain.ports.out.VehicleModelRepository;
 import it.vincenzocorso.carsharing.vehicleservice.domain.ports.out.VehicleRepository;
-
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Produces;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Produces;
 
 @ApplicationScoped
 public class BeansConfig {
