@@ -1,8 +1,8 @@
 package it.vincenzocorso.carsharing.customerservice.adapters.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.quarkus.test.InjectMock;
 import io.quarkus.test.junit.QuarkusTest;
-import io.quarkus.test.junit.mockito.InjectMock;
 import it.vincenzocorso.carsharing.customerservice.domain.exceptions.CustomerNotFoundException;
 import it.vincenzocorso.carsharing.customerservice.domain.models.CustomerDetails;
 import it.vincenzocorso.carsharing.customerservice.domain.models.SearchCustomerCriteria;
