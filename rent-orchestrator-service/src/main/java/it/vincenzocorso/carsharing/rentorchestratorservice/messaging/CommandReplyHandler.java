@@ -1,20 +1,19 @@
 package it.vincenzocorso.carsharing.rentorchestratorservice.messaging;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.smallrye.reactive.messaging.annotations.Blocking;
 import io.smallrye.reactive.messaging.kafka.api.IncomingKafkaRecordMetadata;
 import io.temporal.client.WorkflowClient;
 import it.vincenzocorso.carsharing.common.exceptions.InternalServerException;
 import it.vincenzocorso.carsharing.common.messaging.commands.CommandReplyHeaders;
 import it.vincenzocorso.carsharing.rentorchestratorservice.sagas.CreateRentSagaWorkflow;
 import it.vincenzocorso.carsharing.rentorchestratorservice.sagas.WorkflowCorrelation;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
 import org.eclipse.microprofile.reactive.messaging.Message;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.transaction.Transactional;
 import java.util.concurrent.CompletionStage;
 
 @ApplicationScoped

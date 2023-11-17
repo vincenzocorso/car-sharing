@@ -3,11 +3,10 @@ package it.vincenzocorso.carsharing.rentorchestratorservice.sagas;
 import io.temporal.activity.Activity;
 import it.vincenzocorso.carsharing.common.messaging.commands.Command;
 import it.vincenzocorso.carsharing.common.messaging.commands.CommandProducer;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
-import javax.enterprise.context.ApplicationScoped;
-import javax.transaction.Transactional;
 
 @ApplicationScoped
 @AllArgsConstructor

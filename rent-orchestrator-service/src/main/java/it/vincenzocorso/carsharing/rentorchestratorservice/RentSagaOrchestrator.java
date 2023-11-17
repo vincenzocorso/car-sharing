@@ -7,10 +7,9 @@ import io.temporal.worker.Worker;
 import it.vincenzocorso.carsharing.common.exceptions.InternalServerException;
 import it.vincenzocorso.carsharing.rentorchestratorservice.sagas.CreateRentSagaState;
 import it.vincenzocorso.carsharing.rentorchestratorservice.sagas.CreateRentSagaWorkflow;
+import jakarta.enterprise.context.ApplicationScoped;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
-import javax.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 @AllArgsConstructor
