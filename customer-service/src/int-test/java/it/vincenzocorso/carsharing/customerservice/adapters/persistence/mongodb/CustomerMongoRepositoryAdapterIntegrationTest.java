@@ -5,14 +5,13 @@ import io.quarkus.test.common.QuarkusTestResourceLifecycleManager;
 import io.quarkus.test.junit.QuarkusTest;
 import it.vincenzocorso.carsharing.customerservice.domain.models.Customer;
 import it.vincenzocorso.carsharing.customerservice.domain.models.SearchCustomerCriteria;
+import jakarta.inject.Inject;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.testcontainers.containers.MongoDBContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
-
-import javax.inject.Inject;
 
 import java.util.HashMap;
 import java.util.List;
@@ -21,7 +20,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.mongodb.assertions.Assertions.*;
+import static com.mongodb.assertions.Assertions.assertTrue;
 import static it.vincenzocorso.carsharing.customerservice.domain.FakeCustomer.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
