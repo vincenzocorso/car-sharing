@@ -3,9 +3,8 @@ package it.vincenzocorso.carsharing.customerservice.adapters.persistence.mongodb
 import it.vincenzocorso.carsharing.customerservice.domain.models.Customer;
 import it.vincenzocorso.carsharing.customerservice.domain.models.CustomerDetails;
 import it.vincenzocorso.carsharing.customerservice.domain.models.DriverLicense;
+import jakarta.enterprise.context.ApplicationScoped;
 import org.bson.types.ObjectId;
-
-import javax.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public class CustomerDocumentMapper {

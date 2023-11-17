@@ -5,12 +5,13 @@ import it.vincenzocorso.carsharing.customerservice.domain.models.CustomerDetails
 import it.vincenzocorso.carsharing.customerservice.domain.models.SearchCustomerCriteria;
 import it.vincenzocorso.carsharing.customerservice.domain.ports.in.RegisterCustomer;
 import it.vincenzocorso.carsharing.customerservice.domain.ports.in.SearchCustomer;
+import jakarta.ws.rs.core.Response;
 import lombok.AllArgsConstructor;
 
-import javax.ws.rs.core.Response;
 import java.util.List;
 
-import static javax.ws.rs.core.Response.Status.*;
+import static jakarta.ws.rs.core.Response.Status.CREATED;
+import static jakarta.ws.rs.core.Response.Status.OK;
 
 @AllArgsConstructor
 public class CustomerController implements CustomerRestApi {

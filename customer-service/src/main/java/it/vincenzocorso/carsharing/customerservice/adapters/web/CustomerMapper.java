@@ -3,8 +3,7 @@ package it.vincenzocorso.carsharing.customerservice.adapters.web;
 import it.vincenzocorso.carsharing.customerservice.domain.models.Customer;
 import it.vincenzocorso.carsharing.customerservice.domain.models.CustomerDetails;
 import it.vincenzocorso.carsharing.customerservice.domain.models.DriverLicense;
-
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public class CustomerMapper {

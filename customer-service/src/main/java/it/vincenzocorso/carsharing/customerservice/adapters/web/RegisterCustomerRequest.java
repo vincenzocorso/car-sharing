@@ -1,8 +1,8 @@
 package it.vincenzocorso.carsharing.customerservice.adapters.web;
 
+import jakarta.validation.constraints.*;
 import lombok.Builder;
 
-import javax.validation.constraints.*;
 import java.time.LocalDate;
 
 @Builder

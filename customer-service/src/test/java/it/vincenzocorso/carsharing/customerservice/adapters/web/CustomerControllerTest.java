@@ -8,22 +8,23 @@ import it.vincenzocorso.carsharing.customerservice.domain.models.CustomerDetails
 import it.vincenzocorso.carsharing.customerservice.domain.models.SearchCustomerCriteria;
 import it.vincenzocorso.carsharing.customerservice.domain.ports.in.RegisterCustomer;
 import it.vincenzocorso.carsharing.customerservice.domain.ports.in.SearchCustomer;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.core.MediaType;
 import org.apache.http.HttpStatus;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import javax.inject.Inject;
-import javax.ws.rs.core.MediaType;
-
 import java.util.List;
 
-import static io.restassured.RestAssured.*;
+import static io.restassured.RestAssured.given;
+import static it.vincenzocorso.carsharing.customerservice.adapters.web.FakeCustomerDto.CUSTOMER_RESPONSE;
+import static it.vincenzocorso.carsharing.customerservice.adapters.web.FakeCustomerDto.REGISTER_CUSTOMER_REQUEST;
 import static it.vincenzocorso.carsharing.customerservice.domain.FakeCustomer.*;
-import static it.vincenzocorso.carsharing.customerservice.adapters.web.FakeCustomerDto.*;
-import static org.assertj.core.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.when;
 
 @QuarkusTest
 class CustomerControllerTest {

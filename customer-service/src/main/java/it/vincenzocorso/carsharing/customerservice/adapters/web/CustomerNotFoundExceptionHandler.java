@@ -4,10 +4,10 @@ import it.vincenzocorso.carsharing.common.web.ErrorResponse;
 import it.vincenzocorso.carsharing.common.web.ErrorResponses;
 import it.vincenzocorso.carsharing.common.web.Issue;
 import it.vincenzocorso.carsharing.customerservice.domain.exceptions.CustomerNotFoundException;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.ext.ExceptionMapper;
+import jakarta.ws.rs.ext.Provider;
 
-import javax.ws.rs.core.Response;
-import javax.ws.rs.ext.ExceptionMapper;
-import javax.ws.rs.ext.Provider;
 import java.util.List;
 
 @Provider

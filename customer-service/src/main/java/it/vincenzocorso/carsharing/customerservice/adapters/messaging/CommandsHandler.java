@@ -6,12 +6,12 @@ import it.vincenzocorso.carsharing.common.exceptions.InternalServerException;
 import it.vincenzocorso.carsharing.common.messaging.commands.CommandHeaders;
 import it.vincenzocorso.carsharing.common.messaging.commands.CommandProducer;
 import it.vincenzocorso.carsharing.customerservice.domain.ports.in.RentVehicle;
+import jakarta.enterprise.context.ApplicationScoped;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
 import org.eclipse.microprofile.reactive.messaging.Message;
 
-import javax.enterprise.context.ApplicationScoped;
 import java.util.concurrent.CompletionStage;
 
 @ApplicationScoped

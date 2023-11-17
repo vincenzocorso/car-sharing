@@ -3,13 +3,13 @@ package it.vincenzocorso.carsharing.customerservice.adapters.web;
 import it.vincenzocorso.carsharing.common.web.ErrorResponse;
 import it.vincenzocorso.carsharing.common.web.ErrorResponses;
 import it.vincenzocorso.carsharing.common.web.Issue;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Path;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.ext.ExceptionMapper;
+import jakarta.ws.rs.ext.Provider;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
-import javax.validation.Path;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.ext.ExceptionMapper;
-import javax.ws.rs.ext.Provider;
 import java.util.Iterator;
 import java.util.List;
 

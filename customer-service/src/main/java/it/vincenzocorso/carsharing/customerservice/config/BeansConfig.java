@@ -4,9 +4,8 @@ import it.vincenzocorso.carsharing.common.messaging.events.DomainEventProducer;
 import it.vincenzocorso.carsharing.customerservice.adapters.web.ValidationExceptionHandler;
 import it.vincenzocorso.carsharing.customerservice.domain.CustomerService;
 import it.vincenzocorso.carsharing.customerservice.domain.ports.out.CustomerRepository;
-
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Produces;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Produces;
 
 @ApplicationScoped
 public class BeansConfig {

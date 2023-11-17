@@ -4,9 +4,9 @@ import io.quarkus.mongodb.panache.PanacheQuery;
 import it.vincenzocorso.carsharing.customerservice.domain.models.Customer;
 import it.vincenzocorso.carsharing.customerservice.domain.models.SearchCustomerCriteria;
 import it.vincenzocorso.carsharing.customerservice.domain.ports.out.CustomerRepository;
+import jakarta.enterprise.context.ApplicationScoped;
 import org.bson.types.ObjectId;
 
-import javax.enterprise.context.ApplicationScoped;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
