@@ -29,7 +29,7 @@ public class CreateRentSagaWorkflowImpl implements CreateRentSagaWorkflow {
 
             this.activities.verifyCustomer(state.customerId);
             Workflow.await(Duration.ofMinutes(5), () -> state.canCustomerRent != null);
-            if(!state.canCustomerRent) {
+            if(state.canCustomerRent == null || !state.canCustomerRent) {
                 state.rejectReason = "Customer cannot rent a vehicle";
                 saga.compensate();
                 return;
@@ -37,7 +37,7 @@ public class CreateRentSagaWorkflowImpl implements CreateRentSagaWorkflow {
 
             this.activities.bookVehicle(state.vehicleId);
             Workflow.await(Duration.ofMinutes(5), () -> state.hasVehicleBeenBooked != null);
-            if(!state.hasVehicleBeenBooked) {
+            if(state.hasVehicleBeenBooked == null || !state.hasVehicleBeenBooked) {
                 state.rejectReason = "Vehicle cannot be booked";
                 saga.compensate();
                 return;
