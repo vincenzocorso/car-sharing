@@ -210,3 +210,9 @@ services:
       - vehicle-service
     volumes:
       - ./scripts/nginx-gateway.conf:/etc/nginx/nginx.conf
+
+  structurizr:
+    image: structurizr/lite:3193
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
