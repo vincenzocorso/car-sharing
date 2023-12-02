@@ -6,3 +6,7 @@ build
 
 # Ignore IntelliJ IDEA project files
 .idea
+
+# Ignore Docker Compose env files
+.env
+env.txt

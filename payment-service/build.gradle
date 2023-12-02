@@ -1,0 +1,20 @@
+plugins {
+    id 'java.build-conventions'
+    id 'service.quarkus-conventions'
+}
+
+dependencies {
+    implementation project(':common')
+    implementation project(':common-quarkus:outbox-mongo-extension:runtime')
+
+    implementation 'io.quarkus:quarkus-resteasy-jackson'
+    implementation 'io.quarkus:quarkus-hibernate-validator'
+    implementation 'io.quarkus:quarkus-hibernate-orm-panache'
+    implementation 'io.quarkus:quarkus-jdbc-postgresql'
+    implementation 'io.quarkus:quarkus-smallrye-reactive-messaging-kafka'
+    implementation 'com.stripe:stripe-java:24.2.0'
+
+    intTestImplementation 'org.testcontainers:testcontainers:1.16.0'
+    intTestImplementation 'org.testcontainers:junit-jupiter:1.16.0'
+    intTestImplementation 'org.testcontainers:mongodb:1.16.0'
+}

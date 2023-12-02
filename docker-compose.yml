@@ -199,6 +199,22 @@ services:
       MONGODB_PASSWORD: password
       KAFKA_BOOSTRAP_SERVERS: kafka:9092
 
+  payment-service:
+    image: car-sharing/payment-service
+    restart: unless-stopped
+    depends_on:
+      - kafka
+      - postgres
+      - debezium-connect
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DATABASE: db
+      POSTGRES_USERNAME: admin
+      POSTGRES_PASSWORD: admin
+      KAFKA_BOOSTRAP_SERVERS: kafka:9092
+      STRIPE_API_KEY: ${STRIPE_API_KEY}
+
   api-gateway:
     image: nginx:latest
     ports:

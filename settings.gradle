@@ -12,5 +12,6 @@ include 'customer-service'
 include 'rent-service'
 include 'rent-orchestrator-service'
 include 'vehicle-service'
+include 'payment-service'
 
 include 'custom-debezium-transformer'
