@@ -1,5 +1,4 @@
 plugins {
-    id 'org.unbroken-dome.test-sets'
     id 'com.adarshr.test-logger'
     id 'idea'
     id 'java'
@@ -10,8 +9,38 @@ java {
     targetCompatibility = JavaVersion.VERSION_17
 }
 
-testSets  {
-    intTest { dirName = 'int-test' }
+testing {
+    suites {
+        test {
+            useJUnitJupiter()
+        }
+
+        intTest(JvmTestSuite) {
+            sources.java.srcDirs = ['src/int-test/java']
+            sources.resources.srcDirs = ['src/int-test/resources']
+
+            dependencies {
+                implementation project()
+                implementation sourceSets.test.output
+            }
+
+            targets {
+                all {
+                    testTask.configure {
+                        shouldRunAfter(test)
+                    }
+                }
+            }
+        }
+    }
+}
+
+configurations {
+    intTestImplementation.extendsFrom testImplementation
+}
+
+tasks.named('check') {
+    dependsOn(testing.suites.intTest)
 }
 
 repositories {
@@ -22,8 +51,6 @@ repositories {
 dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.20'
     annotationProcessor 'org.projectlombok:lombok:1.18.20'
-
-    intTestImplementation sourceSets.test.output
 }
 
 project.ext {
@@ -35,8 +62,4 @@ idea {
     module {
         downloadJavadoc = true
     }
-}
-
-tasks.withType(Test) {
-    useJUnitPlatform()
 }

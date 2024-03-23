@@ -9,7 +9,6 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-gradle-plugin:3.0.1'
 	implementation 'io.spring.gradle:dependency-management-plugin:1.0.11.RELEASE'
-	implementation 'org.unbroken-dome.gradle-plugins:gradle-testsets-plugin:4.0.0'
 	implementation 'io.quarkus:gradle-application-plugin:3.5.2'
 	implementation 'io.quarkus.extension:gradle-extension-plugin:3.5.2'
 	implementation 'org.kordamp.gradle:jandex-gradle-plugin:0.11.0'
