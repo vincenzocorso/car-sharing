@@ -31,7 +31,7 @@ public class PaymentMethodEntityMapper {
         return paymentMethodEntity;
     }
 
-    private String encodeMetadata(Map<String, String> metadata) {
+    public String encodeMetadata(Map<String, String> metadata) {
         try {
             return objectMapper.writeValueAsString(metadata);
         } catch (Exception ex) {

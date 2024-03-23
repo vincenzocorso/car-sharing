@@ -5,4 +5,5 @@ import it.vincenzocorso.carsharing.paymentservice.domain.models.PaymentMethodDet
 
 public interface SavePaymentMethod {
     PaymentMethod savePaymentMethod(PaymentMethodDetails details);
+    PaymentMethod enablePaymentMethod(String paymentMethodId);
 }

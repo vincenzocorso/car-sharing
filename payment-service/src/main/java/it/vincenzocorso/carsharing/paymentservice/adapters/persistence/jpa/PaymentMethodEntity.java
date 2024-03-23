@@ -1,29 +1,29 @@
 package it.vincenzocorso.carsharing.paymentservice.adapters.persistence.jpa;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "payment_methods")
-public class PaymentMethodEntity extends PanacheEntityBase {
+@NoArgsConstructor
+public class PaymentMethodEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "payment_method_id")
     public String id;
 
-    @Column(name = "external_id", nullable = false)
+    @Column(name = "external_id")
     public String externalId;
 
-    @Column(name = "customer_id", nullable = false)
+    @Column(name = "customer_id")
     public String customerId;
 
-    @Column(name = "state", nullable = false)
+    @Column(name = "state")
     public String state;
 
-    @Column(name = "metadata", nullable = false)
+    @Column(name = "metadata")
     public String metadata;
 
     @Version
-    @Column(name = "version", nullable = false)
+    @Column(name = "version")
     public Long version;
 }
