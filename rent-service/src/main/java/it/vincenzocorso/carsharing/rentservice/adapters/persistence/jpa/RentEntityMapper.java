@@ -8,6 +8,8 @@ import it.vincenzocorso.carsharing.rentservice.domain.models.RentStateTransition
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -36,7 +38,7 @@ public class RentEntityMapper {
 		RentStateTransitionEntity transitionEntity = new RentStateTransitionEntity();
 		transitionEntity.setId(new RentStateTransitionId(rent, transition.getSequenceNumber()));
 		transitionEntity.setState(transition.getState().toString());
-		transitionEntity.setTimestamp(transition.getTimestamp());
+		transitionEntity.setTimestamp(LocalDateTime.ofInstant(transition.getTimestamp(), ZoneOffset.UTC));
 		return transitionEntity;
 	}
 
@@ -50,7 +52,7 @@ public class RentEntityMapper {
 	}
 
 	private RentStateTransition convertFromEntity(RentStateTransitionEntity transitionEntity) {
-		Instant timestamp = transitionEntity.getTimestamp();
+		Instant timestamp = transitionEntity.getTimestamp().toInstant(ZoneOffset.UTC);
 		RentState rentState = RentState.valueOf(transitionEntity.getState());
 		Integer sequenceNumber = transitionEntity.getId().getSequenceNumber();
 		return new RentStateTransition(timestamp, rentState, sequenceNumber);

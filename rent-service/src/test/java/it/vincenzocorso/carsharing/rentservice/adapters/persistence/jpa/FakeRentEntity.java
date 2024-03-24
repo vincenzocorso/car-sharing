@@ -4,6 +4,7 @@ import it.vincenzocorso.carsharing.rentservice.adapters.persistence.RentWrapper;
 import it.vincenzocorso.carsharing.rentservice.domain.models.Rent;
 import it.vincenzocorso.carsharing.rentservice.domain.models.RentStateTransition;
 
+import java.time.ZoneOffset;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -28,7 +29,7 @@ public class FakeRentEntity {
 					.orElse(null);
 			assertNotNull(actualTransition);
 			assertEquals(expectedTransition.getState().toString(), actualTransition.getState());
-			assertEquals(expectedTransition.getTimestamp(), actualTransition.getTimestamp());
+			assertEquals(expectedTransition.getTimestamp(), actualTransition.getTimestamp().toInstant(ZoneOffset.UTC));
 		}
 	}
 }

@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "rent_state_transitions")
@@ -20,7 +20,7 @@ public class RentStateTransitionEntity {
 	private RentStateTransitionId id;
 
 	@Column(name = "timestamp", nullable = false)
-	private Instant timestamp;
+	private LocalDateTime timestamp;
 
 	@Column(name = "state", nullable = false)
 	private String state;
