@@ -9,13 +9,17 @@ import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Component
 public class RentEntityMapper {
 	public RentEntity convertToEntity(Rent rent) {
 		RentEntity rentEntity = new RentEntity();
-		rentEntity.setId(rent.getId());
+		rentEntity.setId(Optional.ofNullable(rent.getId())
+				.map(UUID::fromString)
+				.orElse(null));
 		rentEntity.setCustomerId(rent.getDetails().customerId());
 		rentEntity.setVehicleId(rent.getDetails().vehicleId());
 		rentEntity.setCurrentState(rent.getCurrentState().toString());
@@ -37,7 +41,9 @@ public class RentEntityMapper {
 	}
 
 	public Rent convertFromEntity(RentEntity rentEntity) {
-		String rentId = rentEntity.getId();
+		String rentId = Optional.ofNullable(rentEntity.getId())
+				.map(UUID::toString)
+				.orElse(null);
 		RentDetails rentDetails = new RentDetails(rentEntity.getCustomerId(), rentEntity.getVehicleId());
 		List<RentStateTransition> transitions = rentEntity.getStateTransitions().stream().map(this::convertFromEntity).collect(Collectors.toList());
 		return new RentWrapper(rentId, rentDetails, transitions, rentEntity.getVersion());

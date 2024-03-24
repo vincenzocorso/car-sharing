@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -26,7 +27,10 @@ public class RentJPARepositoryAdapter implements RentRepository {
 
 	@Override
 	public Optional<Rent> findById(String rentId) {
-		return this.rentRepository.findById(rentId).map(this.rentMapper::convertFromEntity);
+		return Optional.ofNullable(rentId)
+				.map(UUID::fromString)
+				.flatMap(this.rentRepository::findById)
+				.map(this.rentMapper::convertFromEntity);
 	}
 
 	@Override

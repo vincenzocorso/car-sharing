@@ -8,6 +8,7 @@ import org.hibernate.annotations.UuidGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "rents")
@@ -19,7 +20,7 @@ public class RentEntity {
 	@GeneratedValue
 	@UuidGenerator
 	@Column(name = "rent_id")
-	private String id;
+	private UUID id;
 
 	@Column(name = "customer_id", nullable = false)
 	private String customerId;
