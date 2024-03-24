@@ -37,7 +37,8 @@ class RentJPARepositoryAdapterIntegrationTest {
 		registry.add("spring.datasource.username", postgreSQLContainer::getUsername);
 		registry.add("spring.datasource.password", postgreSQLContainer::getPassword);
 		registry.add("spring.datasource.driver-class-name", postgreSQLContainer::getDriverClassName);
-		registry.add("spring.jpa.hibernate.ddl-auto", () -> "create-drop");
+		registry.add("spring.jpa.hibernate.ddl-auto", () -> "none");
+		registry.add("spring.flyway.defaultSchema", () -> "public");
 	}
 
 	@Autowired
