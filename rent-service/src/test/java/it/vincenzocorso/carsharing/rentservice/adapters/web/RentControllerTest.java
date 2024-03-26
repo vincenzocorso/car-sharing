@@ -3,7 +3,7 @@ package it.vincenzocorso.carsharing.rentservice.adapters.web;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.vincenzocorso.carsharing.rentservice.config.WebConfig;
 import it.vincenzocorso.carsharing.rentservice.domain.exceptions.RentNotFoundException;
-import it.vincenzocorso.carsharing.rentservice.domain.models.RentState;
+import it.vincenzocorso.carsharing.rentservice.domain.models.Rent;
 import it.vincenzocorso.carsharing.rentservice.domain.models.SearchRentCriteria;
 import it.vincenzocorso.carsharing.rentservice.domain.ports.in.RentVehicle;
 import it.vincenzocorso.carsharing.rentservice.domain.ports.in.SearchRent;
@@ -18,8 +18,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
+import java.util.UUID;
 
-import static it.vincenzocorso.carsharing.rentservice.domain.FakeRent.*;
+import static it.vincenzocorso.carsharing.rentservice.domain.models.RandomRent.randomRent;
+import static it.vincenzocorso.carsharing.rentservice.domain.models.RentState.*;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -43,19 +45,28 @@ class RentControllerTest {
 	@ParameterizedTest
 	@ValueSource(strings = {"", "?limit=150", "?offset=0", "?states=PENDING,REJECTED,ACCEPTED,STARTED,ENDED"})
 	void shouldGetRents(String queryParameters) throws Exception {
-		when(this.searchRent.getRents(any(SearchRentCriteria.class))).thenReturn(List.of(RENT));
+		Rent rent1 = randomRent(ENDED);
+		Rent rent2 = randomRent(PENDING);
+		when(this.searchRent.getRents(any(SearchRentCriteria.class))).thenReturn(List.of(rent1, rent2));
 
 		this.mockMvc.perform(get("/rents" + queryParameters))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 				.andExpect(jsonPath("$").isArray())
-				.andExpect(jsonPath("$[0].rentId").value(RENT_ID))
-				.andExpect(jsonPath("$[0].customerId").value(CUSTOMER_ID))
-				.andExpect(jsonPath("$[0].vehicleId").value(VEHICLE_ID))
-				.andExpect(jsonPath("$[0].state").value(TRANSITION_4_STATE.toString()))
-				.andExpect(jsonPath("$[0].acceptedAt").value(TRANSITION_2_TIMESTAMP.toString()))
-				.andExpect(jsonPath("$[0].startedAt").value(TRANSITION_3_TIMESTAMP.toString()))
-				.andExpect(jsonPath("$[0].endedAt").value(TRANSITION_4_TIMESTAMP.toString()));
+				.andExpect(jsonPath("$[0].rentId").value(rent1.getId()))
+				.andExpect(jsonPath("$[0].customerId").value(rent1.getDetails().customerId()))
+				.andExpect(jsonPath("$[0].vehicleId").value(rent1.getDetails().vehicleId()))
+				.andExpect(jsonPath("$[0].state").value(ENDED.toString()))
+				.andExpect(jsonPath("$[0].acceptedAt").value(rent1.getStateTransitions().get(1).getTimestamp().toString()))
+				.andExpect(jsonPath("$[0].startedAt").value(rent1.getStateTransitions().get(2).getTimestamp().toString()))
+				.andExpect(jsonPath("$[0].endedAt").value(rent1.getStateTransitions().get(3).getTimestamp().toString()))
+				.andExpect(jsonPath("$[1].rentId").value(rent2.getId()))
+				.andExpect(jsonPath("$[1].customerId").value(rent2.getDetails().customerId()))
+				.andExpect(jsonPath("$[1].vehicleId").value(rent2.getDetails().vehicleId()))
+				.andExpect(jsonPath("$[1].state").value(PENDING.toString()))
+				.andExpect(jsonPath("$[1].acceptedAt").doesNotExist())
+				.andExpect(jsonPath("$[1].startedAt").doesNotExist())
+				.andExpect(jsonPath("$[1].endedAt").doesNotExist());
 	}
 
 	@ParameterizedTest
@@ -70,41 +81,46 @@ class RentControllerTest {
 
 	@Test
 	void shouldGetRent() throws Exception {
-		when(this.searchRent.getRent(RENT_ID)).thenReturn(RENT);
+		Rent rent = randomRent(ENDED);
+		when(this.searchRent.getRent(rent.getId())).thenReturn(rent);
 
-		this.mockMvc.perform(get("/rents/" + RENT_ID))
+		this.mockMvc.perform(get("/rents/" + rent.getId()))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-				.andExpect(jsonPath("$.rentId").value(RENT_ID))
-				.andExpect(jsonPath("$.customerId").value(CUSTOMER_ID))
-				.andExpect(jsonPath("$.vehicleId").value(VEHICLE_ID))
-				.andExpect(jsonPath("$.state").value(TRANSITION_4_STATE.toString()))
-				.andExpect(jsonPath("$.acceptedAt").value(TRANSITION_2_TIMESTAMP.toString()))
-				.andExpect(jsonPath("$.startedAt").value(TRANSITION_3_TIMESTAMP.toString()))
-				.andExpect(jsonPath("$.endedAt").value(TRANSITION_4_TIMESTAMP.toString()));
+				.andExpect(jsonPath("$.rentId").value(rent.getId()))
+				.andExpect(jsonPath("$.customerId").value(rent.getDetails().customerId()))
+				.andExpect(jsonPath("$.vehicleId").value(rent.getDetails().vehicleId()))
+				.andExpect(jsonPath("$.state").value(ENDED.toString()))
+				.andExpect(jsonPath("$.acceptedAt").value(rent.getStateTransitions().get(1).getTimestamp().toString()))
+				.andExpect(jsonPath("$.startedAt").value(rent.getStateTransitions().get(2).getTimestamp().toString()))
+				.andExpect(jsonPath("$.endedAt").value(rent.getStateTransitions().get(3).getTimestamp().toString()));
 	}
 
 	@Test
 	void shouldNotGetRent() throws Exception {
-		when(this.searchRent.getRent(RENT_ID)).thenThrow(RentNotFoundException.class);
+		String rentId = UUID.randomUUID().toString();
+		when(this.searchRent.getRent(rentId)).thenThrow(RentNotFoundException.class);
 
-		this.mockMvc.perform(get("/rents/" + RENT_ID))
+		this.mockMvc.perform(get("/rents/" + rentId))
 				.andExpect(status().isNotFound())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON));
 	}
 
 	@Test
 	void shouldCreateRent() throws Exception {
-		String request = this.objectMapper.writeValueAsString(new CreateRentRequest(CUSTOMER_ID, VEHICLE_ID));
-		when(this.rentVehicle.createRent(CUSTOMER_ID, VEHICLE_ID)).thenReturn(rentInState(RentState.PENDING));
+		Rent persistedRent = randomRent(PENDING);
+		String customerId = persistedRent.getDetails().customerId();
+		String vehicleId = persistedRent.getDetails().vehicleId();
+		String request = this.objectMapper.writeValueAsString(new CreateRentRequest(customerId, vehicleId));
+		when(this.rentVehicle.createRent(customerId, vehicleId)).thenReturn(persistedRent);
 
 		this.mockMvc.perform(post("/rents").content(request).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isCreated())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-				.andExpect(jsonPath("$.rentId").value(RENT_ID))
-				.andExpect(jsonPath("$.customerId").value(CUSTOMER_ID))
-				.andExpect(jsonPath("$.vehicleId").value(VEHICLE_ID))
-				.andExpect(jsonPath("$.state").value(RentState.PENDING.toString()))
+				.andExpect(jsonPath("$.rentId").value(persistedRent.getId()))
+				.andExpect(jsonPath("$.customerId").value(customerId))
+				.andExpect(jsonPath("$.vehicleId").value(vehicleId))
+				.andExpect(jsonPath("$.state").value(PENDING.toString()))
 				.andExpect(jsonPath("$.acceptedAt").doesNotExist())
 				.andExpect(jsonPath("$.startedAt").doesNotExist())
 				.andExpect(jsonPath("$.endedAt").doesNotExist());
@@ -113,7 +129,7 @@ class RentControllerTest {
 	@ParameterizedTest
 	@ValueSource(strings = {"", "{}"})
 	void shouldNotCreateRentWhenRequestBodyIsNotValid(String request) throws Exception {
-		when(this.rentVehicle.createRent(CUSTOMER_ID, VEHICLE_ID)).thenThrow(RentNotFoundException.class);
+		when(this.rentVehicle.createRent(any(), any())).thenThrow(RentNotFoundException.class);
 
 		this.mockMvc.perform(post("/rents").content(request).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isBadRequest())

@@ -1,7 +1,7 @@
 package it.vincenzocorso.carsharing.rentservice.adapters.persistence.jpa;
 
 import it.vincenzocorso.carsharing.rentservice.adapters.persistence.RentWrapper;
-import it.vincenzocorso.carsharing.rentservice.domain.FakeRent;
+import it.vincenzocorso.carsharing.rentservice.domain.models.RandomRent;
 import it.vincenzocorso.carsharing.rentservice.domain.models.Rent;
 import it.vincenzocorso.carsharing.rentservice.domain.models.RentState;
 import it.vincenzocorso.carsharing.rentservice.domain.models.SearchRentCriteria;
@@ -15,13 +15,14 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static it.vincenzocorso.carsharing.rentservice.domain.FakeRent.*;
+import static it.vincenzocorso.carsharing.rentservice.domain.models.RandomRent.randomRent;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -54,18 +55,23 @@ class RentJPARepositoryAdapterIntegrationTest {
 
 	@Test
 	void shouldSave() {
-		Rent rent = rentInState(RentState.STARTED);
+		Rent rent = randomRent();
+		rent.setId(null);
+
 		Rent savedRent = this.rentJPARepositoryAdapter.save(rent);
-		rent.setId(savedRent.getId());
 
 		assertThat(this.rentRepository.count()).isEqualTo(1);
 		assertThat(savedRent).isInstanceOf(RentWrapper.class);
-		assertEqualsWithRent(rent, savedRent);
+		assertThat(((RentWrapper)savedRent).getVersion()).isZero();
+		assertThat(savedRent)
+				.usingRecursiveComparison()
+				.ignoringFields("id", "version")
+				.isEqualTo(rent);
 	}
 
 	@Test
 	void shouldGenerateUUID() {
-		Rent newRent = rentInState(RentState.PENDING);
+		Rent newRent = randomRent();
 		newRent.setId(null);
 
 		Rent savedRent = this.rentJPARepositoryAdapter.save(newRent);
@@ -86,14 +92,16 @@ class RentJPARepositoryAdapterIntegrationTest {
 
 	@Test
 	void shouldFindRentById() {
-		Rent savedRent = this.rentJPARepositoryAdapter.save(rentInState(RentState.STARTED));
+		Rent savedRent = this.rentJPARepositoryAdapter.save(randomRent());
 
 		Optional<Rent> optionalRent = this.rentJPARepositoryAdapter.findById(savedRent.getId());
 
 		assertTrue(optionalRent.isPresent());
 		Rent retrievedRent = optionalRent.get();
 		assertThat(retrievedRent).isInstanceOf(RentWrapper.class);
-		assertEqualsWithRent(savedRent, retrievedRent);
+		assertThat(retrievedRent)
+				.usingRecursiveComparison()
+				.isEqualTo(savedRent);
 	}
 
 	@Test
@@ -111,8 +119,10 @@ class RentJPARepositoryAdapterIntegrationTest {
 	@Test
 	void shouldFindRentsByCustomerIdCriteria() {
 		List<Rent> savedRents = this.initializeRentsTable();
-		List<String> expectedRentsIds = savedRents.stream().map(Rent::getId).collect(Collectors.toList());
-		SearchRentCriteria searchCriteria = SearchRentCriteria.builder().customerId(CUSTOMER_ID).build();
+		Collections.shuffle(savedRents);
+		Rent expectedRent = savedRents.get(0);
+		List<String> expectedRentsIds = Stream.of(expectedRent).map(Rent::getId).toList();
+		SearchRentCriteria searchCriteria = SearchRentCriteria.builder().customerId(expectedRent.getDetails().customerId()).build();
 
 		List<String> retrievedRentsIds = this.rentJPARepositoryAdapter.findByCriteria(searchCriteria).stream().map(Rent::getId).collect(Collectors.toList());
 
@@ -132,7 +142,7 @@ class RentJPARepositoryAdapterIntegrationTest {
 	private List<Rent> initializeRentsTable() {
 		RentEntityMapper rentMapper = new RentEntityMapper();
 		return Stream.of(RentState.PENDING, RentState.STARTED, RentState.ENDED)
-				.map(FakeRent::rentInState)
+				.map(RandomRent::randomRent)
 				.peek(rent -> rent.setId(null))
 				.map(rentMapper::convertToEntity)
 				.map(this.rentRepository::save)
