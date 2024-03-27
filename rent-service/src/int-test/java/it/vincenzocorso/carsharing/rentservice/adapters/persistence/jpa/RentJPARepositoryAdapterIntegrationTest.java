@@ -1,5 +1,6 @@
 package it.vincenzocorso.carsharing.rentservice.adapters.persistence.jpa;
 
+import it.vincenzocorso.carsharing.common.messaging.events.ResultWithEvents;
 import it.vincenzocorso.carsharing.rentservice.adapters.persistence.RentWrapper;
 import it.vincenzocorso.carsharing.rentservice.domain.models.RandomRent;
 import it.vincenzocorso.carsharing.rentservice.domain.models.Rent;
@@ -23,7 +24,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static it.vincenzocorso.carsharing.rentservice.domain.models.RandomRent.randomRent;
+import static it.vincenzocorso.carsharing.rentservice.domain.models.RentState.PENDING;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatException;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -139,9 +142,22 @@ class RentJPARepositoryAdapterIntegrationTest {
 		assertThat(retrievedRentsIds).hasSize(savedRents.size() - 1);
 	}
 
+	@Test
+	void shouldThrowExceptionWhenOptimisticLockFails() {
+		Rent rent = this.rentJPARepositoryAdapter.save(randomRent(PENDING));
+		Rent loadedRent1 = this.rentJPARepositoryAdapter.findById(rent.getId()).orElseThrow();
+		Rent loadedRent2 = this.rentJPARepositoryAdapter.findById(rent.getId()).orElseThrow();
+		loadedRent1.accept();
+		loadedRent2.reject();
+
+		Rent savedRent = this.rentJPARepositoryAdapter.save(loadedRent1);
+		assertThatException().isThrownBy(() -> this.rentJPARepositoryAdapter.save(loadedRent2));
+		assertThat(((RentWrapper)savedRent).getVersion()).isEqualTo(((RentWrapper)loadedRent1).getVersion() + 1);
+	}
+
 	private List<Rent> initializeRentsTable() {
 		RentEntityMapper rentMapper = new RentEntityMapper();
-		return Stream.of(RentState.PENDING, RentState.STARTED, RentState.ENDED)
+		return Stream.of(PENDING, RentState.STARTED, RentState.ENDED)
 				.map(RandomRent::randomRent)
 				.peek(rent -> rent.setId(null))
 				.map(rentMapper::convertToEntity)
